@@ -25,7 +25,7 @@ const Marketplace = () => {
                                 <Marketbox key={i}  logo={logo} name={name} subname={company} word={word} subStatus={subscribeStatus} subscribe={subscribe}  />                        
                             )
                     }
-
+// 
                     )}
                 </BoxWrapper>
             </Box>

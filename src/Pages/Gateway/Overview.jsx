@@ -139,21 +139,7 @@ const Overview = () => {
       name: "dateCreated",
       image: <img src={tablearrow} alt="" />,
     },
-    // {
-    //   id: 9,
-    //   name: "TRANSFER FEE",
-    //   image: <img src={tablearrow} alt="" />,
-    // },
-    // {
-    //   id: 10,
-    //   name: "TRANSACTION STATUS",
-    //   image: <img src={tablearrow} alt="" />,
-    // },
-    // {
-    //   id: 11,
-    //   name: "ACTIONS",
-    //   // image: <img src={tablearrow} alt="" />,
-    // },
+   
   ]
 
   const TheadBodys = trx?.map((d) => {

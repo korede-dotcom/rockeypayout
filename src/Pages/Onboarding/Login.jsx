@@ -47,7 +47,7 @@ const Login = () => {
   const handleContinueClick = () => {
     if (activeTab < 4) {
       setActiveTab(activeTab + 1);
-    }
+    }else{}
   };
   const handleBackClick = () => {
     if (activeTab > 1) {
@@ -533,8 +533,8 @@ const Login = () => {
                 placeholder="••••••••••••••"
                 onChange={handleInputChange}
                 value={formData.password}
-                name="username"
-                forhtml="username"
+                name="password"
+                forhtml="password"
               />
               <OInput
                 type="text"
@@ -542,8 +542,8 @@ const Login = () => {
                 placeholder="••••••••••••••"
                 onChange={handleInputChange}
                 value={formData.password}
-                name="username"
-                forhtml="username"
+                name="password"
+                forhtml="password"
               />
             </>
             )}
@@ -551,9 +551,19 @@ const Login = () => {
           {/* <div className="next" onClick={() => setPage(page + 1)}> */}
           {/* <div className="next" onClick={handleGoNext}> */}
           {/* <div className="next" onClick={() => setActiveTab(activeTab + 1)}> */}
+          {
+            activeTab >= 4 ? (
           <div className="next" onClick={handleSignup}>
             <button>Submit</button>
           </div>
+
+            ) : (
+          <div className="next" onClick={handleContinueClick}>
+            <button>continue</button>
+          </div>
+
+            )
+          }
         </RightContent>
       </RightLogin>
     </LoginWrapper>

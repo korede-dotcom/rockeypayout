@@ -9,10 +9,39 @@ import Reusetable from "../../Reuseable/Reusetable";
 import { ApiHeader, ApiBody } from "../../Mapables";
 import { WebhooksHHead, WebhooksBody } from "../../Mapables";
 import Modal from "../../Reuseable/Modal";
+//
+import gb from "../../assets/gb.svg";
+import rb from "../../assets/rb.svg";
+import cc from '../../assets/languagesImg/c.svg'
+import cplus from '../../assets/languagesImg/cplus.svg'
+import gosimg from '../../assets/languagesImg/go.svg'
+import json from '../../assets/languagesImg/json.svg'
+import jsimg from '../../assets/languagesImg/js.svg'
+import kotlin from '../../assets/languagesImg/kotlin.svg'
+import objectc from '../../assets/languagesImg/objectc.svg'
+import python from '../../assets/languagesImg/python.svg'
+import rlang from '../../assets/languagesImg/rlang.svg'
+import swift from '../../assets/languagesImg/swift.svg'
 
 const Details = () => {
   const [mod, setMo] = useState(false);
   const [reveal, setReveal] = useState(false);
+  const [others, setOther] = useState(false);
+
+  const othermap = [
+    {name: 'C', image: cc},
+    {name: 'C++', image: cplus},
+    {name: 'Go', image: gosimg},
+    {name: 'HTTP', image: cc},
+    {name: 'Javascript', image: jsimg},
+    {name: 'JSON', image: cc},
+    {name: 'Kotlin', image: kotlin},
+    {name: 'Objective-C', image: objectc},
+    {name: 'PowerShell', image: cc},
+    {name: 'Python', image: python},
+    {name: 'R', image: rlang},
+    {name: 'Swift', image: swift}
+  ]
   return (
     <Layout>
       <ApiBox>
@@ -33,10 +62,10 @@ const Details = () => {
               <Modal
                 width="430px"
                 height="350px"
-                modalName="API"
+                modalName="API KEY"
                 setPayout={setMo}
                 setShow=""
-                style={{padding: '0 10px'}}
+                style={{ padding: "0 10px" }}
               >
                 <APiModalWrapper>
                   <p>
@@ -146,7 +175,7 @@ const Details = () => {
                     </td>
                     <td>{tbody.datecreated}</td>
                     <td>{tbody.lastcreated}</td>
-                    <td className={tbody.status === "Active" ? "green" : "red"}>
+                    {/* <td className={tbody.status === "Active" ? "green" : "red"}>
                       <span
                         className={
                           tbody.status === "Active"
@@ -163,20 +192,52 @@ const Details = () => {
                       >
                         {tbody.status}
                       </span>
+                      </td> */}
+                    <td>
+                      {tbody.status === true ? (
+                        <span className="sp_active">
+                          <img src={gb} alt="" />
+                          Active
+                        </span>
+                      ) : (
+                        <span className="sp_inactive">
+                          <img src={rb} alt="" />
+                          Inactive
+                        </span>
+                      )}
                     </td>
+                    {/* src/assets/languagesImg/go */}
                   </tr>
                 ))}
               </tbody>
             </table>
           </Retable>
           <div className="webhook">
-            <h2>Webhooks</h2>
-            <p>A description about sample codes goes here</p>
+            <div className="con">
+              <h2>Webhooks</h2>
+              <p>A description about sample codes goes here</p>
+            </div>
+            <div className="other">
+              <p className="sh" onClick={() => setOther(!others)}>
+                Other Languages
+              </p>
+              {others && <div className="showothers"  onClick={() => setOther(!others)}>
+                      {othermap.map((m,i) => (
+                        <div className="oth">
+                          <img src={m.image} alt="" />
+                          <span>{m.name}</span>
+                        </div>
+                      ))}
+                </div>}
+            </div>
           </div>
+
           <hr
             style={{
+              display: "flex",
+              alignItems: "center",
               width: "calc(100% - 40px)",
-              margin: "10px 20px",
+              margin: "5px  15px 30px",
               border: ".5px solid #EAECF0",
             }}
           />
@@ -306,7 +367,6 @@ const Details = () => {
             </div>
           </Retabletwo>
         </Box>
-        
       </ApiBox>
     </Layout>
   );
@@ -359,21 +419,68 @@ const ApiBox = styled.div`
     }
   }
   .webhook {
-    display: flex;
-    flex-direction: column;
-    padding: 10px 20px;
     margin: 20px 0 0;
-    h2 {
-      color: #090814;
-      font-size: 16px;
-      margin-bottom: 10px;
-      font-weight: 400;
-      line-height: 28px;
+    padding: 10px 20px;
+    width: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .con {
+      display: flex;
+      flex-direction: column;
+      h2 {
+        color: #090814;
+        font-size: 16px;
+        margin-bottom: 10px;
+        font-weight: 400;
+        line-height: 28px;
+      }
+      p {
+        color: #667085;
+        font-size: 12px;
+        font-weight: 300;
+      }
     }
-    p {
-      color: #667085;
-      font-size: 12px;
-      font-weight: 300;
+    .other {
+      position: relative;
+      cursor: pointer;
+      .sh {
+        border-radius: 8px;
+        border: 1px solid #d0d5dd;
+        background: #fff;
+        box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+        color: #667085;
+        font-size: 12px;
+        padding: 10px;
+        font-weight: 400;
+      }
+      .showothers {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        row-gap: 5px;
+        top: 38px;
+        width: 150px;
+        height: 230px;
+        overflow-y: auto;
+        right: 0;
+        border-radius: 6px;
+        background: #FFF;
+        padding: 10px;
+        box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.08), 0px 15px 35px -5px rgba(17, 24, 38, 0.15), 0px 0px 0px 1px rgba(152, 161, 178, 0.10);
+        .oth{
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          span{
+            color: #464F60;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 20px;
+            letter-spacing: 0.32px;
+          }
+        }
+      }
     }
   }
 `;
@@ -485,6 +592,9 @@ const Retable = styled.div`
           font-weight: 400;
           line-height: 20px; /* 142.857% */
         }
+        td:first-child {
+          padding: 0 25px;
+        }
         td:nth-child(4) {
           display: flex;
           align-items: center;
@@ -506,41 +616,73 @@ const Retable = styled.div`
           }
         }
         td:last-child {
-          margin: 0 0 0 15px;
-          padding: 3px 10px;
-          border-radius: 20px;
-          display: flex;
-          align-items: center;
-          gap: 7px;
-          .greenbullet {
-            height: 5px;
-            width: 5px;
-            padding: 1px 2.5px;
-            border-radius: 50%;
-            background: #00a85a;
+          padding-right: 20px;
+
+          .sp_active {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border-radius: 16px;
+            background: #ecfdf3;
+            padding: 5px 15px;
+            color: #027a48;
+            text-align: center;
+            font-size: 11px;
+            font-weight: 400;
+            img {
+              width: 7px;
+            }
           }
-          .activeLast {
-            color: #fff;
-            // border: 2px solid red;
+          .sp_inactive {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border-radius: 16px;
+            background: #fef3f2;
+            padding: 5px 15px;
+            color: #b42318;
+            text-align: center;
+            font-size: 11px;
+            font-weight: 400;
+            img {
+              width: 7px;
+            }
           }
-          // false
-          .redbullet {
-            height: 5px;
-            width: 5px;
-            padding: 1px 2.5px;
-            border-radius: 50%;
-            background: red;
-          }
-          .inactiveLast {
-            color: red;
-          }
+          //   margin: 0 0 0 15px;
+          //   padding: 3px 10px;
+          //   border-radius: 20px;
+          //   display: flex;
+          //   align-items: center;
+          //   gap: 7px;
+          //   .greenbullet {
+          //     height: 5px;
+          //     width: 5px;
+          //     padding: 1px 2.5px;
+          //     border-radius: 50%;
+          //     background: #00a85a;
+          //   }
+          //   .activeLast {
+          //     color: #fff;
+          //     // border: 2px solid red;
+          //   }
+          //   // false
+          //   .redbullet {
+          //     height: 5px;
+          //     width: 5px;
+          //     padding: 1px 2.5px;
+          //     border-radius: 50%;
+          //     background: red;
+          //   }
+          //   .inactiveLast {
+          //     color: red;
+          //   }
         }
-        .green {
-          background: #7bb83d;
-        }
-        .red {
-          background: orange;
-        }
+        // .green {
+        //   background: #7bb83d;
+        // }
+        // .red {
+        //   background: orange;
+        // }
       }
     }
   }

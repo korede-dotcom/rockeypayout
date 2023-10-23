@@ -7,15 +7,21 @@ import {
   WebhooksBody,
   WebhooksHHead,
 } from "../../Mapables";
+import Modal from "../../Reuseable/Modal";
 // import Modal from '../../Reuseable/Modal'
 import styled from "styled-components";
 //
 import add from "../../assets/add.svg";
 import gb from "../../assets/gb.svg";
 import rb from "../../assets/rb.svg";
+import OInput from "../Onboarding/OnboardingInput/OInput";
+import mail from "../../assets/mail.svg";
+import choose from "../../assets/choose.svg";
 
 const UserManagement = () => {
-  const [sho, setShow] = useState();
+  const [sho, setShow] = useState(false);
+  // const [mod, setMod] = useState(false);
+
   return (
     <Layout>
       <UserWrapper>
@@ -28,11 +34,38 @@ const UserManagement = () => {
             </p>
           </div>
           <div className="rightside">
-            <p onClick={() => setShow(!sho)}>
+            <p onClick={() => setShow(true)}>
               <img src={add} alt="" />
               <span>New User</span>
             </p>
-            {/* {sho && <Modal></Modal>} */}
+            {sho && (
+              <Modal
+                height="350px"
+                width="350px"
+                setShow={setShow}
+                setPayout={setShow}
+                modalName="New User"
+                btn="Create"
+              >
+                <Usermodal>
+                  <OInput label="Full Name" placeholder="Sun Earth" />
+                  <Email>
+                    <label htmlFor="email">Email</label>
+                    <div className="inner">
+                      <img src={mail} alt="" />
+                      <input type="text" placeholder="sunearthweb@gmail.com" />
+                    </div>
+                  </Email>
+                  <Role>
+                    <label htmlFor="email">Role</label>
+                    <div className="inner">
+                      <input type="text" placeholder="Choose role" />
+                      <img src={choose} alt="" />
+                    </div>
+                  </Role>
+                </Usermodal>
+              </Modal>
+            )}
           </div>
         </div>{" "}
         <Box
@@ -74,10 +107,14 @@ const UserManagement = () => {
                     <td>
                       {m.status === true ? (
                         <span className="sp_active">
-                          <img src={gb} alt="" />Active
-                          </span>
+                          <img src={gb} alt="" />
+                          Active
+                        </span>
                       ) : (
-                        <span className="sp_inactive"><img src={rb} alt="" />Inactive</span>
+                        <span className="sp_inactive">
+                          <img src={rb} alt="" />
+                          Inactive
+                        </span>
                       )}
                     </td>
                   </tr>
@@ -153,19 +190,19 @@ const TableWrap = styled.div`
           padding: 10px;
           text-align: start;
           color: #687182;
+          border-collapse: collapse;
           font-size: 10px;
           font-weight: 500;
           letter-spacing: 0.36px;
           text-transform: uppercase;
-          img{
+          img {
             width: 13px;
           }
-          .col{
+          .col {
             display: flex;
             align-items: center;
-            gap: 5px;           
+            gap: 5px;
           }
-
         }
         th:nth-child(1) {
           width: 45%;
@@ -229,27 +266,27 @@ const TableWrap = styled.div`
         td:last-child {
           width: 10%;
           padding-right: 20px;
-            
-          .sp_active{
+
+          .sp_active {
             display: flex;
             align-items: center;
             gap: 5px;
             border-radius: 16px;
-            background: #ECFDF3;
+            background: #ecfdf3;
             padding: 8px 15px;
-            color: #027A48;
+            color: #027a48;
             text-align: center;
             font-size: 12px;
             font-weight: 500;
           }
-          .sp_inactive{
+          .sp_inactive {
             display: flex;
             align-items: center;
             gap: 5px;
             border-radius: 16px;
-            background: #FEF3F2;
+            background: #fef3f2;
             padding: 8px 15px;
-            color: #B42318;
+            color: #b42318;
             text-align: center;
             font-size: 12px;
             font-weight: 500;
@@ -258,4 +295,90 @@ const TableWrap = styled.div`
       }
     }
   }
+`;
+
+const Usermodal = styled.div`
+  height: 100%;
+  width: 100%;
+  padding: 0 10px;
+`;
+
+const Email = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  row-gap: 5px;
+  margin: 15px 0 5px;
+  width: 100%;
+  label {
+    color: #344054;
+    font-size: 12px;
+    font-weight: 400;
+  }
+  .inner {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+    height: 35px;
+    width: 100%;
+    padding: 0 10px;
+    border-radius: 8px;
+    border: 1px solid #d0d5dd;
+    background: #fff;
+    box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+    input {
+      outline: none;
+      width: 100%;
+      border: none;
+      color: black;
+      font-weight: 300;
+      text-transform: capitalize;
+      &::placeholder {
+        color: #a1a9b8;
+        font-size: 12px;
+        font-weight: 400;
+      }
+    }
+  }
+`;
+
+const Role = styled.div`
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+row-gap: 5px;
+margin: 15px 0 5px;
+width: 100%;
+label {
+  color: #344054;
+  font-size: 12px;
+  font-weight: 400;
+}
+.inner {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  height: 35px;
+  width: 100%;
+  padding: 0 10px;
+  border-radius: 8px;
+  border: 1px solid #d0d5dd;
+  background: #fff;
+  box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+  input {
+    outline: none;
+    width: 100%;
+    border: none;
+    color: black;
+    font-weight: 300;
+    text-transform: capitalize;
+    &::placeholder {
+      color: #a1a9b8;
+      font-size: 12px;
+      font-weight: 400;
+    }
+  }
+}
 `;

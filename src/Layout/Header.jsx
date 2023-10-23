@@ -33,49 +33,23 @@ const Header = ({ setPropsPassed, SelectedCategory }) => {
   const [headtab, setHeadTab] = useState(0);
   const [showProfile, setShowProfile] = useState(false);
 
-  // const handleTabClick = (id) => {
-  //   setHeadTab(id);
-  //   setPropsPassed(headerTab[id].name);
-  // };
-  // useEffect(() => {
-  //   const activeTabIndex = headerTab.findIndex((tab) => tab.path === pathname);
-  //   if (activeTabIndex !== -1) {
-  //     setHeadTab(activeTabIndex);
-  //     setPropsPassed(headerTab[activeTabIndex].name);
-  //   }
-  // }, [pathname]);
-  // const handleTabClick = (id, path) => {
-  //   setHeadTab(id);
-  //   setPropsPassed(headerTab[id].name);
-  //   Navigate(path);
-  // };
-  // const handleTabClick = (id, path) => {
-  //   setHeadTab(id);
-  //   setPropsPassed(headerTab[id].name);
-  //   Navigate(path);
-  //   console.log(path);
-  // };
 
-  // const handleTabClick = (id, path, category) => {
-  //   setHeadTab(id);
-  //   setPropsPassed(headerTab[id].name);
-  //   setSelectedCategory(category);
-  //   Navigate(path);
-  // };
-  const handleTabClick = (id, path) => {
-    setHeadTab(id);
-    setPropsPassed(headerTab[id].name);
+  const handleTabClick = (name, path) => {
+    setHeadTab(headerTab.find((tab) => tab.name === name).id);
+    setPropsPassed(name);
     Navigate(path);
   };
 
   useEffect(() => {
-    const activeTabIndex = headerTab.findIndex((tab) => tab.path === pathname);
-    if (activeTabIndex !== -1) {
-      setHeadTab(activeTabIndex);
-      setPropsPassed(headerTab[activeTabIndex].name);
+    const activeTab = headerTab.find((tab) => pathname.startsWith(tab.path));
+    if (activeTab) {
+      setHeadTab(activeTab.id);
+      setPropsPassed(activeTab.name);
     }
-  }, [pathname]);
+  }, [pathname, headerTab]);
 
+  console.log("Current pathname:", pathname);
+  console.log(setPropsPassed);
 
   return (
     <HeaderContainer>
@@ -83,9 +57,7 @@ const Header = ({ setPropsPassed, SelectedCategory }) => {
         {headerTab.map((m, i) => (
           <p
             key={i}
-            // onClick={() => setHeadTab(m.id)}
-            // onClick={() => {handleTabClick(m.id)}}
-            onClick={() => handleTabClick(m.id, m.path)}
+            onClick={() => handleTabClick(m.name, m.path)}
             className={headtab === i && "activeTab"}
           >
             {m.name}
@@ -160,7 +132,7 @@ const HeaderContainer = styled.header`
       font-weight: 400;
       border-radius: 4px;
       padding: 8px 20px;
-      transition: all 1s;
+      // transition: all 1s;
     }
     .activeTab {
       background: #00a85a;
@@ -170,7 +142,7 @@ const HeaderContainer = styled.header`
   .right {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
     // border: 2px solid blue;
     .toggle {
       display: flex;
@@ -181,8 +153,8 @@ const HeaderContainer = styled.header`
       p {
         color: #667085;
         font-size: 12px;
-        font-weight: 00;
-        margin-bottom: 5px;
+        font-weight: 500;
+        lineheight: 25px;
       }
     }
     .notifi {

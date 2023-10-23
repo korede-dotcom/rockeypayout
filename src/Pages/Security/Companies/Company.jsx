@@ -33,7 +33,7 @@ const Company = () => {
           border="none"
           radius="15px"
           margin="20px 0"
-          padding="25px 15px"
+          padding="25px 20px"
           flexDirection="column"
           alignItems="flex-start"
         >

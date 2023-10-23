@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import logo from '../../assets/SidebarImg/logo.svg'
 import OInput from "./OnboardingInput/OInput";
-import {useNavigate} from "react-router-dom"
 
 const LoginR = () => {
 
@@ -11,14 +10,8 @@ const LoginR = () => {
     const [deviceId, setDeviceId] = useState("Tets");
     const [source, setSource] = useState("Web");
 
-    const navigate = useNavigate();
-
-    const gotoSignUp = () => {
-        navigate("/signup")
-    }
-
     // useEffect(() => {
-        const SubmitHandler = () => {
+        const SubmitHandler = async () => {
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
             
@@ -36,10 +29,13 @@ const LoginR = () => {
             redirect: 'follow'
             };
             
-            fetch("https://moneybusiness.tm-dev.xyz/moneybusiness//auth", requestOptions)
-            .then(response => response.json())
-            .then(result => console.log(result))
-            .catch(error => console.log('error', error));            
+           const response = await fetch("https://moneybusiness.tm-dev.xyz/moneybusiness//auth", requestOptions)
+           const data = await response.json()
+              console.log("🚀 ~ file: LoginR.jsx:34 ~ SubmitHandler ~ data:", data)
+              if (data?.status) {
+                window.location.href = "/overview"
+              }
+              
         }
 
     // }, [])
@@ -70,7 +66,7 @@ const LoginR = () => {
             <div className="dont">
                 <div className="dontBx">
                     <p>Don’t have an account?</p>
-                    <span onClick={gotoSignUp}>Sign Up</span>
+                    <span>Sign Up</span>
                 </div>
             </div>
         </div>

@@ -15,12 +15,14 @@ import java from "./assets/Webhooks/java.svg";
 import php from "./assets/Webhooks/php.svg";
 import node from "./assets/Webhooks/node.png";
 import alb from "./assets/alb.png";
+import ngn from './assets/ngn.svg'
 //
 
 export const SidebarData = [
   {
     pageName: "Gateway",
     Name: "My GATEWAYS",
+    path: "/overview",
     Gateway: [
       {
         title: "Overview",
@@ -42,6 +44,7 @@ export const SidebarData = [
   {
     pageName: "Gateway",
     Name: "ALL GATEWAYS",
+    path: "/marketplace",
     Gateway: [
       {
         title: "Marketplace",
@@ -53,6 +56,7 @@ export const SidebarData = [
   {
     pageName: "Transactions",
     Name: "Transactions",
+    path: "/transaction",
     Gateway: [
       {
         title: "Transaction",
@@ -64,6 +68,7 @@ export const SidebarData = [
   {
     pageName: "Security",
     Name: "Security",
+    path: "/security/profile",
     Gateway: [
       {
         title: "User Profile",
@@ -77,7 +82,7 @@ export const SidebarData = [
       },
       {
         title: "Details",
-        path: "/API",
+        path: "/security/API",
         image: <img src={market} alt="" />,
       },
       {
@@ -200,7 +205,7 @@ export const ApiBody = [
     Test: "Test",
     datecreated: "23/09/23, 09:11:04",
     lastcreated: "23/09/23, 09:11:04",
-    status: "Active",
+    status: false,
   },
   {
     Appid: "192830485",
@@ -212,7 +217,7 @@ export const ApiBody = [
     Test: "Test",
     datecreated: "23/09/23, 09:11:04",
     lastcreated: "23/09/23, 09:11:04",
-    status: "Active",
+    status: true,
   },
   {
     Appid: "192830485",
@@ -224,7 +229,7 @@ export const ApiBody = [
     Test: "Test",
     datecreated: "23/09/23, 09:11:04",
     lastcreated: "23/09/23, 09:11:04",
-    status: "false",
+    status: false,
   },
   {
     Appid: "192830485",
@@ -236,7 +241,7 @@ export const ApiBody = [
     Test: "Test",
     datecreated: "23/09/23, 09:11:04",
     lastcreated: "23/09/23, 09:11:04",
-    status: "Active",
+    status: true,
   },
   {
     Appid: "192830485",
@@ -248,7 +253,7 @@ export const ApiBody = [
     Test: "Test",
     datecreated: "23/09/23, 09:11:04",
     lastcreated: "23/09/23, 09:11:04",
-    status: "Active",
+    status: true,
   },
 ];
 
@@ -274,6 +279,377 @@ export const WebhooksHHead = [
     image: <img style={{ width: "40px" }} src={node} alt="" />,
   },
 ];
+
+export const OverviewHeader = [
+  {
+    id: 0,
+    name: "TRANSACTION REF",
+    image: <img src={tablearrow} alt="" />,
+  },
+  {
+    id: 1,
+    name: "DATE",
+    image: <img src={tablearrow} alt="" />,
+  },
+  {
+    id: 2,
+    name: "GATEWAY",
+    image: <img src={tablearrow} alt="" />,
+  },
+  {
+    id: 3,
+    name: "SENDER",
+    image: <img src={tablearrow} alt="" />,
+  },
+  {
+    id: 4,
+    name: "RECEIVER",
+    image: <img src={tablearrow} alt="" />,
+  },
+  {
+    id: 5,
+    name: "BANK",
+    image: <img src={tablearrow} alt="" />,
+  },
+  {
+    id: 6,
+    name: "ACCOUNT NO",
+    image: <img src={tablearrow} alt="" />,
+  },
+  {
+    id: 7,
+    name: "CURRENCY",
+    image: <img src={tablearrow} alt="" />,
+  },
+  {
+    id: 8,
+    name: "AMOUNT",
+    image: <img src={tablearrow} alt="" />,
+  },
+  {
+    id: 9,
+    name: "TRANSFER FEE",
+    image: <img src={tablearrow} alt="" />,
+  },
+  {
+    id: 10,
+    name: "TRANSACTION STATUS",
+    image: <img src={tablearrow} alt="" />,
+  },
+  {
+    id: 11,
+    name: "ACTIONS",
+    // image: <img src={tablearrow} alt="" />,
+  },
+]
+export const OhentpayHead = [
+  {
+    id: 0,
+    name: "TRANSACTION REF",
+    image: <img src={tablearrow} alt="" />,
+  },
+  {
+    id: 1,
+    name: "DATE",
+    image: <img src={tablearrow} alt="" />,
+  },
+  {
+    id: 2,
+    name: "RECEIVER",
+    image: <img src={tablearrow} alt="" />,
+  },
+  {
+    id: 3,
+    name: "BANK",
+    image: <img src={tablearrow} alt="" />,
+  },
+  {
+    id: 4,
+    name: "ACCOUNT NO",
+    image: <img src={tablearrow} alt="" />,
+  },
+  {
+    id: 5,
+    name: "CURRENCY",
+    image: <img src={tablearrow} alt="" />,
+  },
+  {
+    id: 6,
+    name: "AMOUNT",
+    image: <img src={tablearrow} alt="" />,
+  },
+  {
+    id: 7,
+    name: "TRANSFER FEE",
+    image: <img src={tablearrow} alt="" />,
+  },
+  {
+    id: 8,
+    name: "TRANSACTION STATUS",
+    image: <img src={tablearrow} alt="" />,
+  },
+  {
+    id: 9,
+    name: "ACTIONS",
+    // image: <img src={tablearrow} alt="" />,
+  },
+]
+export const OverviewBody = [
+  {
+    trans: "TX19784903",
+    date: "23/09/23, 09:11:24",
+    img: <img src={Ohentpay} alt="" />,
+    gateway: "ohentpay",
+    receiver: "AINAJOHNSON",
+    bank: "Access Bank",
+    accNo: "0012345678",
+    flag: <img src={ngn} alt="" />,
+    currency: "NGN",
+    amount: "30.00",
+    transferfee: 0.0,
+    transactiontatus: "Deposited",
+    actions: "view details"
+  },
+  {
+    trans: "TX19784903",
+    date: "23/09/23  09:11:24",
+    img: <img src={hope} alt="" />,
+    gateway: "Hope PS BANk",
+    receiver: "AINA JOHNSON",
+    bank: "GT Bank",
+    accNo: "0012345678",
+    flag: <img src={ngn} alt="" />,
+    currency: "NGN",
+    amount: "30.00",
+    transferfee: 0.0,
+    transactiontatus: "cancelled",
+    actions: "view details"
+  },
+  {
+    trans: "TX19784903",
+    date: "23/09/23  09:11:24",
+    img: <img src={Ohentpay} alt="" />,
+    gateway: "ohentpay",
+    receiver: "CHUKWURA FREDRICK UGOCHUKWU",
+    bank: "Union Bank",
+    accNo: "0012345678",
+    flag: <img src={ngn} alt="" />,
+    currency: "NGN",
+    amount: "30.00",
+    transferfee: 0.0,
+    transactiontatus: "Deposited",
+    actions: "view details"
+  },
+  {
+    trans: "TX19784903",
+    date: "23/09/23  09:11:24",
+    img: <img src={hope} alt="" />,
+    gateway: "Hope PS BANk",
+    receiver: "CHUKWURA FREDRICK UGOCHUKWU",
+    bank: "FCMB",
+    accNo: "0012345678",
+    flag: <img src={ngn} alt="" />,
+    currency: "NGN",
+    amount: "30.00",
+    transferfee: 0.0,
+    transactiontatus: "Deposited",
+    actions: "view details"
+  },
+  {
+    trans: "TX19784903",
+    date: "23/09/23  09:11:24",
+    img: <img src={Ohentpay} alt="" />,
+    gateway: "ohentpay",
+    receiver: "CHUKWURA FREDRICK UGOCHUKWU",
+    bank: "Sterling Bank",
+    accNo: "0012345678",
+    flag: <img src={ngn} alt="" />,
+    currency: "NGN",
+    amount: "30.00",
+    transferfee: 0.0,
+    transactiontatus: "Deposited",
+    actions: "view details"
+  },
+  {
+    trans: "TX19784903",
+    date: "23/09/23  09:11:24",
+    img: <img src={hope} alt="" />,
+    gateway: "Hope PS BANk",
+    receiver: "CHUKWURA FREDRICK UGOCHUKWU",
+    bank: "Access Bank",
+    accNo: "0012345678",
+    flag: <img src={ngn} alt="" />,
+    currency: "NGN",
+    amount: "30.00",
+    transferfee: 0.0,
+    transactiontatus: "cancelled",
+    actions: "view details"
+  },
+  {
+    trans: "TX19784903",
+    date: "23/09/23  09:11:24",
+    img: <img src={hope} alt="" />,
+    gateway: "Hope PS BANk",
+    receiver: "CHUKWURA FREDRICK UGOCHUKWU",
+    bank: "Access Bank",
+    accNo: "0012345678",
+    flag: <img src={ngn} alt="" />,
+    currency: "NGN",
+    amount: "30.00",
+    transferfee: 0.0,
+    transactiontatus: "cancelled",
+    actions: "view details"
+  },
+  {
+    trans: "TX19784903",
+     date: "23/09/23  09:11:24",
+    img: <img src={Ohentpay} alt="" />,
+    gateway: "ohentpay",
+    receiver: "AINA JOHNSON",
+    bank: "Access Bank",
+    accNo: "0012345678",
+    flag: <img src={ngn} alt="" />,
+    currency: "NGN",
+    amount: "30.00",
+    transferfee: 0.0,
+    transactiontatus: "Deposited",
+    actions: "view details"
+  },
+  {
+    trans: "TX19784903",
+    date: "23/09/23  09:11:24",
+    img: <img src={hope} alt="" />,
+    gateway: "Hope PS BANk",
+    receiver: "AINA JOHNSON",
+    bank: "Access Bank",
+    accNo: "0012345678",
+    flag: <img src={ngn} alt="" />,
+    currency: "NGN",
+    amount: "30.00",
+    transferfee: 0.0,
+    transactiontatus: "Deposited",
+    actions: "view details"
+  }
+]
+export const OhentpayBody = [
+  {
+    trans: "TX19784903",
+    date: "23/09/23, 09:11:24",
+    receiver: "AINAJOHNSON",
+    bank: "Access Bank",
+    accNo: "0012345678",
+    flag: <img src={ngn} alt="" />,
+    currency: "NGN",
+    amount: "30.00",
+    transferfee: 0.0,
+    transactiontatus: "Deposited",
+    actions: "view details"
+  },
+  {
+    trans: "TX19784903",
+    date: "23/09/23  09:11:24",
+    receiver: "AINA JOHNSON",
+    bank: "GT Bank",
+    accNo: "0012345678",
+    flag: <img src={ngn} alt="" />,
+    currency: "NGN",
+    amount: "30.00",
+    transferfee: 0.0,
+    transactiontatus: "cancelled",
+    actions: "view details"
+  },
+  {
+    trans: "TX19784903",
+    date: "23/09/23  09:11:24",
+    receiver: "CHUKWURA FREDRICK UGOCHUKWU",
+    bank: "Union Bank",
+    accNo: "0012345678",
+    flag: <img src={ngn} alt="" />,
+    currency: "NGN",
+    amount: "30.00",
+    transferfee: 0.0,
+    transactiontatus: "Deposited",
+    actions: "view details"
+  },
+  {
+    trans: "TX19784903",
+    date: "23/09/23  09:11:24",
+    receiver: "CHUKWURA FREDRICK UGOCHUKWU",
+    bank: "FCMB",
+    accNo: "0012345678",
+    flag: <img src={ngn} alt="" />,
+    currency: "NGN",
+    amount: "30.00",
+    transferfee: 0.0,
+    transactiontatus: "Deposited",
+    actions: "view details"
+  },
+  {
+    trans: "TX19784903",
+    date: "23/09/23  09:11:24",
+    receiver: "CHUKWURA FREDRICK UGOCHUKWU",
+    bank: "Sterling Bank",
+    accNo: "0012345678",
+    flag: <img src={ngn} alt="" />,
+    currency: "NGN",
+    amount: "30.00",
+    transferfee: 0.0,
+    transactiontatus: "Deposited",
+    actions: "view details"
+  },
+  {
+    trans: "TX19784903",
+    date: "23/09/23  09:11:24",
+    receiver: "CHUKWURA FREDRICK UGOCHUKWU",
+    bank: "Access Bank",
+    accNo: "0012345678",
+    flag: <img src={ngn} alt="" />,
+    currency: "NGN",
+    amount: "30.00",
+    transferfee: 0.0,
+    transactiontatus: "cancelled",
+    actions: "view details"
+  },
+  {
+    trans: "TX19784903",
+    date: "23/09/23  09:11:24",
+    receiver: "CHUKWURA FREDRICK UGOCHUKWU",
+    bank: "Access Bank",
+    accNo: "0012345678",
+    flag: <img src={ngn} alt="" />,
+    currency: "NGN",
+    amount: "30.00",
+    transferfee: 0.0,
+    transactiontatus: "cancelled",
+    actions: "view details"
+  },
+  {
+    trans: "TX19784903",
+     date: "23/09/23  09:11:24",
+    receiver: "AINA JOHNSON",
+    bank: "Access Bank",
+    accNo: "0012345678",
+    flag: <img src={ngn} alt="" />,
+    currency: "NGN",
+    amount: "30.00",
+    transferfee: 0.0,
+    transactiontatus: "Deposited",
+    actions: "view details"
+  },
+  {
+    trans: "TX19784903",
+    date: "23/09/23  09:11:24",
+    receiver: "AINA JOHNSON",
+    bank: "Access Bank",
+    accNo: "0012345678",
+    flag: <img src={ngn} alt="" />,
+    currency: "NGN",
+    amount: "30.00",
+    transferfee: 0.0,
+    transactiontatus: "Deposited",
+    actions: "view details"
+  }
+]
 export const WebhooksBody = [
   {
     text: "fetch httpsjsonplaceholdertypicodecomusersthenesponsereturnrespsejsonthenusersconsoleogusers",

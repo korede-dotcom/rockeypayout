@@ -5,6 +5,7 @@ import File from "../../../Reuseable/Inputs/File";
 const Documnets = () => {
   return (
     <DocumentsBox>
+      
       <div className="head">
         <h1>ID Document</h1>
         <p>View, edit, and update your company ID documents here</p>
@@ -18,7 +19,7 @@ const Documnets = () => {
       />
       <InputWrapBox>
         <p>Form Co2</p>
-        <File />
+        <File name="Form Co2" />
       </InputWrapBox>
       <hr
         style={{
@@ -28,8 +29,8 @@ const Documnets = () => {
         }}
       />
       <InputWrapBox>
-        <p>Form Co2</p>
-        <File />
+        <p>Form Co7</p>
+        <File name="Form Co7" />
       </InputWrapBox>
       <hr
         style={{
@@ -39,8 +40,8 @@ const Documnets = () => {
         }}
       />
       <InputWrapBox>
-        <p>Form Co2</p>
-        <File />
+        <p>Company Certification</p>
+        <File name="Company Certification" />
       </InputWrapBox>
       <hr
         style={{
@@ -50,8 +51,30 @@ const Documnets = () => {
         }}
       />
       <InputWrapBox>
-        <p>Form Co2</p>
-        <File />
+        <p>Memorandum of Association</p>
+        <File name="Memorandum of Association" />
+      </InputWrapBox>
+      <hr
+        style={{
+          width: "100%",
+          margin: "15px 0",
+          border: ".7px solid #EAECF0",
+        }}
+      />
+      <InputWrapBox>
+        <p>Article of Association</p>
+        <File name="Article of Association" />
+      </InputWrapBox>
+      <hr
+        style={{
+          width: "100%",
+          margin: "15px 0",
+          border: ".7px solid #EAECF0",
+        }}
+      />
+      <InputWrapBox>
+        <p>Utility Bill</p>
+        <File name="Utility Bill" />
       </InputWrapBox>
       <hr
         style={{
@@ -63,7 +86,7 @@ const Documnets = () => {
             <EndBtn>
         <div className="btns">
           <p className="cancel">Cancel</p>
-          <div className="update">Updatae Profile</div>
+          <div className="update">Update Profile</div>
         </div>
       </EndBtn>
     </DocumentsBox>
@@ -75,6 +98,7 @@ export default Documnets;
 const DocumentsBox = styled.div`
   margin: 20px 0;
   width: 100%;
+  
   .head {
     h1 {
       color: #090814;
@@ -100,7 +124,7 @@ const InputWrapBox = styled.div`
   p {
     color: #333b4a;
     font-size: 11px;
-    font-weight: 400;
+    font-weight: 500;
     line-height: 20px; /* 142.857% */
   }
 `;

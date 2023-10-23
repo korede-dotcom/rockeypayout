@@ -46,7 +46,7 @@ function App() {
             <Route path='/security/company' element={<Company />} />
             <Route path='/security/change-password' element={<Changepassword />} />
             <Route path='/security/change-password' element={<Changepassword />} />
-            <Route path='/api' element={<Details />} />
+            <Route path='/security/API' element={<Details />} />
             <Route path='/security/user-management' element={<UserManagement />} />
 
         </Routes>

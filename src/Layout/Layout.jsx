@@ -5,10 +5,26 @@ import Sidebar from './Sidebar';
 import styled from 'styled-components';
 
 const Layout = ({children}) => {
-  const [activeTab, setActiveTab] = useState('');
-  // const [selectedCategory, setSelectedCategory] = useState('Gateway');
-  const locate = window.location.pathname.split("/", );
+  const [activeTab, setActiveTab] = useState('Gateway');
+  // const locate = window.location.pathname.split("/", );
+  // const locate = window.location.pathname.split('/').reduce((acc, pathPart) => {
+  //   if (pathPart === 'security') {
+  //     return `${acc} `;
+  //   } else {
+  //     return `${acc}/${pathPart}`;
+  //   }
+  // }, '').trim();
+  const parts = window.location.pathname.split('/').filter((part) => part !== 'security');
+  // const locate = parts.map(part => part.replace(/-/g, ' ')).join(' ');
+  const locate = parts
+  .map(part => part.replace(/-/g, ' '))
+  .map(part => part.charAt(0).toLocaleUpperCase() + part.slice(1))
+  .join(' ');
   const [id, setId] = useState();
+  useEffect(() => {
+
+  }, [activeTab])
+  // const [selectedCategory, setSelectedCategory] = useState('Gateway');
   // useEffect(() => {
   //   console.log("activeTab:", activeTab)
   // },[activeTab])
@@ -81,5 +97,6 @@ const Path = styled.div`
   .bold{
     color: #333;
     font-weight: 400;
+    text-transform: capitalize;
   }
 `;

@@ -58,7 +58,7 @@ const Changepassword = () => {
           <EndBtn>
             <div className="btns">
               <p className="cancel">Cancel</p>
-              <div className="update">Updatae Profile</div>
+              <div className="update">Update Profile</div>
             </div>
           </EndBtn>
         </Box>

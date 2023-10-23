@@ -36,7 +36,6 @@ const Sidebar = ({ selectedCategory }) => {
     (item) => item.pageName === selectedCategory
   );
   const locate = window.location.pathname;
-    console.log(locate);
 
   return (
     <SidebarContainer isOpen={isOpen}>

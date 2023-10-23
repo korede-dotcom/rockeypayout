@@ -6,13 +6,13 @@ import edit from '../../assets/edit.svg'
 import save from '../../assets/save.svg'
 import delet from '../../assets/delete.svg'
 
-const File = () => {
+const File = ({name}) => {
   return (
     <FileBox>
         <div className="left">
             <img src={download} alt="" />
             <div className="name">
-                <p>Form Co2.pdf</p>
+                <p>{name}</p>
                 <p>1 MB</p>
             </div>
         </div>

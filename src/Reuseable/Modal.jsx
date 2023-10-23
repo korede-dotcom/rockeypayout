@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import cancel from '../assets/cancel.svg'
 
-const Modal = ({ width, height, children, setPayout, setShow, modalName }) => {
+const Modal = ({ width, height, children, setPayout, setShow, modalName, btn }) => {
 
   return (
     <ModalBox>
@@ -17,13 +17,13 @@ const Modal = ({ width, height, children, setPayout, setShow, modalName }) => {
         <p>{modalName}</p>
           <img onClick={() => {setPayout(false); setShow(false)}} src={cancel} alt="" />
         </div>
-        {modalName === "Payout" && <p className="quick">Quickly send money to your clients</p>}
+        {modalName === "Payout"   && <p className="quick">Quickly send money to your clients</p>}
         {children}
-        {modalName !== "API" &&
+        {modalName !== "API KEY" &&
         <div className="buttons">
           <div className="btnbx">
             <div className="cancel" onClick={() => {setPayout(false); setShow(false)}} >Cancel</div>
-            <div className="proceed">Proceed</div>
+            <div className="proceed">{btn}</div>
           </div>
         </div>
         }
@@ -49,7 +49,6 @@ const ModalBox = styled.div`
   .modalcontent {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
     // overflow-y: auto;
     position: absolute;
     border-radius: 12px;
@@ -68,8 +67,8 @@ const ModalBox = styled.div`
     padding: 20px 10px 10px;
     p {
       color: #090814;
-      font-size: 14px;
-      font-weight: 400;
+      font-size: 15px;
+      font-weight: 500;
     }
     img {
       width: 20px;

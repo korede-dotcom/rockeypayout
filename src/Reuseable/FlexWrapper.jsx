@@ -81,6 +81,7 @@ const FlexWrapper = ({
                   setShow={setShow}
                   setPayout={setPayout}
                   modalName="Payout"
+                  btn="Proceed"
                 >
                   <ModalInner>
                     {/* <p className="quick">Quickly send money to your clients</p> */}
@@ -115,6 +116,7 @@ const FlexWrapper = ({
                   setShow={setShow}
                   setPayout={setPayout}
                   modalName="Fund Gateway"
+                  btn="Fund"
                 >
                   <ModalInner>
                     <TextInput label="Amount" placeholder="200" />

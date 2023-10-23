@@ -34,6 +34,8 @@ const Marketbox = ({ logo, name, subname, word, subscribe, subStatus }) => {
   );
 };
 
+// 
+
 export default Marketbox;
 
 const MarketBox = styled.div`

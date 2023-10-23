@@ -36,6 +36,7 @@ const Login = () => {
   // City Start
   const [city, setCity] = useState([]);
   const [cityId, setcityId] = useState("");
+  const [getIdTypes, setIdTypes] = useState([]);
   const [cityValue, setCityValue] = useState("Default City");
   // cityId Start End
 
@@ -72,7 +73,7 @@ const Login = () => {
       "password" : "",
       "bvn": "",
       "idType": {
-          "id" : ""
+          "id" : 1
       },
       "idnumber": "",
       "idURL": "",
@@ -186,6 +187,19 @@ const Login = () => {
         }
       })
       .catch((error) => console.log("error", error));
+    fetch(
+      "https://moneybusiness.tm-dev.xyz/moneybusiness//getidtypes",
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setIdTypes(data.data);
+        if (data.data.length > 0) {
+          setCountryId(data.data[0].id);
+          setCountryValue(data.data[0].name);
+        }
+      })
+      .catch((error) => console.log("error", error));
   }, []);
 
   useEffect(() => {
@@ -202,10 +216,7 @@ const Login = () => {
       .then((response) => response.json())
       .then((data) => {
         setState(data.data);
-        if (data.data.length > 0) {
-          setStateId(data.data[0].id);
-          setStateValue(data.data[0].name);
-        }
+       
       })
       .catch((error) => console.log("error", error));
   }, [countryId]);
@@ -330,6 +341,46 @@ const Login = () => {
                 forhtml="address"
                 value={formData.address}
               />
+                <SelectorLong>
+                  <p>ID</p>
+                  <select
+                    onChange={(e) => {
+                      console.log("🚀 ~ file: Login.jsx:348 ~ Login ~ e:", e.target.value)
+                      // setCountryValue(e.target.value);
+                      // setCountryId(e.target.value);
+                      setFormData(prev => {
+                        return { ...prev, idType: {id:parseInt(e.target.value)} }
+                      })
+                    }}
+                    value={countryId}
+                  >
+                    {getIdTypes.map((m, i) => (
+                      <option key={i} value={m.id}>
+                        {m.name}
+                      </option>
+                    ))}
+                  </select>
+                </SelectorLong>
+                {/* <Wrap> */}
+                <OInput
+                type="text"
+                label="idnumber"
+                placeholder="Enter your Id number"
+                onChange={handleInputChange}
+                value={formData.idnumber}
+                name="idnumber"
+                forhtml="idnumber"
+              />
+                <OInput
+                type="text"
+                label="Id url"
+                placeholder="Id Url"
+                onChange={handleInputChange}
+                value={formData.idURL}
+                name="idURL"
+                forhtml="bvn"
+              />
+                {/* </Wrap> */}
               <Wrap>
                 <Selector>
                   <p>Country</p>
@@ -762,6 +813,31 @@ const Selector = styled.div`
   }
   select {
     width: 120px;
+    padding: 0 10px;
+    height: 35px;
+    outline: none;
+    border-radius: 8px;
+    border: 1px solid #d0d5dd;
+    background: #fff;
+    box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+    option {
+      width: 100px !important;
+    }
+  }
+`;
+const SelectorLong = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  row-gap: 5px;
+  margin: 5px 0;
+  p {
+    color: #344054;
+    font-size: 12px;
+    font-weight: 400;
+  }
+  select {
+    width: 100%;
     padding: 0 10px;
     height: 35px;
     outline: none;

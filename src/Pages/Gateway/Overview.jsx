@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import styled from "styled-components";
 import Layout from "../../Layout/Layout";
 //
@@ -19,6 +19,52 @@ import { OverviewHeader, OverviewBody } from "../../Mapables";
 
 const Overview = () => {
   const navigate = useNavigate();
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const requestOptions = {
+          method: 'GET',
+          redirect: 'follow'
+        };
+
+        const response = await fetch("https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/45586980", requestOptions);
+        const result = await response.json();
+
+        // Set the fetched data to state
+        setData(result);
+        console.log("Fetched data:", result);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        // Handle errors here
+      }
+    };
+
+    // Call the fetch function
+    fetchData();
+  }, []);
+
+  const TheadBodys = trx?.map((d) => {
+    return {
+      ID: d.id, // Assuming d.id is the corresponding ID in your data
+      originator: "automatic generated",
+      "terminal name": d.terminalName, // Replace with the actual key from your data
+      "terminal class": "POS",
+      "terminal country": d.terminalCountry, // Replace with the actual key from your data
+      "terminal location": d.terminalLocation, // Replace with the actual key from your data
+      host: d.host,
+      "host in": d.hostIn,
+      time: d.timestamp, // Assuming d.timestamp is the corresponding timestamp in your data
+      phase: d.phase, // Replace with the actual key from your data
+      "transaction code": `${d.transactionCode} - ${d.transactionType}`, // Assuming d.transactionCode and d.transactionType are the corresponding keys in your data
+      amount: `${d.amount.toFixed(2)} ${d.currency}`, // Assuming d.amount and d.currency are the corresponding keys in your data
+      pan: d.pan, // Replace with the actual key from your data
+      "authorizer resp": `${d.authorizerCode} - ${d.authorizerDescription}`, // Assuming d.authorizerCode and d.authorizerDescription are the corresponding keys in your data
+      action: "view",
+    };
+  });
+  
 
   return (
     <Layout>

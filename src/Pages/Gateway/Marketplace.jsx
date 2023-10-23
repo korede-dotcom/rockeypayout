@@ -5,7 +5,7 @@ import Layout from '../../Layout/Layout';
 import Box from '../../Reuseable/Box';
 import FlexWrapper from '../../Reuseable/FlexWrapper';
 import FlexItems from '../../Reuseable/FlexItems';
-import Marketbox from '../../Reuseable/marketbox';
+import Marketbox from '../../Reuseable/Marketbox';
 import {marketplaces} from '../../Mapables'
 
 const Marketplace = () => {

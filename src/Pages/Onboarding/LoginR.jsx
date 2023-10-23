@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import logo from '../../assets/SidebarImg/logo.svg'
 import OInput from "./OnboardingInput/OInput";
+import {useNavigate} from "react-router-dom"
 
 const LoginR = () => {
 
@@ -9,6 +10,12 @@ const LoginR = () => {
     const [password, setPassword] = useState("");
     const [deviceId, setDeviceId] = useState("Tets");
     const [source, setSource] = useState("Web");
+
+    const navigate = useNavigate();
+
+    const gotoSignUp = () => {
+        navigate("/signup")
+    }
 
     // useEffect(() => {
         const SubmitHandler = () => {
@@ -63,7 +70,7 @@ const LoginR = () => {
             <div className="dont">
                 <div className="dontBx">
                     <p>Don’t have an account?</p>
-                    <span>Sign Up</span>
+                    <span onClick={gotoSignUp}>Sign Up</span>
                 </div>
             </div>
         </div>

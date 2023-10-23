@@ -8,6 +8,7 @@ import drop from "../../assets/drop.svg";
 import Card from "../../Reuseable/Card";
 import gb from "../../assets/gb.svg";
 import rb from "../../assets/rb.svg";
+import tablearrow from "../../assets/tablearrow.svg";
 //
 import Box from "../../Reuseable/Box";
 import FlexItems from "../../Reuseable/FlexItems";
@@ -20,6 +21,47 @@ import { OverviewHeader, OverviewBody } from "../../Mapables";
 const Overview = () => {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
+  const [trx, settrx] = useState(null);
+  const sorted = data?.data?.transactionVolume["NGN"]
+
+  //  const cardbodys = [
+  //   {
+  //     Image: contact,
+  //     name: "Total Transaction Count",
+  //     downImg: down,
+  //     day: "yesterday",
+  //   },
+  //   {
+  //     Image: successful,
+  //     name: `Successful`,
+  //     downImg: down,
+  //     day: "yesterday",
+  //     border: "border",
+  //     padding: "padding",
+  //   },
+  //   {
+  //     Image: pending,
+  //     name: "Pending",
+  //     downImg: down,
+  //     day: "yesterday",
+  //     border: "border",
+  //     padding: "padding",
+  //   },
+  //   {
+  //     Image: cancelled,
+  //     name: "Cancelled",
+  //     downImg: down,
+  //     day: "yesterday",
+  //     border: "border",
+  //     padding: "padding",
+  //   },
+  // ];
+   const figures = [
+    { number: sorted?.processed },
+    { number: sorted?.deposited },
+    { number: sorted?.pending},
+    { number: sorted?.cancelled },
+  ];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,6 +76,7 @@ const Overview = () => {
 
         // Set the fetched data to state
         setData(result);
+        settrx(result?.data?.payOutTransactions);
         console.log("Fetched data:", result);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -45,25 +88,82 @@ const Overview = () => {
     fetchData();
   }, []);
 
+  const OverviewHeaders = [
+    {
+      id: 0,
+      name: "id",
+      image: <img src={tablearrow} alt="" />,
+    },
+    {
+      id: 1,
+      name: "amount",
+      image: <img src={tablearrow} alt="" />,
+    },
+    {
+      id: 2,
+      name: "payoutclientid",
+      image: <img src={tablearrow} alt="" />,
+    },
+    {
+      id: 3,
+      name: "transferFee",
+      image: <img src={tablearrow} alt="" />,
+    },
+    {
+      id: 4,
+      name: "beneficiaryName",
+      image: <img src={tablearrow} alt="" />,
+    },
+    {
+      id: 5,
+      name: "beneficiaryPhoneNumber",
+      image: <img src={tablearrow} alt="" />,
+    },
+    {
+      id: 6,
+      name: "bankName",
+      image: <img src={tablearrow} alt="" />,
+    },
+    {
+      id: 7,
+      name: "payOutProvider",
+      image: <img src={tablearrow} alt="" />,
+    },
+    {
+      id: 8,
+      name: "status",
+      image: <img src={tablearrow} alt="" />,
+    },
+    {
+      id: 8,
+      name: "dateCreated",
+      image: <img src={tablearrow} alt="" />,
+    },
+    // {
+    //   id: 9,
+    //   name: "TRANSFER FEE",
+    //   image: <img src={tablearrow} alt="" />,
+    // },
+    // {
+    //   id: 10,
+    //   name: "TRANSACTION STATUS",
+    //   image: <img src={tablearrow} alt="" />,
+    // },
+    // {
+    //   id: 11,
+    //   name: "ACTIONS",
+    //   // image: <img src={tablearrow} alt="" />,
+    // },
+  ]
+
   const TheadBodys = trx?.map((d) => {
     return {
       ID: d.id, // Assuming d.id is the corresponding ID in your data
-      originator: "automatic generated",
-      "terminal name": d.terminalName, // Replace with the actual key from your data
-      "terminal class": "POS",
-      "terminal country": d.terminalCountry, // Replace with the actual key from your data
-      "terminal location": d.terminalLocation, // Replace with the actual key from your data
-      host: d.host,
-      "host in": d.hostIn,
-      time: d.timestamp, // Assuming d.timestamp is the corresponding timestamp in your data
-      phase: d.phase, // Replace with the actual key from your data
-      "transaction code": `${d.transactionCode} - ${d.transactionType}`, // Assuming d.transactionCode and d.transactionType are the corresponding keys in your data
-      amount: `${d.amount.toFixed(2)} ${d.currency}`, // Assuming d.amount and d.currency are the corresponding keys in your data
-      pan: d.pan, // Replace with the actual key from your data
-      "authorizer resp": `${d.authorizerCode} - ${d.authorizerDescription}`, // Assuming d.authorizerCode and d.authorizerDescription are the corresponding keys in your data
-      action: "view",
+      Amount: d?.Amount,
+    
     };
   });
+  console.log("🚀 ~ file: Overview.jsx:161 ~ TheadBodys ~ TheadBodys:", TheadBodys)
   
 
   return (
@@ -91,7 +191,7 @@ const Overview = () => {
           </div>
         </PageWord>
         <CardContainer>
-          <Card cardbody={cardbody} figure={figure} padding="0 0 0 70px" />
+          <Card cardbody={cardbody} figure={figures} padding="0 0 0 70px" />
         </CardContainer>
         <Box
           width="100%"
@@ -105,7 +205,7 @@ const Overview = () => {
             <table>
               <thead>
                 <tr>
-                  {OverviewHeader.map((m, i) => (
+                  {OverviewHeaders.map((m, i) => (
                     <th key={i}>
                       <span>
                         {m.name}
@@ -116,11 +216,20 @@ const Overview = () => {
                 </tr>
               </thead>
               <tbody>
-                {OverviewBody.map((mb, i) => {
+                {trx?.map((mb, i) => {
                   return (
                     <tr key={i}>
-                      <td>{mb.trans}</td>
-                      <td>{mb.date}</td>
+                      <td>{mb?.id}</td>
+                      <td>{mb?.Amount}</td>
+                      <td>{mb?.payoutclientid}</td>
+                      <td>{mb?.transferFee}</td>
+                      <td>{mb?.beneficiary?.beneficiaryName}</td>
+                      <td>{mb?.beneficiary?.beneficiaryPhoneNumber}</td>
+                      <td>{mb?.beneficiary?.beneficiaryBank?.bankName}</td>
+                      <td>{mb?.payOutProvider?.name}</td>
+                      <td>{mb?.status}</td>
+                      <td>{mb?.dateCreated}</td>
+                      {/* <td>{mb.date}</td>
                       <td className="gateway">
                         {mb.img}
                         <span>{mb.gateway}</span>
@@ -134,17 +243,17 @@ const Overview = () => {
                         <span> {mb.currency}</span>
                       </td>
                       <td>{mb.amount}</td>
-                      <td>{mb.transferfee}</td>
-                      <td>
+                      <td>{mb.transferfee}</td> */}
+                      {/* <td>
                       {mb.transactiontatus ===  "Deposited" ? (
                         <span className="depo">
-                          <img src={gb} alt="" />{mb.transactiontatus}
+                          <img src={mb?.logo} alt="" />{}
                           </span>
                       ) : (
                         <span className="cancel"><img src={rb} alt="" />{mb.transactiontatus}</span>
                       )}
-                      </td>
-                      <td>{mb.actions}</td>
+                      </td> */}
+                      {/* <td>{mb.actions}</td> */}
                     </tr>
                   );
                 })}

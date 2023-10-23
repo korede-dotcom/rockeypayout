@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import styled from "styled-components";
 import Layout from "../../Layout/Layout";
 import Box from "../../Reuseable/Box";
@@ -6,11 +6,94 @@ import Search from "../../Reuseable/Inputs/Search";
 import Reusetable from "../../Reuseable/Reusetable";
 import { TheadBody, TheadHeader } from "../../Mapables";
 import { OhentpayHead, OhentpayBody } from "../../Mapables";
+import tablearrow from "../../assets/tablearrow.svg";
 //
 import gb from "../../assets/gb.svg";
 import rb from "../../assets/rb.svg";
 
 const Transactions = () => {
+  // const navigate = useNavigate();
+  const [data, setData] = useState(null);
+  const [trx, settrx] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const requestOptions = {
+          method: 'GET',
+          redirect: 'follow'
+        };
+
+        const response = await fetch("https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/45586980", requestOptions);
+        const result = await response.json();
+
+        // Set the fetched data to state
+        setData(result);
+        settrx(result?.data?.payOutTransactions);
+        console.log("Fetched data:", result);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        // Handle errors here
+      }
+    };
+
+    // Call the fetch function
+    fetchData();
+  }, []);
+
+  const OverviewHeaders = [
+    {
+      id: 0,
+      name: "id",
+      image: <img src={tablearrow} alt="" />,
+    },
+    {
+      id: 1,
+      name: "amount",
+      image: <img src={tablearrow} alt="" />,
+    },
+    {
+      id: 2,
+      name: "payoutclientid",
+      image: <img src={tablearrow} alt="" />,
+    },
+    {
+      id: 3,
+      name: "transferFee",
+      image: <img src={tablearrow} alt="" />,
+    },
+    {
+      id: 4,
+      name: "beneficiaryName",
+      image: <img src={tablearrow} alt="" />,
+    },
+    {
+      id: 5,
+      name: "beneficiaryPhoneNumber",
+      image: <img src={tablearrow} alt="" />,
+    },
+    {
+      id: 6,
+      name: "bankName",
+      image: <img src={tablearrow} alt="" />,
+    },
+    {
+      id: 7,
+      name: "payOutProvider",
+      image: <img src={tablearrow} alt="" />,
+    },
+    {
+      id: 8,
+      name: "status",
+      image: <img src={tablearrow} alt="" />,
+    },
+    {
+      id: 8,
+      name: "dateCreated",
+      image: <img src={tablearrow} alt="" />,
+    },
+   
+  ]
   return (
     <Layout>
       <TransactionsBox>
@@ -35,7 +118,7 @@ const Transactions = () => {
               <table>
                 <thead>
                   <tr>
-                    {OhentpayHead.map((m, i) => (
+                    {OverviewHeaders.map((m, i) => (
                       <th key={i}>
                         <span>
                           {m.name}
@@ -46,10 +129,20 @@ const Transactions = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {OhentpayBody.map((mb, i) => {
+                  {trx?.map((mb, i) => {
                     return (
                       <tr key={i}>
-                        <td>{mb.trans}</td>
+                         <td>{mb?.id}</td>
+                      <td>{mb?.Amount}</td>
+                      <td>{mb?.payoutclientid}</td>
+                      <td>{mb?.transferFee}</td>
+                      <td>{mb?.beneficiary?.beneficiaryName}</td>
+                      <td>{mb?.beneficiary?.beneficiaryPhoneNumber}</td>
+                      <td>{mb?.beneficiary?.beneficiaryBank?.bankName}</td>
+                      <td>{mb?.payOutProvider?.name}</td>
+                      <td>{mb?.status}</td>
+                      <td>{mb?.dateCreated}</td>
+                        {/* <td>{mb.trans}</td>
                         <td>{mb.date}</td>
                         <td>{mb.receiver}</td>
                         <td>{mb.bank}</td>
@@ -58,9 +151,9 @@ const Transactions = () => {
                           {mb.flag}
                           <span> {mb.currency}</span>
                         </td>
-                        <td>{mb.amount}</td>
+                        <td>{mb.amount}</td> */}
                         {/* <td className="receiver">{mb.receiver}</td> */}
-                        <td>{mb.transferfee}</td>
+                        {/* <td>{mb.transferfee}</td>
                         <td>
                           {mb.transactiontatus === "Deposited" ? (
                             <span className="depo">
@@ -74,7 +167,7 @@ const Transactions = () => {
                             </span>
                           )}
                         </td>
-                        <td>{mb.actions}</td>
+                        <td>{mb.actions}</td> */}
                       </tr>
                     );
                   })}

@@ -51,6 +51,7 @@ const LoginR = () => {
             <p>Welcome back! Please enter your details.</p>
         </div>
         <div className="inputbox">
+            
             <OInput label="Email Address/Username" type="text" placeholder="Enter your email/userame" onChange={e => setUsername(e.target.value)} value={username} forhtml="username" name="username" />
         </div>
         <OInput label="Password" type="password" placeholder="••••••••••••"  onChange={e => setPassword(e.target.value)} />

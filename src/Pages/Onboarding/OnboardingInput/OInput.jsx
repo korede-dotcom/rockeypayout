@@ -4,8 +4,8 @@ import styled from 'styled-components';
 const OInput = ({label, type, placeholder, onChange,name, value, forhtml}) => {
   return (
     <OnInput>   
-            <label htmlFor={forhtml}>{label}</label>
-            <input type={type} id={forhtml} placeholder={placeholder} onChange={onChange} name={name} value={value} />
+            <label >{label}</label>
+            <input type={type} placeholder={placeholder} onChange={onChange} name={name} value={value} />
     </OnInput>
   )
 }

@@ -114,7 +114,7 @@
 //     };
 
 //     fetch(
-//       "https://moneybusiness.tm-dev.xyz/moneybusiness/getcountries",
+//       "https://apidoc.transferrocket.co.uk/getcountries",
 //       requestOptions
 //     )
 //       .then((response) => response.json())
@@ -136,7 +136,7 @@
 //     };
 
 //     fetch(
-//       `https://moneybusiness.tm-dev.xyz/moneybusiness/getstates?countryId=${countryId}&stateId=0`,
+//       `https://apidoc.transferrocket.co.uk/getstates?countryId=${countryId}&stateId=0`,
 //       requestOptions
 //     )
 //       .then((response) => response.json())
@@ -158,7 +158,7 @@
 //     };
 
 //     fetch(
-//       `https://moneybusiness.tm-dev.xyz/moneybusiness/getcities?countryId=${countryId}&stateId=${stateId}&citiId=0`,
+//       `https://apidoc.transferrocket.co.uk/getcities?countryId=${countryId}&stateId=${stateId}&citiId=0`,
 //       requestOptions
 //     )
 //       .then((response) => response.json())
@@ -811,7 +811,7 @@ const Login = () => {
       redirect: 'follow'
     };
     
-   const response = await  fetch("https://moneybusiness.tm-dev.xyz/moneybusiness//payoutclientsignup", requestOptions)
+   const response = await  fetch("https://apidoc.transferrocket.co.uk/payoutclientsignup", requestOptions)
   const reponseDate  = await response.json()
   console.log("🚀 ~ file: Login.jsx:126 ~ handleSignup ~ reponseDate:", reponseDate)
   }
@@ -829,7 +829,7 @@ const Login = () => {
       redirect: 'follow'
     };
     
-   const response = await fetch("https://moneybusiness.tm-dev.xyz/moneybusiness//FileUploadAPI", requestOptions)
+   const response = await fetch("https://apidoc.transferrocket.co.uk//FileUploadAPI", requestOptions)
     const responseData = await response.json()
     console.log("🚀 ~ file: Login.jsx:98 ~ handleFileInputChange ~ responseData:", responseData)
 
@@ -864,7 +864,7 @@ const Login = () => {
     };
 
     fetch(
-      "https://moneybusiness.tm-dev.xyz/moneybusiness/getcountries",
+      "https://apidoc.transferrocket.co.uk/getcountries",
       requestOptions
     )
       .then((response) => response.json())
@@ -877,7 +877,7 @@ const Login = () => {
       })
       .catch((error) => console.log("error", error));
     fetch(
-      "https://moneybusiness.tm-dev.xyz/moneybusiness//getidtypes",
+      "https://apidoc.transferrocket.co.uk//getidtypes",
       requestOptions
     )
       .then((response) => response.json())
@@ -899,7 +899,7 @@ const Login = () => {
     };
 
     fetch(
-      `https://moneybusiness.tm-dev.xyz/moneybusiness/getstates?countryId=${countryId}&stateId=0`,
+      `https://apidoc.transferrocket.co.uk/getstates?countryId=${countryId}&stateId=0`,
       requestOptions
     )
       .then((response) => response.json())
@@ -918,7 +918,7 @@ const Login = () => {
     };
 
     fetch(
-      `https://moneybusiness.tm-dev.xyz/moneybusiness/getcities?countryId=${countryId}&stateId=${stateId}&citiId=0`,
+      `https://apidoc.transferrocket.co.uk/getcities?countryId=${countryId}&stateId=${stateId}&citiId=0`,
       requestOptions
     )
       .then((response) => response.json())

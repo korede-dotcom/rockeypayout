@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import logo from '../../assets/SidebarImg/logo.svg'
 import OInput from "./OnboardingInput/OInput";
+import { useNavigate } from 'react-router-dom';
 
 const LoginR = () => {
-
+    const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [deviceId, setDeviceId] = useState("Tets");
@@ -66,7 +67,7 @@ const LoginR = () => {
             <div className="dont">
                 <div className="dontBx">
                     <p>Don’t have an account?</p>
-                    <span>Sign Up</span>
+                    <span onClick={() => navigate("/signup")}>Sign Up</span>
                 </div>
             </div>
         </div>

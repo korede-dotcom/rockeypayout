@@ -699,9 +699,11 @@ import axios from "axios";
 //
 import greenback from "../../assets/gback.svg";
 import File from "./OnboardingInput/File.jsx";
+import { useNavigate } from 'react-router-dom';
 // import Select from "../../Reuseable/Inputs/Select.jsx";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [back, setback] = useState(false);
 
@@ -977,7 +979,7 @@ const Login = () => {
 
             <div className="content">
               <p>Already have an account?</p>
-              <span>Sign in</span>
+              <span onClick={() => navigate("/")}>Sign in</span>
             </div>
           </div>
           <div className="progress">

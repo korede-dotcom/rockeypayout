@@ -35,7 +35,7 @@ const LoginR = () => {
            const data = await response.json()
               console.log("🚀 ~ file: LoginR.jsx:34 ~ SubmitHandler ~ data:", data)
               if (data?.status) {
-                window.location.href = "/overview"
+               navigate("/overview")
               }
               
         }

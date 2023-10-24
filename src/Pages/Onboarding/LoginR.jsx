@@ -30,7 +30,7 @@ const LoginR = () => {
             redirect: 'follow'
             };
             
-           const response = await fetch("https://apidoc.transferrocket.co.uk//auth", requestOptions)
+           const response = await fetch("https://apidoc.transferrocket.co.uk/auth", requestOptions)
            const data = await response.json()
               console.log("🚀 ~ file: LoginR.jsx:34 ~ SubmitHandler ~ data:", data)
               if (data?.status) {

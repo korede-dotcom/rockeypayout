@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import styled from "styled-components";
 import Layout from "../../../Layout/Layout";
 import Box from "../../../Reuseable/Box";
@@ -17,6 +17,12 @@ const Company = () => {
       name: "ID Documents",
     },
   ];
+  const [getUser,setUser] = useState()
+useEffect(() => {
+
+ setUser(JSON.parse(localStorage.getItem("userDetails")))
+
+},[])
   return (
     <Layout>
       <CompanyBox>

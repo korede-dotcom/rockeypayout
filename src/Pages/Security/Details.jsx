@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Layout from "../../Layout/Layout";
 import styled from "styled-components";
 //
@@ -27,6 +27,12 @@ const Details = () => {
   const [mod, setMo] = useState(false);
   const [reveal, setReveal] = useState(false);
   const [others, setOther] = useState(false);
+
+  const [getUser,setUser] = useState()
+  console.log("🚀 ~ file: Details.jsx:32 ~ Details ~ getUser:", getUser)
+  useEffect(() => {
+   setUser(JSON.parse(localStorage.getItem("userDetails")))
+  },[])
 
   const othermap = [
     {name: 'C', image: cc},
@@ -158,43 +164,43 @@ const Details = () => {
                 </tr>
               </thead>
               <tbody>
-                {ApiBody.map((tbody, index) => (
+                {getUser?.data?.clientApps?.map((tbody, index) => (
                   <tr key={index}>
                     {/* {theads.map((thead) => (
                 <td key={thead.id}>{tbody[thead.name]}</td>
               ))} */}
-                    <td>{tbody.Appid}</td>
-                    <td>{tbody.Appname}</td>
-                    <td>{tbody.AppDes}</td>
+                    <td>{tbody?.id}</td>
+                     <td>{tbody?.appName}</td>
+                    <td>{tbody?.appDescription}</td>
                     <td>
-                      {tbody.WebUrl}
+                      {tbody?.appWebHook}
                       <span className="special">
                         {tbody.image}
                         <span>{tbody.Test}</span>
                       </span>
                     </td>
-                    <td>{tbody.datecreated}</td>
-                    <td>{tbody.lastcreated}</td>
-                    {/* <td className={tbody.status === "Active" ? "green" : "red"}>
+                    <td>{tbody?.dateCreated}</td>
+                    <td>{tbody?.lastUpdated}</td> 
+                    <td className={tbody?.approved === true ? "green" : "red"}>
                       <span
                         className={
-                          tbody.status === "Active"
+                          tbody.approved === true
                             ? "greenbullet"
                             : "redbullet"
                         }
                       ></span>
                       <span
                         className={
-                          tbody.status === "Active"
+                          tbody.approved === true
                             ? "activeLast"
                             : "inactiveLast"
                         }
                       >
-                        {tbody.status}
+                        {tbody.approved}
                       </span>
-                      </td> */}
+                      </td>
                     <td>
-                      {tbody.status === true ? (
+                      {tbody.approved === true ? (
                         <span className="sp_active">
                           <img src={gb} alt="" />
                           Active

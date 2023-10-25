@@ -1,12 +1,12 @@
 import React from 'react'
 import styled from 'styled-components';
 
-const Textarea = ({width, placeholder, background, margin}) => {
+const Textarea = ({width, placeholder, background, margin,value}) => {
   return (
     <TextareaBox style={{ margin: margin ? margin : ""}}>
         <label htmlFor="">Description</label>
       <TextInner style={{width: width ? width : "350px", background: background ? background : '#F9FAFB',}}>
-          <textarea name="" id="" cols="30" rows="10"  placeholder={ placeholder ? placeholder :'120 street Name, Street State, State Country'} >
+          <textarea name="" id="" cols="30" rows="10"  placeholder={ placeholder ? placeholder :'120 street Name, Street State, State Country'}  val={value}>
           </textarea>        
       </TextInner>
     </TextareaBox>

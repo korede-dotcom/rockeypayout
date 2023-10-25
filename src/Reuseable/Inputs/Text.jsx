@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components';
 
-const Text = ({placeholder}) => {
+const Text = ({placeholder,val}) => {
   return (
     <TextBox>
-            <input type="text"  placeholder={placeholder}/>
+            <input type="text" value={val}  placeholder={placeholder}/>
     </TextBox>
   )
 }

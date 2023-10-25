@@ -1,11 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import Layout from "../../Layout/Layout";
 import styled from "styled-components";
 import Box from "../../Reuseable/Box";
 import Text from "../../Reuseable/Inputs/Text";
+import { useEffect } from "react";
 
 const Security = () => {
+const [getUser,setUser] = useState()
+useEffect(() => {
+
+ setUser(JSON.parse(localStorage.getItem("userDetails")))
+
+},[])
+
   return (
+    
     <Layout>
       <UserProfileBox>
         <div className="head">
@@ -36,7 +45,7 @@ const Security = () => {
             />
             <InputWrapBox>
               <p>Full Name</p>
-              <Text />
+              <Text val={getUser?.data?.username} />
             </InputWrapBox>
             <hr
               style={{
@@ -47,7 +56,7 @@ const Security = () => {
             />
             <InputWrapBox>
               <p>Email Address</p>
-              <Text />
+              <Text val={getUser?.data?.email} />
             </InputWrapBox>
             <hr
               style={{
@@ -58,7 +67,7 @@ const Security = () => {
             />
             <InputWrapBox>
               <p>Phone Number</p>
-              <Text />
+              <Text val={getUser?.data?.phone}  />
             </InputWrapBox>
             <hr
               style={{

@@ -120,7 +120,8 @@ const HeaderContainer = styled.header`
   align-items: center;
   justify-content: space-between;
   padding: 0 15px 0 10px;
-  // background: #EAECF0;
+  
+  background: #fff;
   .left {
     display: flex;
     align-items: center;

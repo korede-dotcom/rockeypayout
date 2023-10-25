@@ -1,9 +1,19 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import styled from "styled-components";
 import Textarea from "../../../Reuseable/Inputs/Textarea";
 import Text from "../../../Reuseable/Inputs/Text";
 
 const Details = () => {
+  const [getUser,setUser] = useState()
+useEffect(() => {
+
+ setUser(JSON.parse(localStorage.getItem("userDetails")))
+
+},[])
+
+
+
+
   return (
     <DetailsBox>
       <div className="name">
@@ -19,7 +29,7 @@ const Details = () => {
       />
       <InputWrapBox>
         <p>Company Name</p>
-        <Text placeholder="Kostom Kitchen" />
+        <Text placeholder="Kostom Kitchen" val={getUser?.data?.companyName} />
       </InputWrapBox>
       <hr
         style={{
@@ -30,7 +40,7 @@ const Details = () => {
       />
       <InputWrapBox>
         <p>Business ID</p>
-        <Text placeholder="Transfer" />
+        <Text placeholder="Transfer" val={getUser?.data?.companyRegistrationNumber} />
       </InputWrapBox>
       <hr
         style={{
@@ -41,7 +51,7 @@ const Details = () => {
       />
       <InputWrapBox>
         <p>Address</p>
-        <Textarea />
+        <Textarea val={getUser?.data?.address} />
       </InputWrapBox>
       <hr
         style={{
@@ -52,7 +62,7 @@ const Details = () => {
       />
       <InputWrapBox>
         <p>Company Type</p>
-        <Text placeholder="Limited Company" />
+        <Text placeholder="Limited Company" val={getUser?.data?.sector} />
       </InputWrapBox>
       <hr
         style={{

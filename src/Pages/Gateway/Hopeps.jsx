@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect,useState} from 'react'
 import styled from 'styled-components';
 // 
 import Layout from '../../Layout/Layout';
@@ -12,11 +12,135 @@ import { OhentpayHead, OhentpayBody } from "../../Mapables";
 // 
 import gb from "../../assets/gb.svg";
 import rb from "../../assets/rb.svg";
+import Loader from '../../Reuseable/Loader';
+import tablearrow from "../../assets/tablearrow.svg";
+import ngn from "../../assets/ngn.svg";
 
 
 const Hopeps = () => {
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState(null);
+  const [trx, settrx] = useState(null);
+
+  const OhentpayHead = [
+    {
+      id: 0,
+      name: "TRANSACTION REF",
+      image: <img src={tablearrow} alt="" />,
+    },
+    {
+      id: 1,
+      name: "DATE",
+      image: <img src={tablearrow} alt="" />,
+    },
+    {
+      id: 2,
+      name: "AMOUNT APPROVED",
+      image: <img src={tablearrow} alt="" />,
+    },
+    {
+      id: 3,
+      name: "AMOUN REQUESTED",
+      image: <img src={tablearrow} alt="" />,
+    },
+    {
+      id: 4,
+      name: "BALANCE BEFORE REQUEST",
+      image: <img src={tablearrow} alt="" />,
+    },
+    {
+      id: 5,
+      name: "CURRENCY",
+      image: <img src={tablearrow} alt="" />,
+    },
+    {
+      id: 6,
+      name: "BALANCE",
+      image: <img src={tablearrow} alt="" />,
+    },
+    {
+      id: 7,
+      name: "WALLET NAME",
+      image: <img src={tablearrow} alt="" />,
+    },
+    {
+      id: 8,
+      name: "TRANSACTION STATUS",
+      image: <img src={tablearrow} alt="" />,
+    },
+    {
+      id: 9,
+      name: "ACTIONS",
+      // image: <img src={tablearrow} alt="" />,
+    },
+  ]
+
+  const OhentpayBody = [
+    {
+      trans: "TX19784903",
+      date: "23/09/23, 09:11:24",
+      receiver: "AINAJOHNSON",
+      bank: "Access Bank",
+      accNo: "0012345678",
+      flag: <img src={ngn} alt="" />,
+      currency: "NGN",
+      amount: "30.00",
+      transferfee: 0.0,
+      transactiontatus: "Deposited",
+      actions: "view details"
+    },
+    {
+      trans: "TX19784903",
+      date: "23/09/23  09:11:24",
+      receiver: "AINA JOHNSON",
+      bank: "GT Bank",
+      accNo: "0012345678",
+      flag: <img src={ngn} alt="" />,
+      currency: "NGN",
+      amount: "30.00",
+      transferfee: 0.0,
+      transactiontatus: "cancelled",
+      actions: "view details"
+    },
+  ]
+
+
+
+  useEffect(() => {
+
+    setLoading(true)
+    const userId = JSON.parse(localStorage.getItem("userDetails"))
+
+    const fetchData = async () => {
+      try {
+        const requestOptions = {
+          method: 'GET',
+          redirect: 'follow'
+        };
+
+        const response = await fetch(`https://apidoc.transferrocket.co.uk///getuserwalletfundrequest?userId=${userId?.data?.userId}&requestId=0`, requestOptions);
+        const result = await response.json();
+        console.log("🚀 ~ file: Hopeps.jsx:39 ~ fetchData ~ result:", result)
+        
+        // Set the fetched data to state
+        setData(result);
+        setLoading(false)
+        // settrx(result?.data?.payOutTransactions);
+        console.log("Fetched data:", result);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        // Handle errors here
+      }
+    };
+
+    // Call the fetch function
+    fetchData();
+  }, []);
+
+
   return (
     <Layout>
+      {loading && <Loader/>}
         <HopepsBox>
             <FlexWrapper name="Hope PS Bank" subname="[Payarena]" amount="600, 022.89" word="This overview provides a comprehensive snapshot of wallet transactions on your system" />
             <CardContainer>
@@ -40,31 +164,37 @@ const Hopeps = () => {
                 </tr>
               </thead>
               <tbody>
-                {OhentpayBody.map((mb, i) => {
+                {data?.data?.map((mb, i) => {
                   return (
                     <tr key={i}>
-                      <td>{mb.trans}</td>
-                      <td>{mb.date}</td>
-                      <td>{mb.receiver}</td>
-                      <td>{mb.bank}</td>
-                      <td>{mb.accNo}</td>
+                      <td>{mb.id}</td>
+                      <td>{mb.dateCreated}</td>
+                      <td>{mb.amountApproved}</td>
+                      <td>{mb.balanceBeforeRequest}</td>
+                      <td>{mb.amountRequested}</td>
                       <td className="currency">
                         {mb.flag}
-                        <span> {mb.currency}</span>
+                        <span> {mb?.userWallet?.country?.name}</span>
                       </td>
-                      <td>{mb.amount}</td>
+                      <td>{mb.userWallet.balance}</td>
                       {/* <td className="receiver">{mb.receiver}</td> */}
-                      <td>{mb.transferfee}</td>
+                      <td>{mb.userWallet.name}</td>
                       <td>
-                      {mb.transactiontatus ===  "Deposited" ? (
+                      {mb.status ===  "Pending" ? (
                         <span className="depo">
-                          <img src={gb} alt="" />{mb.transactiontatus}
+                          <img src={gb} alt="" />{mb.status}
                           </span>
                       ) : (
-                        <span className="cancel"><img src={rb} alt="" />{mb.transactiontatus}</span>
+                        <span className="cancel"><img src={rb} alt="" />{mb.status}</span>
                       )}
                       </td>
-                      <td>{mb.actions}</td>
+                      {/* <td>{mb.actions}</td> */}
+                       {mb.status ===  "Pending" ? (
+                          <span className="cancel" style={{background:"#FEF3F2",padding:"2px 10px",borderRadius:"10px",color:"red"}}>
+                            <img src={rb} alt="" /><small>cancel</small>
+                            </span>
+                      ) : ""
+                      }
                     </tr>
                   );
                 })}
@@ -125,7 +255,7 @@ const TableWraptwo = styled.div`
     border-radius: 100px;
   }
   table {
-    height: 300px;
+    /* height: 300px; */
     border-collapse: collapse;
     width: max-content;
     padding: 20px;
@@ -169,7 +299,7 @@ const TableWraptwo = styled.div`
           font-size: 10px;
           font-style: normal;
           font-weight: 400;
-          line-height: 20px; /* 142.857% */
+          /* line-height: 20px; 142.857% */
 
           // 
           .depo{

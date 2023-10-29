@@ -7,7 +7,8 @@ import Box from "../../Reuseable/Box";
 import copy from "../../assets/copy.svg";
 import Reusetable from "../../Reuseable/Reusetable";
 import { ApiHeader, ApiBody } from "../../Mapables";
-import { WebhooksHHead, WebhooksBody } from "../../Mapables";
+import {  WebhooksBody } from "../../Mapables";
+// import { WebhooksHHead, WebhooksBody } from "../../Mapables";
 import Modal from "../../Reuseable/Modal";
 //
 import gb from "../../assets/gb.svg";
@@ -22,11 +23,62 @@ import objectc from '../../assets/languagesImg/objectc.svg'
 import python from '../../assets/languagesImg/python.svg'
 import rlang from '../../assets/languagesImg/rlang.svg'
 import swift from '../../assets/languagesImg/swift.svg'
+import copys from 'clipboard-copy';
+import { Button } from "@arco-design/web-react";
+import OInput from "../Onboarding/OnboardingInput/OInput";
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
+import csharp from "../../assets/Webhooks/csharp.svg";
+import curl from "../../assets/Webhooks/curl.svg";
+import java from "../../assets/Webhooks/java.svg";
+import php from "../../assets/Webhooks/php.svg";
+import node from "../../assets/Webhooks/node.png";
+import alb from "../../assets/alb.png";
+import ngn from '../../assets/ngn.svg'
+
+
+
 
 const Details = () => {
   const [mod, setMo] = useState(false);
+  const [mod2, setMo2] = useState(false);
   const [reveal, setReveal] = useState(false);
   const [others, setOther] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [WebhooksHHead, setWebhooksHead] = useState([
+    {
+      name: "curl",
+      image: <img src={curl} alt="" />,
+    },
+    {
+      name: "c",
+      image: <img src={cc} alt="" />,
+    },
+    {
+      name: "Java",
+      image: <img src={java} alt="" />,
+    },
+    {
+      name: "C#",
+      image: <img src={csharp} alt="" />,
+    },
+    {
+      name: "PHP",
+      image: <img src={php} alt="" />,
+    },
+    {
+      name: "NODE JS",
+      image: <img style={{ width: "40px" }} src={node} alt="" />,
+    },
+  ]);
+  const [createApp, setcreateApp] = useState(
+    {
+      "clientId": "",
+      "appName": "",
+      "appDescription": "",
+      "appWebHook": ""
+  });
+  console.log("🚀 ~ file: Details.jsx:47 ~ Details ~ createApp:", createApp)
 
   const [getUser,setUser] = useState()
   console.log("🚀 ~ file: Details.jsx:32 ~ Details ~ getUser:", getUser)
@@ -34,7 +86,7 @@ const Details = () => {
    setUser(JSON.parse(localStorage.getItem("userDetails")))
   },[])
 
-  const othermap = [
+  const [othermap,setOthermap] = useState([
     {name: 'C', image: cc},
     {name: 'C++', image: cplus},
     {name: 'Go', image: gosimg},
@@ -47,7 +99,57 @@ const Details = () => {
     {name: 'Python', image: python},
     {name: 'R', image: rlang},
     {name: 'Swift', image: swift}
-  ]
+  ])
+
+  const handleCopyClick = async () => {
+    try {
+      await copys(textToCopy);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500); // Reset copied state after 1.5 seconds
+    } catch (error) {
+      console.error('Failed to copy: ', error);
+    }
+  };
+
+  const handlecreateuser = (e) => {
+    const {name,value} = e?.target;
+
+    setcreateApp(prev => {
+      return {
+        ...prev,
+        [name]:value,
+        ["clientId"]:getUser?.data?.clientKeys?.clientId
+      }
+    })
+
+  }
+
+const submitCreateApp = async ()  => {
+
+  var requestOptions = {
+    method: 'POST',
+    body: JSON.stringify(createApp),
+    redirect: 'follow'
+  };
+  
+  const response = await fetch("https://apidoc.transferrocket.co.uk//createpayoutclientapp", requestOptions)
+  const data = await response.json()
+  console.log("🚀 ~ file: Details.jsx:97 ~ submitCreateApp ~ data:", data)
+
+}
+
+
+const handleSelect = (name) => {
+  console.log("🚀 ~ file: Details.jsx:109 ~ handleSelect ~ name:", name)
+  let selectedLanguage = WebhooksHHead.find((language) => language.name.toLowerCase() === name.toLowerCase());
+  setWebhooksHead([selectedLanguage])
+  // setOthermap([selectedLanguage])
+  console.log("🚀 ~ file: Details.jsx:110 ~ handleSelect ~ selectedLanguage:", selectedLanguage)
+  // setOther(!others)
+}
+
+
+
   return (
     <Layout>
       <ApiBox>
@@ -84,10 +186,10 @@ const Details = () => {
                     <div className="con">
                       <input
                         type={reveal ? "text" : "password"}
-                        value="4c29dfd9-81bb-49df-97dd-7decd8ef 4872"
+                        value={getUser?.data?.clientKeys?.testKey}
                         readOnly
                       />
-                      <img src={copy} alt="" />
+                      <img src={copy} alt="" onClick={handleCopyClick} />
                     </div>
                   </div>
                   <div className="textes">
@@ -95,7 +197,7 @@ const Details = () => {
                     <div className="con">
                       <input
                         type={reveal ? "text" : "password"}
-                        value="4c29dfd9-81bb-49df-97dd-7decd8ef 4872"
+                        value={getUser?.data?.clientKeys?.liveKey}
                         readOnly
                       />
                       <img src={copy} alt="" />
@@ -105,6 +207,28 @@ const Details = () => {
                     Reveal Key
                   </div>
                 </APiModalWrapper>
+              </Modal>
+            )}
+            {mod2 && (
+              <Modal
+                width="430px"
+                // height="350px"
+                modalName="Create a new App"
+                setPayout={setMo}
+                setShow=""
+                style={{ padding: "0 10px" }}
+                btn="create"
+                handleSubmit={submitCreateApp}
+                cancleModal={() => setMo2(!mod2)}
+              >
+                <div style={{paddingInline:"20px"}}>
+                <OInput label="appName" name="appName" onChange={handlecreateuser}/>
+                <OInput label="appDescription" name="appDescription" onChange={handlecreateuser} />
+                <OInput label="appWebHook" name="appWebHook" onChange={handlecreateuser} />
+
+                </div>
+                
+                
               </Modal>
             )}
           </div>
@@ -120,7 +244,14 @@ const Details = () => {
         >
           <Apiwrap>
             <div className="top">
+              <div style={{display:"flex",justifyContent:"space-between",textAlign:"center"}}>
               <h3>Application Tokens</h3>
+              <div className="btn" onClick={() => setMo2(!mod2)}>
+                <Button>Create App</Button>
+
+              </div>
+
+              </div>
               <p>
                 <span>
                   You can use the Transferrocket API to access your
@@ -199,7 +330,7 @@ const Details = () => {
                         {tbody.approved}
                       </span>
                       </td>
-                    <td>
+                    {/* <td>
                       {tbody.approved === true ? (
                         <span className="sp_active">
                           <img src={gb} alt="" />
@@ -211,7 +342,7 @@ const Details = () => {
                           Inactive
                         </span>
                       )}
-                    </td>
+                    </td> */}
                     {/* src/assets/languagesImg/go */}
                   </tr>
                 ))}
@@ -227,10 +358,11 @@ const Details = () => {
               <p className="sh" onClick={() => setOther(!others)}>
                 Other Languages
               </p>
-              {others && <div className="showothers"  onClick={() => setOther(!others)}>
+
+              {others && <div className="showothers"  >
                       {othermap.map((m,i) => (
-                        <div className="oth">
-                          <img src={m.image} alt="" />
+                        <div className="oth" onClick={() => handleSelect(m.name)}>
+                          <img  src={m.image} alt="" />
                           <span>{m.name}</span>
                         </div>
                       ))}
@@ -248,129 +380,36 @@ const Details = () => {
             }}
           />
           <Retabletwo>
-            {/* <table>
-              <thead>
-                <tr>
-                  {WebhooksHHead.map((thead, i) => (
-                    <th
-                      key={i}
-                      className="webhookhead"
-                    >
-                      <span
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "10px",
-                        }}
-                      >
-                        {thead.name}
-                        {thead.image}
-                      </span>
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  {WebhooksBody.map((m, i) => (
-                    <td
-                      key={i}
-                      className="webhookbody"
-                    >
-                      {m.text}
-                    </td>
-                  ))}
-                </tr>
-              </tbody>
-            </table> */}
-            {/* <table>
-              <thead>
-                {WebhooksHHead.map((m, i) => (
-                  <th>
-                    <span>{m.name}</span>
-                    {m.image}
-                  </th>
-                ))}
-              </thead>
-              <tbody>
-                <tr>
-                  {WebhooksBody.map((m, i) => (
-                    <td>{m.text}</td>
-                  ))}
-                </tr>
-              </tbody>
-            </table> */}
 
-            {/* <table class="fixed-width-table">
-              <thead>
-                <tr>
-                  {WebhooksHHead.map((m, i) => (
-                    <th key={i}>
-                      <span>{m.name}</span>
-                      {m.image}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  {WebhooksBody.map((m, i) => (
-                    <td key={i}>{m.text}</td>
-                  ))}
-                </tr>
-              </tbody>
-            </table> */}
-            {/* <div className="table">
-              <div className="tablehead">
-                {WebhooksHHead.map((m, i) => (
-                  <div className="th" key={i}>
-                    <span>{m.name}</span>
-                    {m.image}
-                  </div>
-                ))}
-              </div>
-              <div className="tablebody">
-                {WebhooksBody.map((m,i) => (
-                  <div className="tb">{m.text}</div>
-                ))}
-              </div>
-            </div> */}
-            {/* <table>
-              <thead>
-                <tr>
-                  {WebhooksHHead.map((m, i) => (
-                    <th key={i}>
-                      <span className="col">
-                        <span>{m.name}</span>
-                        {m.image}
-                      </span>
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  {WebhooksBody.map((m, i) => (
-                    <td key={i}>{m.text}</td>
-                  ))}
-                </tr>
-              </tbody>
-            </table> */}
+          <Tabs>
+    <TabList>
+      <Tab>Step 1</Tab>
+      <Tab>Step 2</Tab>
+      <Tab>Step 3</Tab>
+    </TabList>
+
+    <TabPanel>
             <div className="table">
               <div className="thead">
                 {WebhooksHHead.map((m, i) => (
                   <div key={i} className="tdd">
-                    {m.image}
-                    <span>{m.name}</span>
+                    {m?.image}
+                    <span>{m?.name}</span>
                   </div>
                 ))}
               </div>
               <div className="tbod">
                 {WebhooksBody.map((m, i) => (
-                  <div className="bod">{m.text}</div>
+                  <div className="bod">{m?.text}</div>
                 ))}
               </div>
             </div>
+    </TabPanel>
+    <TabPanel>
+      <h2>Any content 2</h2>
+    </TabPanel>
+  </Tabs>
+            
           </Retabletwo>
         </Box>
       </ApiBox>
@@ -494,6 +533,15 @@ const Apiwrap = styled.div`
   width: 100%;
   .top {
     padding: 0 20px 0;
+    .btn{
+      button{
+        background: #00a85a;
+        border: none;
+        padding: 10px 40px;
+        border-radius: 7px;
+
+      }
+    }
     h3 {
       color: #090814;
       font-size: 14px;
@@ -801,6 +849,74 @@ const Retabletwo = styled.div`
   // }
 `;
 const APiModalWrapper = styled.div`
+  border-radius: 10px;
+  background: #f3f3f3;
+  // height: 200px;
+  width: 96%;
+  margin: 5px auto 0;
+  padding: 20px 15px;
+  // border: 2px solid red;
+  p {
+    color: #667085;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 15px; /* 142.857% */
+  }
+  .textes {
+    display: flex;
+    flex-direction: column;
+    align-itesm: flex-start;
+    width: 100%;
+    margin: 10px 0;
+    label {
+      color: #344054;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 20px; /* 142.857% */
+    }
+    .con {
+      display: flex;
+      align-itesm: center;
+      width: 100%;
+      // border: 2px solid red;
+      gap: 10px;
+      input {
+        width: 87%;
+        border: none;
+        outline: none;
+        border-radius: 8px;
+        border: 1px solid #d0d5dd;
+        background: #fff;
+        padding: 8px 10px;
+        box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+        color: #667085;
+        font-size: 12px;
+        font-weight: 400;
+        &::placeholder {
+          color: #667085;
+          font-size: 12px;
+          font-weight: 400;
+        }
+      }
+      img {
+        width: 18px;
+      }
+    }
+  }
+  .re {
+    border-radius: 8px;
+    border: 1px solid var(--Primary-Colour, #00a85a);
+    background: var(--Primary-Colour, #00a85a);
+    box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: 25px;
+  }
+`;
+const APiModalWrapper2 = styled.div`
   border-radius: 10px;
   background: #f3f3f3;
   // height: 200px;

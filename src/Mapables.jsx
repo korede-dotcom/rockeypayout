@@ -1,5 +1,9 @@
 import Overview from "./assets/SidebarImg/overview";
 import Ohentpay from "./assets/SidebarImg/ohentpay.svg";
+import user from "./assets/SidebarImg/user.png";
+import code from "./assets/SidebarImg/code.png";
+import lock from "./assets/SidebarImg/lock.png";
+import cprofile from "./assets/SidebarImg/cprofile.png";
 import hope from "./assets/SidebarImg/hope.svg";
 import market from "./assets/SidebarImg/market.svg";
 import tablearrow from "./assets/tablearrow.svg";
@@ -16,6 +20,7 @@ import php from "./assets/Webhooks/php.svg";
 import node from "./assets/Webhooks/node.png";
 import alb from "./assets/alb.png";
 import ngn from './assets/ngn.svg'
+import cc from './assets/languagesImg/c.svg'
 //
 
 export const SidebarData = [
@@ -73,22 +78,22 @@ export const SidebarData = [
       {
         title: "User Profile",
         path: "/security",
-        image: <Overview />,
+        image: <img src={user} alt="" />,
       },
       {
         title: "Company Profile",
         path: "/security/company",
-        image: <img src={market} alt="" />,
+        image: <img src={cprofile} alt="" />,
       },
       {
-        title: "Details",
+        title: "API",
         path: "/security/API",
-        image: <img src={market} alt="" />,
+        image: <img src={code} alt="" />,
       },
       {
         title: "Change Password",
         path: "/security/change-password",
-        image: <img src={market} alt="" />,
+        image: <img src={lock} alt="" />,
         // image: <Overview />
       },
       {
@@ -188,11 +193,11 @@ export const ApiHeader = [
     name: "LAST UPDATED",
     image: <img src={tablearrow} alt="" />,
   },
-  {
-    id: 6,
-    name: "STATUS",
-    image: <img src={tablearrow} alt="" />,
-  },
+  // {
+  //   id: 6,
+  //   name: "STATUS",
+  //   image: <img src={tablearrow} alt="" />,
+  // },
 ];
 export const ApiBody = [
   {
@@ -257,10 +262,33 @@ export const ApiBody = [
   },
 ];
 
+    // {name: 'C', image: cc},
+    // {name: 'C++', image: cplus},
+    // {name: 'C#', image: csharp},
+    // {name: 'Go', image: gosimg},
+    // {name: 'PHP', image: php},
+    // {name: 'HTTP', image: cc},
+    // {name: 'nodejs', image: node},
+    // {name: 'Javascript', image: jsimg},
+    // {name: 'JSON', image: cc},
+    // {name: 'Kotlin', image: kotlin},
+    // {name: 'Objective-C', image: objectc},
+    // {name: 'PowerShell', image: cc},
+    // {name: 'Python', image: python},
+    // {name: 'R', image: rlang},
+    // {name: 'Swift', image: swift},
+    // {name: 'curl', image: curl},
+    // {name: 'java', image: java},
+
+
 export const WebhooksHHead = [
   {
-    name: "CURL",
+    name: "curl",
     image: <img src={curl} alt="" />,
+  },
+  {
+    name: "c",
+    image: <img src={cc} alt="" />,
   },
   {
     name: "Java",
@@ -654,18 +682,18 @@ export const WebhooksBody = [
   {
     text: "fetch httpsjsonplaceholdertypicodecomusersthenesponsereturnrespsejsonthenusersconsoleogusers",
   },
-  {
-    text: "fetch  httpsjsonplaceholdertypicodecomusersthenesponsereturnrespsejsonthenusersconsoleogusers",
-  },
-  {
-    text: "fetch httpsjsonplaceholdertypicodecomusersthenesponsereturnrespsejsonthenusersconsoleogusers",
-  },
-  {
-    text: "fetch httpsjsonplaceholdertypicodecomusersthenesponsereturnrespsejsonthenusersconsoleogusers",
-  },
-  {
-    text: "fetch httpsjsonplaceholdertypicodecomusersthenesponsereturnrespsejsonthenusersconsoleogusers",
-  },
+  // {
+  //   text: "fetch  httpsjsonplaceholdertypicodecomusersthenesponsereturnrespsejsonthenusersconsoleogusers",
+  // },
+  // {
+  //   text: "fetch httpsjsonplaceholdertypicodecomusersthenesponsereturnrespsejsonthenusersconsoleogusers",
+  // },
+  // {
+  //   text: "fetch httpsjsonplaceholdertypicodecomusersthenesponsereturnrespsejsonthenusersconsoleogusers",
+  // },
+  // {
+  //   text: "fetch httpsjsonplaceholdertypicodecomusersthenesponsereturnrespsejsonthenusersconsoleogusers",
+  // },
 ];
 
 export const ManagHead = [

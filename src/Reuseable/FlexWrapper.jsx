@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 //
 import ngn from "../assets/ngn.svg";
@@ -21,21 +21,81 @@ const FlexWrapper = ({
   // payout,
   // setPayout,
 }) => {
-  const [show, setShow] = useState(false);
-  const [payout, setPayout] = useState(false);
+  // const [show, setShow] = useState(false);
+  // const [user,setuser] = useState()
   // const showModal = () => {
-  //   setShow(!show);
-  //   if (payout) {
-  //     setShow(false);
-  //   }
+    //   setShow(!show);
+    //   if (payout) {
+      //     setShow(false);
+      //   }
   // };
+  const [user, setUser] = useState(null);
+  const [payout, setPayout] = useState(false);
+  const [show, setShow] = useState(false);
   const [payouttwo, setPayouttwo] = useState(false);
+  const [fundingRequest, setFundingRequest] = useState({
+    userId: null,
+    amountRequested: '',
+    userWallet: {
+      walletId: null
+    },
+    comment: '',
+    lastUpdatedBy: 0
+  });
+  console.log("🚀 ~ file: FlexWrapper.jsx:45 ~ fundingRequest:", fundingRequest)
+
+  useEffect(() => {
+    const userId = JSON.parse(localStorage.getItem("userDetails"));
+    const userWalletId = userId?.data?.walletFundindRequests[0]?.userWallet?.walletId;
+    console.log("🚀 ~ file: FlexWrapper.jsx:35 ~ useEffect ~ userId:", userWalletId);
+    setUser(userId);
+    setFundingRequest(prevState => ({
+      ...prevState,
+      userId: userId?.data?.userId,
+      userWallet: {
+        walletId: userWalletId
+      }
+    }));
+  }, []);
+
   const showModal = () => {
     setShow(!show);
-    // Ensure that payout and payouttwo are set to false when opening the smallModal
     setPayout(false);
     setPayouttwo(false);
   };
+
+  const handlechange = (e) => {
+    const { name, value } = e.target;
+  
+    // Force the amountRequested value to be a number
+    const amountRequestedAsNumber = Number(value);
+    if (!isNaN(amountRequestedAsNumber)) {
+      setFundingRequest(prevState => ({
+        ...prevState,
+        [name]: amountRequestedAsNumber,
+      }));
+    } else {
+      // amountRequested is not a number, so reset it to 0
+      setFundingRequest(prevState => ({
+        ...prevState,
+        [name]: null,
+      }));
+    }
+  };
+
+
+  const CreateWalletFundingRequest = async () => {
+    var requestOptions = {
+      method: 'POST',
+      body: JSON.stringify(fundingRequest),
+      redirect: 'follow'
+    };
+    
+   const response = await fetch("https://apidoc.transferrocket.co.uk//walletfundingrequest", requestOptions);
+   const data = await response.json()
+   console.log("🚀 ~ file: FlexWrapper.jsx:96 ~ CreateWalletFundingRequest ~ data:", data)
+  }
+  
 
   return (
     <FlexWrapperBox>
@@ -86,16 +146,17 @@ const FlexWrapper = ({
                   <ModalInner>
                     {/* <p className="quick">Quickly send money to your clients</p> */}
                     <Select label="Bank" />
-                    <TextInput
-                      label="Bank Account Number"
-                      placeholder="0123894758"
-                    />
-                    <TextInput label="Amount" placeholder="200" />
+                   
+                    <TextInput label="Amount" placeholder="200" name="amountRequested" change={handlechange} />
+
                     <Textarea
                       width="100%"
                       placeholder="Type a narration..."
                       background="#FFF"
                       margin="20px 0"
+                      name="comment"
+                      value={fundingRequest?.comment}
+                      change={handlechange}
                     />
                   </ModalInner>
                 </Modal>
@@ -111,20 +172,26 @@ const FlexWrapper = ({
               </div>
               {payouttwo && (
                 <Modal
-                  height="350px"
-                  width="350px"
+                  // height="350px"
+                  // width="350px"
+
                   setShow={setShow}
                   setPayout={setPayout}
                   modalName="Fund Gateway"
                   btn="Fund"
+                  cancleModal={() => setShow(!show)}
+                  handleSubmit={CreateWalletFundingRequest}
                 >
                   <ModalInner>
-                    <TextInput label="Amount" placeholder="200" />
+                    <TextInput label="Amount" name="amountRequested" placeholder="200" change={handlechange}/>
                     <Textarea
                       width="100%"
                       placeholder="Type a narration..."
                       background="#FFF"
                       margin="20px 0"
+                      name="comment"
+                      value={fundingRequest?.comment}
+                      change={handlechange}
                     />
                   </ModalInner>
                 </Modal>

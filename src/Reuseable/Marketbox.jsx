@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const Marketbox = ({ logo, name, subname, word, subscribe, subStatus }) => {
+const Marketbox = ({ logo, name, subname, word, subscribe, subStatus,handleSubcribe }) => {
   return (
     <MarketBox>
       <div className="top">
@@ -18,16 +18,16 @@ const Marketbox = ({ logo, name, subname, word, subscribe, subStatus }) => {
       </div>
       <div className="bottom">
         <div className="left">
-          {subStatus !== "true" ? 
-            <p className="sub">Unsubscribe</p>
+          {subStatus !== true ? 
+            <p className="sub" onClick={handleSubcribe}>subscribe</p>
            : 
-            <p className="unsub">subscribe</p>
+            <p className="unsub" onClick={handleSubcribe}>subscribed</p>
           }
         </div>
         <div className="right">
-          {subStatus !== "true" && (
+          {/* {subStatus !== true && ( */}
               <p className="greensub">{subscribe}</p>
-          )}
+          {/* )} */}
         </div>
       </div>
     </MarketBox>
@@ -49,6 +49,7 @@ const MarketBox = styled.div`
   padding: 15px 10px;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   align-items: flex-start;
   row-gap: 15px;
   .top{

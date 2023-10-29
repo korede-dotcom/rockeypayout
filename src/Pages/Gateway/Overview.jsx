@@ -17,11 +17,13 @@ import { TheadHeader, TheadBody, cardbody, figure } from "../../Mapables";
 import { useNavigate } from "react-router-dom";
 //
 import { OverviewHeader, OverviewBody } from "../../Mapables";
+import Loader from "../../Reuseable/Loader";
 
 const Overview = () => {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [trx, settrx] = useState(null);
+  const [loading, setLoading] = useState(false);
   const sorted = data?.data?.transactionVolume["NGN"]
 
   //  const cardbodys = [
@@ -57,13 +59,17 @@ const Overview = () => {
   //   },
   // ];
    const figures = [
-    { number: sorted?.processed },
-    { number: sorted?.deposited },
-    { number: sorted?.pending},
-    { number: sorted?.cancelled },
+    { number: sorted?.successful },
+    { number: sorted?.successfulAmount },
+    { number: sorted?.pendingAmount},
+    { number: sorted?.cancelledAmount },
   ];
 
   useEffect(() => {
+
+    setLoading(true)
+    const userId = JSON.parse(localStorage.getItem("userDetails"))
+
     const fetchData = async () => {
       try {
         const requestOptions = {
@@ -71,11 +77,11 @@ const Overview = () => {
           redirect: 'follow'
         };
 
-        const response = await fetch("https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/45586980", requestOptions);
+        const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userId?.data?.userId}`, requestOptions);
         const result = await response.json();
-
         // Set the fetched data to state
         setData(result);
+        setLoading(false)
         settrx(result?.data?.payOutTransactions);
         console.log("Fetched data:", result);
       } catch (error) {
@@ -155,6 +161,8 @@ const Overview = () => {
   return (
     <Layout>
       <OverviewContainer>
+      {loading && <Loader/>}
+
         <PageWord>
           <div className="left">
             <h3>Overview</h3>

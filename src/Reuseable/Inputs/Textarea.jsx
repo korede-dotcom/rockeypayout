@@ -1,12 +1,12 @@
 import React from 'react'
 import styled from 'styled-components';
 
-const Textarea = ({width, placeholder, background, margin,value}) => {
+const Textarea = ({width, placeholder, background, margin,value,name,change}) => {
   return (
     <TextareaBox style={{ margin: margin ? margin : ""}}>
         <label htmlFor="">Description</label>
       <TextInner style={{width: width ? width : "350px", background: background ? background : '#F9FAFB',}}>
-          <textarea name="" id="" cols="30" rows="10"  placeholder={ placeholder ? placeholder :'120 street Name, Street State, State Country'}  val={value}>
+          <textarea name={name} id="" cols="30" rows="10"  placeholder={ placeholder ? placeholder :'120 street Name, Street State, State Country'} onInput={change}  value={value}>
           </textarea>        
       </TextInner>
     </TextareaBox>
@@ -47,6 +47,7 @@ const TextInner = styled.div`
         background: inherit;
         font-size: 12px;
         font-weight: 400;
+        color: grey;
         &::placeholder{
             color: #667085;
             font-size: 12px;

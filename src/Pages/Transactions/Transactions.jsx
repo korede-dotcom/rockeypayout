@@ -10,13 +10,16 @@ import tablearrow from "../../assets/tablearrow.svg";
 //
 import gb from "../../assets/gb.svg";
 import rb from "../../assets/rb.svg";
+import Loader from "../../Reuseable/Loader";
 
 const Transactions = () => {
   // const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [trx, settrx] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true)
     const fetchData = async () => {
       try {
         const requestOptions = {
@@ -29,6 +32,7 @@ const Transactions = () => {
 
         // Set the fetched data to state
         setData(result);
+        setLoading(false)
         settrx(result?.data?.payOutTransactions);
         console.log("Fetched data:", result);
       } catch (error) {
@@ -96,6 +100,7 @@ const Transactions = () => {
   ]
   return (
     <Layout>
+      {loading && <Loader/>}
       <TransactionsBox>
         <div className="head">
           <h1>Transaction Log</h1>

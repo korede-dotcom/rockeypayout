@@ -3,6 +3,15 @@ import styled from "styled-components";
 
 import { useNavigate } from "react-router-dom";
 import { SidebarData } from "../Mapables";
+import Overview from "../assets/SidebarImg/overview";
+import Ohentpay from "../assets/SidebarImg/ohentpay.svg";
+import user from "../assets/SidebarImg/user.png";
+import code from "../assets/SidebarImg/code.png";
+import lock from "../assets/SidebarImg/lock.png";
+import cprofile from "../assets/SidebarImg/cprofile.png";
+import hope from "../assets/SidebarImg/hope.svg";
+
+
 //
 import logo from "../assets/SidebarImg/logo.svg";
 
@@ -10,6 +19,117 @@ const Sidebar = ({ selectedCategory }) => {
   const [isOpen, setIsOpen] = useState(true);
 
   const Navigate = useNavigate();
+  const [market,setMarket] = useState([])
+
+  const SidebarData = [
+    {
+      pageName: "Gateway",
+      Name: "My GATEWAYS",
+      path: "/overview",
+      Gateway: [
+        {
+          title: "Overview",
+          path: "/overview",
+          image: <Overview />,
+        },
+        ...generateGatewayItems(),
+      ],
+    },
+    {
+      pageName: "Gateway",
+      Name: "ALL GATEWAYS",
+      path: "/marketplace",
+      Gateway: [
+        {
+          title: "Marketplace",
+          path: "/marketplace",
+          image: <img src={market} alt="" />,
+        },
+      ],
+    },
+    {
+      pageName: "Transactions",
+      Name: "Transactions",
+      path: "/transaction",
+      Gateway: [
+        {
+          title: "Transaction",
+          path: "/transaction",
+          image: <Overview />,
+        },
+      ],
+    },
+    {
+      pageName: "Security",
+      Name: "Security",
+      path: "/security/profile",
+      Gateway: [
+        {
+          title: "User Profile",
+          path: "/security",
+          image: <img src={user} alt="" />,
+        },
+        {
+          title: "Company Profile",
+          path: "/security/company",
+          image: <img src={cprofile} alt="" />,
+        },
+        {
+          title: "API",
+          path: "/security/API",
+          image: <img src={code} alt="" />,
+        },
+        {
+          title: "Change Password",
+          path: "/security/change-password",
+          image: <img src={lock} alt="" />,
+          // image: <Overview />
+        },
+        {
+          title: "User Details",
+          path: "/security/user-management",
+          image: <img src={market} alt="" />,
+        },
+      ],
+    },
+  ];
+  
+  function generateGatewayItems() {
+    const market = useMarketData(); // Fetch market data
+    return market?.map((d) => ({
+      title: d?.name,
+      path: d?.name?.includes("HopePSB") ? "/hopebank" : "/ohentpay",
+      image:d?.name?.includes("HopePSB") ? <img src={hope} alt="" /> : <img src={Ohentpay} alt="" />,
+    }));
+  }
+  
+  function useMarketData() {
+  
+    useEffect(() => {
+      const fetchMarketData = async () => {
+        try {
+          const requestOptions = {
+            method: 'GET',
+            redirect: 'follow',
+          };
+  
+          const response = await fetch("https://apidoc.transferrocket.co.uk//getpayoutprovider", requestOptions);
+          const data = await response.json();
+          setMarket(data?.data);
+          console.log("🚀 ~ file: Marketplace.jsx:22 ~ makeRequest ~ data:", data);
+        } catch (error) {
+          console.error('Error fetching market data: ', error);
+        }
+      };
+  
+      fetchMarketData();
+    }, []);
+  
+    return market;
+  }
+
+
+
 
   useEffect(() => {
     const updateIsOpen = () => {

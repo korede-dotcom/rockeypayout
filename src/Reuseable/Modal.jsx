@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import cancel from '../assets/cancel.svg'
 
-const Modal = ({ width, height, children, setPayout, setShow, modalName, btn }) => {
+const Modal = ({ width, height, children, setPayout, setShow, modalName, btn,handleSubmit ,cancleModal}) => {
 
   return (
     <ModalBox>
@@ -15,15 +15,18 @@ const Modal = ({ width, height, children, setPayout, setShow, modalName, btn }) 
       >
         <div className="top">
         <p>{modalName}</p>
-          <img onClick={() => {setPayout(false); setShow(false)}} src={cancel} alt="" />
+        {
+        modalName === "API KEY" &&  <img onClick={() => {setPayout(false); setShow(false)}} src={cancel} alt="" />
+
+        }
         </div>
         {modalName === "Payout"   && <p className="quick">Quickly send money to your clients</p>}
         {children}
         {modalName !== "API KEY" &&
         <div className="buttons">
           <div className="btnbx">
-            <div className="cancel" onClick={() => {setPayout(false); setShow(false)}} >Cancel</div>
-            <div className="proceed">{btn}</div>
+            <div className="cancel" onClick={cancleModal} >Cancel</div>
+            <div className="proceed" onClick={handleSubmit}>{btn}</div>
           </div>
         </div>
         }

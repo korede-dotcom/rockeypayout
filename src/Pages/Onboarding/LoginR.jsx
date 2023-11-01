@@ -24,6 +24,8 @@ import Kyc from "../../reuseables/Kyc"
 import visible from '../../assets/view.png'
 import hide from '../../assets/hide.png'
 import { countries } from '../../services/Auth';
+import Success from '../../images/Success.svg'
+
 
 // Inside your component
 
@@ -112,7 +114,7 @@ function LoginR() {
         },
       });
 
-    const { mutate, isLoading, isError } = useMutation({
+    const { mutate, isPending, isError } = useMutation({
         mutationFn: userLogin,
         onSuccess: (data) => {
             console.log(data);
@@ -246,7 +248,7 @@ function LoginR() {
                             </div>
                             <div>
                                 <Btn disabled={loginDetails?.username === "" && loginDetails?.password === "" ? true : false} clicking={handleLogin} styles={{ width: '100%', background: 'var(--primary-color)', color: '#fff', borderRadius: '8px', padding: '0.8em' }}>
-                                    {isLoading ? <Spin dot /> : "Sign In"}
+                                    {isPending ? <Spin dot /> : "Sign In"}
                                 </Btn>
                             </div>
                             <CenterElement>

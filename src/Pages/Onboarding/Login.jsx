@@ -700,12 +700,21 @@ import axios from "axios";
 import greenback from "../../assets/gback.svg";
 import File from "./OnboardingInput/File.jsx";
 import { useNavigate } from 'react-router-dom';
+import DatePicker from "react-datepicker";
+import Success from '../../images/Success.svg'
+
+import "react-datepicker/dist/react-datepicker.css";
 // import Select from "../../Reuseable/Inputs/Select.jsx";
 
 const Login = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [back, setback] = useState(false);
+  const [wrongPass, setWrongPass] = useState(false);
+  // const [startDate, setStartDate] = useState(new Date());
+
+  // const [tbs, settbs] = useState([1]);
+  // console.log("🚀 ~ file: Login.jsx:710 ~ Login ~ tbs:", tbs)
 
   //country Start
   const [country, setCountry] = useState([]);
@@ -730,15 +739,15 @@ const Login = () => {
   // cityId Start End
 
   const [activeTab, setActiveTab] = useState(1);
+  const [tabs, setTabs] = useState([1]);
+  const [tabs2, setTabs2] = useState([2]);
+  const [tabs3, setTabs3] = useState([3]);
+  const [tabs4, setTabs4] = useState([4]);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
-  const handleContinueClick = () => {
-    if (activeTab < 4) {
-      setActiveTab(activeTab + 1);
-    }else{}
-  };
+ 
   const handleBackClick = () => {
     if (activeTab > 1) {
       setActiveTab(activeTab - 1);
@@ -777,6 +786,35 @@ const Login = () => {
   }
 
   );
+
+  const handleContinueClick = () => {
+    if (activeTab < 4) {
+     
+
+     
+  
+      const tabsCopy = [...tabs];
+  
+      // Push the next tab to the array
+      tabsCopy.push(activeTab + 1);
+  
+      // Set the tabs state to the updated array
+      setTabs(tabsCopy);
+  
+      // Set the active tab to the next tab
+      setActiveTab(activeTab + 1);
+    }
+  };
+
+  const handleCofirmpassword = (e) => {
+      const {value,name} = e?.target;
+      if (value.toString().trim().toLowerCase() !== formData?.password) {
+        setWrongPass(true)
+      }
+  }
+
+
+
   // const [formData, setFormData] = useState({
   //   email: "",
   //   phone: "",
@@ -849,7 +887,15 @@ const Login = () => {
       [name]: value,
     }));
   };
+
   const handleSelectChange = (name, value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+  const handleInputChangeForDate = (name, value) => {
+    console.log("🚀 ~ file: Login.jsx:896 ~ handleSelectChange ~ name, value:", name)
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -941,6 +987,7 @@ const Login = () => {
     { name: "FinTech" },
     { name: "Innovation" },
   ];
+
   //
   return (
     <LoginWrapper>
@@ -984,7 +1031,16 @@ const Login = () => {
           </div>
           <div className="progress">
             {/* <img src={progress} alt="" /> */}
-            <Pag />
+            {/* <Pag /> */}
+            <div className="tracker">
+              <div className="box" style={{background:tabs.includes(activeTab) && "green"}}></div>
+              <div className="round"></div>
+              <div className="box" style={{background:tabs2.includes(activeTab) && "green"}} ></div>
+              <div className="round" ></div>
+              <div className="box" style={{background:tabs3.includes(activeTab) && "green"}}></div>
+              <div className="round"></div>
+              <div className="box" style={{background:tabs4.includes(activeTab) && "green"}}></div>
+            </div>
           </div>
           <div className="per_deta">
             {/* {activeTab === 1 && <> */}
@@ -1176,7 +1232,16 @@ const Login = () => {
                     ))}
                   </select>
                 </Selector> */}
+                
               </Wrap>{" "}
+              {
+            formData?.country?.id?.toString().length &&  formData?.state?.id?.toString().length && formData?.city?.id?.toString().length && formData?.idType?.id?.toString().length &&  formData?.idURL.length > 1 && formData?.email.length > 1 && formData?.phone.length > 1 && formData.bvn.length  > 1 && formData.address.length > 1 ? (
+                  <div className="next" onClick={handleContinueClick}>
+                    <button>continue</button>
+                  </div>
+
+                ):""
+              }
             </>
             )} 
             {activeTab === 2 && (
@@ -1201,15 +1266,17 @@ const Login = () => {
               />
               <Date>
                 <p>Date Registered</p>
-                <div className="date">
-                  <input
-                    type="date"
-                    name="dateRegistered"
-                    value={formData.dateRegistered}
-                    id="dateInput"
+                <div className="date" >
+                {/* <DatePicker   name="dateRegistered" placeholderText="00/12/2023" onSelect={handleInputChangeForDate} /> */}
+
+                  <input  name="dateRegistered"  type="date" style={{background:"#fff"}} onChange={handleInputChange}/>
+
+                    {/* name="dateRegistered"
+                    // value={formData.dateRegistered}
+                    // id="dateInput" 
                     placeholder="numueber"
-                    onChange={handleInputChange}
-                  />
+                    // onChange={handleInputChange}
+                  />  */}
                 </div>
               </Date>
               <Selects
@@ -1217,10 +1284,90 @@ const Login = () => {
                 label="Sector"
                 content="name"
                 name="sector"
-                mapper={statee}
+                mapper={[
+                  {
+                    "id": 1,
+                    "name": "Technology"
+                  },
+                  {
+                    "id": 2,
+                    "name": "Financial Services"
+                  },
+                  {
+                    "id": 3,
+                    "name": "Healthcare"
+                  },
+                  {
+                    "id": 4,
+                    "name": "Education"
+                  },
+                  {
+                    "id": 5,
+                    "name": "Retail"
+                  },
+                  {
+                    "id": 6,
+                    "name": "Manufacturing"
+                  },
+                  {
+                    "id": 7,
+                    "name": "Transportation"
+                  },
+                  {
+                    "id": 8,
+                    "name": "Logistics"
+                  },
+                  {
+                    "id": 9,
+                    "name": "Energy"
+                  },
+                  {
+                    "id": 10,
+                    "name": "Utilities"
+                  },
+                  {
+                    "id": 11,
+                    "name": "Construction"
+                  },
+                  {
+                    "id": 12,
+                    "name": "Real Estate"
+                  },
+                  {
+                    "id": 13,
+                    "name": "Hospitality"
+                  },
+                  {
+                    "id": 14,
+                    "name": "Media and Entertainment"
+                  },
+                  {
+                    "id": 15,
+                    "name": "Professional Services"
+                  },
+                  {
+                    "id": 16,
+                    "name": "Nonprofit"
+                  },
+                  {
+                    "id": 17,
+                    "name": "Other"
+                  }
+                ]}
                 onSelectChange={handleSelectChange}
               />
+
+              {
+                 formData?.sector.length > 1 && formData?.dateRegistered.length > 1 && formData?.companyName.length > 1 && formData.companyRegistrationNumber.length  > 1 ? (
+                  <div className="next" onClick={handleContinueClick}>
+                    <button>continue</button>
+                  </div>
+
+                ):""
+              }
+              
             </>
+            
             )} 
             {activeTab == 3 && (
             <>
@@ -1229,14 +1376,17 @@ const Login = () => {
                 onChange={(event) =>
                   handleFileInputChange(event, "companyCertificateURL")
                 }
+                doneImg={formData?.companyCertificateURL?.length > 0 ? Success : false}
               />
               <File
                 label="Form Co7"
                 onChange={(event) => handleFileInputChange(event, "formCo7URL")}
+                doneImg={formData?.formCo7URL?.length > 0 ? Success : false}
               />
               <File
                 label="Form Co2"
                 onChange={(event) => handleFileInputChange(event, "formCo2URL")}
+                doneImg={formData?.formCo2URL?.length > 0 ? Success : false}
               />
               <File
                 label="Article of Association"
@@ -1246,6 +1396,7 @@ const Login = () => {
                     "articlesAndMemorandumOfAssociation"
                   )
                 }
+                doneImg={formData?.articlesAndMemorandumOfAssociation?.length > 0 ? Success : false}
               />
               {/* <File label="Memorandum of Association" /> */}
               <File
@@ -1253,8 +1404,18 @@ const Login = () => {
                 onChange={(event) =>
                   handleFileInputChange(event, "utilityBill")
                 }
+                doneImg={formData?.utilityBill?.length > 0 ? Success : false}
               />
+              {
+                 formData?.companyCertificateURL.length > 1 && formData?.formCo7URL.length > 1 && formData?.formCo2URL.length > 1 && formData.articlesAndMemorandumOfAssociation.length  > 1 && formData.utilityBill.length  > 1 ? (
+                  <div className="next" onClick={handleContinueClick}>
+                    <button>continue</button>
+                  </div>
+
+                ):""
+              }
             </>
+            
             )}
             {activeTab === 4 && (
             <>
@@ -1268,7 +1429,7 @@ const Login = () => {
                 forhtml="username"
               />
               <OInput
-                type="text"
+                type="password"
                 label="Password"
                 placeholder="••••••••••••••"
                 onChange={handleInputChange}
@@ -1277,11 +1438,10 @@ const Login = () => {
                 forhtml="password"
               />
               <OInput
-                type="text"
+                type="password"
                 label="Confirm Password"
                 placeholder="••••••••••••••"
-                onChange={handleInputChange}
-                value={formData.password}
+                onChange={handleCofirmpassword}
                 name="password"
                 forhtml="password"
               />
@@ -1292,17 +1452,17 @@ const Login = () => {
           {/* <div className="next" onClick={handleGoNext}> */}
           {/* <div className="next" onClick={() => setActiveTab(activeTab + 1)}> */}
           {
-            activeTab >= 4 ? (
+            activeTab >= 4 && (
           <div className="next" onClick={handleSignup}>
             <button>Submit</button>
           </div>
-
-            ) : (
-          <div className="next" onClick={handleContinueClick}>
-            <button>continue</button>
-          </div>
-
             )
+          //   ) : (
+          // <div className="next" onClick={handleContinueClick}>
+          //   <button>continue</button>
+          // </div>
+
+          //   )
           }
         </RightContent>
       </RightLogin>
@@ -1323,6 +1483,24 @@ const LoginWrapper = styled.div`
     @media screen and (max-width: 40em) {
       display: none;
     }
+  }
+  .tracker{
+    /* border: 1px solid red; */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    /* gap: 10px; */
+  }
+  .round{
+    height: 5px;
+    width: 4px;
+    background: green;
+    border-radius: 50%;
+  }
+  .box{
+    height: 0.6px ;
+    width: 25%;
+    background: grey;
   }
 `;
 const RightLogin = styled.div`
@@ -1427,6 +1605,9 @@ const InputWrapper = styled.div`
   margin: 10px 0;
   // border: 2px solid red;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: calc(10px 5px 20px);
 
   &::-webkit-scrollbar {
     display: none;

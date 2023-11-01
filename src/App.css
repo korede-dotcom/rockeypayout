@@ -17,3 +17,7 @@
       width: 20px;
     }
   }
+
+  .rs-dropdown-toggle-caret .rs-icon{
+      display: none;
+  }

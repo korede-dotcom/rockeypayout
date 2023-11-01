@@ -33,13 +33,18 @@ const queryClient = new QueryClient({
   },
 });
 
+import { Toaster } from 'react-hot-toast';
+
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
      <ConfigProvider locale={enUS}>
     <QueryClientProvider client={queryClient}>
     {/* <IntlProvider locale="en"> */}
+    <Toaster/>
+
        <App />
+       
     {/* </IntlProvider> */}
     </QueryClientProvider>
 

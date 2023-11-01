@@ -27,10 +27,14 @@ const OnInput = styled.div`
             height: 35px;
             width: 100%;
             padding: 0 10px;
-            border-radius: 8px;
-            border: 1px solid #D0D5DD;
+            /* border-radius: 8px; */
+            /* border: 1px solid #D0D5DD; */
             background: #FFF;
             box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+            border: none;
+            border-bottom: 1px solid #000;
+            background-color: transparent;
+            
             outline: none;
             color: black;
             text-transform: capitalize;

@@ -77,10 +77,12 @@ const Card = ({cardbody, figure, padding, width}) => {
             ))} */}
           <div className="bottom">
             <span>
-              <img src={m.downImg} alt="" />
-              12%{" "}
+              {/* <img src={m.downImg} alt="" />
+              12%{" "} */}
+            <span className="same">{m.count}</span>
+
             </span>
-            <span className="same">vs</span>
+            {/* <span className="same">vs</span> */}
             <span className="same">{m.day}</span>
           </div>
         </div>

@@ -680,7 +680,66 @@ export const OhentpayBody = [
 ]
 export const WebhooksBody = [
   {
-    text: "fetch httpsjsonplaceholdertypicodecomusersthenesponsereturnrespsejsonthenusersconsoleogusers",
+    text: `var client = new HttpClient()
+    var request = new HttpRequestMessage(HttpMethod.Get, "http://93.114.128.117:8585/bcon/getcurrencytype");
+    var response = await client.SendAsync(request)
+    response.EnsureSuccessStatusCode()
+    Console.WriteLine(await response.Content.ReadAsStringAsync())
+    `,
+    id:1
+  },
+  {
+    text: `v url := "http://93.114.128.117:8585/bcon/getcurrencytype"
+    method := "GET"
+  
+    client := &http.Client {
+    }
+    req, err := http.NewRequest(method, url, nil)
+  
+    if err != nil {
+      fmt.Println(err)
+      return
+    }
+    res, err := client.Do(req)
+    if err != nil {
+      fmt.Println(err)
+      return
+    }
+    defer res.Body.Close()
+  
+    body, err := ioutil.ReadAll(res.Body)
+    if err != nil {
+      fmt.Println(err)
+      return
+    }
+    fmt.Println(string(body))
+    `,
+    id:2
+  },
+  {
+    text: `GET /bcon/getcurrencytype HTTP/1.1
+    Host: 93.114.128.117:8585
+    `,
+    id:3
+  },
+  {
+    text: `GET /bcon/getcurrencytype HTTP/1.1
+    Host: 93.114.128.117:8585
+    `,
+    id:4
+  },
+  {
+    text: `var requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+    };
+    
+    fetch("http://93.114.128.117:8585/bcon/getcurrencytype", requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
+    `,
+    id:5
   },
   // {
   //   text: "fetch  httpsjsonplaceholdertypicodecomusersthenesponsereturnrespsejsonthenusersconsoleogusers",

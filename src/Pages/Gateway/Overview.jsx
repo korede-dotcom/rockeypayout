@@ -9,60 +9,82 @@ import Card from "../../Reuseable/Card";
 import gb from "../../assets/gb.svg";
 import rb from "../../assets/rb.svg";
 import tablearrow from "../../assets/tablearrow.svg";
+import contact from "../../assets/contact.png";
+import successful from "../../assets/successful.png";
+import pending from "../../assets/pending.png";
+import cancelled from "../../assets/cancelled.png";
+import down from "../../assets/down.svg";
+import test from "../../assets/test.svg";
+import opt from "../../assets/opt.svg";
 //
 import Box from "../../Reuseable/Box";
 import FlexItems from "../../Reuseable/FlexItems";
 import Reusetable from "../../Reuseable/Reusetable";
 import { TheadHeader, TheadBody, cardbody, figure } from "../../Mapables";
 import { useNavigate } from "react-router-dom";
+import { OhentpayHead, OhentpayBody } from "../../Mapables";
 //
 import { OverviewHeader, OverviewBody } from "../../Mapables";
 import Loader from "../../Reuseable/Loader";
+import { Dropdown } from "rsuite";
+import "rsuite/dist/rsuite.min.css";
 
 const Overview = () => {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
+  const [data2, setData2] = useState(null);
   const [trx, settrx] = useState(null);
   const [loading, setLoading] = useState(false);
-  const sorted = data?.data?.transactionVolume["NGN"]
 
-  //  const cardbodys = [
-  //   {
-  //     Image: contact,
-  //     name: "Total Transaction Count",
-  //     downImg: down,
-  //     day: "yesterday",
-  //   },
-  //   {
-  //     Image: successful,
-  //     name: `Successful`,
-  //     downImg: down,
-  //     day: "yesterday",
-  //     border: "border",
-  //     padding: "padding",
-  //   },
-  //   {
-  //     Image: pending,
-  //     name: "Pending",
-  //     downImg: down,
-  //     day: "yesterday",
-  //     border: "border",
-  //     padding: "padding",
-  //   },
-  //   {
-  //     Image: cancelled,
-  //     name: "Cancelled",
-  //     downImg: down,
-  //     day: "yesterday",
-  //     border: "border",
-  //     padding: "padding",
-  //   },
-  // ];
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: "NGN",
+  });
+  const sorted = data?.data?.transactionVolume[0]
+  console.log("🚀 ~ file: Overview.jsx:39 ~ Overview ~ sorted:", sorted)
+
+   const cardbodys = [
+    {
+      Image: contact,
+      name: "Total Transaction Count",
+      downImg: down,
+      count:sorted?.total,
+      day: "count",
+    },
+    {
+      Image: successful,
+      name: `Successful`,
+      downImg: down,
+      count:sorted?.failed,
+      day: "count",
+      border: "border",
+      padding: "padding",
+    },
+    {
+      Image: pending,
+      name: "Pending",
+      downImg: down,
+      count:sorted?.pending,
+      day: "count",
+      border: "border",
+      padding: "padding",
+    },
+    {
+      Image: cancelled,
+      name: "Cancelled",
+      downImg: down,
+      count:sorted?.cancelled,
+      day: "count",
+      border: "border",
+      padding: "padding",
+    },
+  ];
+
    const figures = [
-    { number: sorted?.successful },
-    { number: sorted?.successfulAmount },
-    { number: sorted?.pendingAmount},
-    { number: sorted?.cancelledAmount },
+    { number: formatter.format(sorted?.totalAmount) },
+    { number: formatter.format(sorted?.successfulAmount) },
+    { number: formatter.format(sorted?.pendingAmount)},
+    { number: formatter.format(sorted?.cancelledAmount) },
   ];
 
   useEffect(() => {
@@ -79,10 +101,44 @@ const Overview = () => {
 
         const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userId?.data?.userId}`, requestOptions);
         const result = await response.json();
+        
         // Set the fetched data to state
         setData(result);
         setLoading(false)
         settrx(result?.data?.payOutTransactions);
+        localStorage.getItem("userDetails",JSON.stringify(result))
+        console.log("Fetched data:", result);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        // Handle errors here
+      }
+    };
+
+    // Call the fetch function
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+
+    setLoading(true)
+    const userId = JSON.parse(localStorage.getItem("userDetails"))
+    // setUser(userId);
+
+    const fetchData = async () => {
+      try {
+        const requestOptions = {
+          method: 'GET',
+          redirect: 'follow'
+        };
+
+        const response = await fetch(`https://apidoc.transferrocket.co.uk///getuserwalletfundrequest?userId=${userId?.data?.userId}&requestId=0`, requestOptions);
+        const result = await response.json();
+        console.log("🚀 ~ file: Hopeps.jsx:39 ~ fetchData ~ result:", result)
+        
+        // Set the fetched data to state
+        setData2(result);
+        setLoading(false)
+        // settrx(result?.data?.payOutTransactions);
         console.log("Fetched data:", result);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -185,8 +241,84 @@ const Overview = () => {
           </div>
         </PageWord>
         <CardContainer>
-          <Card cardbody={cardbody} figure={figures} padding="0 0 0 70px" />
+          <Card  cardbody={cardbodys} figure={figures} padding="0 0 0 70px" />
         </CardContainer>
+        <Box
+          width="100%"
+          border="none"
+          radius="15px"
+          flexDirection="column"
+          padding="20px 0 40px 0"
+        >
+          <FlexItems text="Payout Request" />
+          <TableWrap>
+          <table>
+              <thead>
+                <tr>
+                  {OhentpayHead.map((m, i) => (
+                    <th key={i}>
+                      <span>
+                        {m.name}
+                        {m.image}
+                      </span>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {data2?.data?.map((mb, i) => {
+                  return (
+                    <tr key={i}>
+                      <td>{mb.id}</td>
+                      <td>{mb.dateCreated}</td>
+                      <td>{mb.amountApproved}</td>
+                      <td>{mb.balanceBeforeRequest}</td>
+                      <td>{mb.amountRequested}</td>
+                      <td className="currency">
+                        {mb.flag}
+                        <span> {mb?.userWallet?.country?.name}</span>
+                      </td>
+                      <td>{mb.userWallet.balance}</td>
+                      {/* <td className="receiver">{mb.receiver}</td> */}
+                      <td>{mb.userWallet.name}</td>
+                      <td>
+                      {mb.status ===  "Pending" ? (
+                        <span className="depo">
+                          <img src={gb} alt="" />{mb.status}
+                          </span>
+                      ) : (
+                        <span className="cancel"><img src={rb} alt="" />{mb.status}</span>
+                      )}
+                      </td>
+                      {/* <td>{mb.actions}</td> */}
+                       {/* {mb.status ===  "Pending" ? (
+                          <span className="cancel" style={{background:"#FEF3F2",padding:"2px 10px",borderRadius:"10px",color:"red"}}>
+                            <img src={rb} alt="" /><small>cancel</small>
+                            </span>
+                      ) : ""
+                      } */}
+                                            <td >
+                      <Dropdown
+                      title={<img src={opt} height="20px" />}
+                      >
+                        <Dropdown.Item
+                         
+                        style={{color:"red",background:"#fff"}}
+                        >
+                          Cancel
+                        </Dropdown.Item>
+
+                     
+                      </Dropdown>
+                    </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </TableWrap>
+          {/* <Reusetable  theads={TheadHeader} tbodies={TheadBody} /> */}
+        </Box>
         <Box
           width="100%"
           border="none"
@@ -371,8 +503,9 @@ const TableWrap = styled.div`
   }
   table {
     height: 300px;
+    width: 100%;
     border-collapse: collapse;
-    width: max-content;
+    /* width: max-content; */
     padding: 20px;
     thead {
       border-top: 1px solid #e9edf5;

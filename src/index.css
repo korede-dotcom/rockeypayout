@@ -82,6 +82,21 @@ main{
 
 }
 
+ .rs-icon{
+  display: none !important;
+}
+.rs-dropdown-menu:hover{
+  background-color: none !important;
+}
+
+.rs-btn-default{
+  background: none !important;
+}
+
+input::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
 * select,
 input {
   color: #000 !important;

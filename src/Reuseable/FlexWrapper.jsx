@@ -15,6 +15,7 @@ const FlexWrapper = ({
   subname,
   amount,
   word,
+  balance,
   // onClick,
   // show,
   // setShow,
@@ -32,6 +33,8 @@ const FlexWrapper = ({
   const [user, setUser] = useState(null);
   const [payout, setPayout] = useState(false);
   const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [info, setInfo] = useState("");
   const [payouttwo, setPayouttwo] = useState(false);
   const [fundingRequest, setFundingRequest] = useState({
     userId: null,
@@ -85,6 +88,7 @@ const FlexWrapper = ({
 
 
   const CreateWalletFundingRequest = async () => {
+    setLoading(true)
     var requestOptions = {
       method: 'POST',
       body: JSON.stringify(fundingRequest),
@@ -93,6 +97,15 @@ const FlexWrapper = ({
     
    const response = await fetch("https://apidoc.transferrocket.co.uk//walletfundingrequest", requestOptions);
    const data = await response.json()
+   if(data?.status){
+     setLoading(false)
+       setInfo(data?.message)
+       setTimeout(() => {
+      setInfo("")
+      setShow(!show)
+
+    }, 1000);
+   }
    console.log("🚀 ~ file: FlexWrapper.jsx:96 ~ CreateWalletFundingRequest ~ data:", data)
   }
   
@@ -145,6 +158,7 @@ const FlexWrapper = ({
                 >
                   <ModalInner>
                     {/* <p className="quick">Quickly send money to your clients</p> */}
+                 
                     <Select label="Bank" />
                    
                     <TextInput label="Amount" placeholder="200" name="amountRequested" change={handlechange} />
@@ -182,6 +196,7 @@ const FlexWrapper = ({
                   cancleModal={() => setShow(!show)}
                   handleSubmit={CreateWalletFundingRequest}
                 >
+                  {info && (<p style={{color:"green"}}>{info}</p>)}
                   <ModalInner>
                     <TextInput label="Amount" name="amountRequested" placeholder="200" change={handlechange}/>
                     <Textarea

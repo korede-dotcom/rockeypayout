@@ -3,13 +3,16 @@ import styled from 'styled-components';
 // 
 import file from '../../../assets/file.svg'
 
-const File = ({label, onChange}) => {
+const File = ({label, onChange,doneImg}) => {
         
   return (
     <FileBox>
         <label>{label}</label>
         <div className="files">
-            <img src={file} alt="" />
+            {
+             doneImg ? <img src={doneImg} alt="" className='doneimg' /> : <img src={file} alt="" />
+
+            }
             <input type="file" onChange={onChange} />
         </div>
     </FileBox>
@@ -31,6 +34,9 @@ const FileBox = styled.div`
         display: flex;
         align-items: center;
         justify-content: center;
+        .doneimg{
+            height: 50%;
+        }
         img{
             width: 100%;
             height: 100%; 

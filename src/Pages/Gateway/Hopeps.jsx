@@ -4,23 +4,44 @@ import styled from 'styled-components';
 import Layout from '../../Layout/Layout';
 import FlexWrapper from '../../Reuseable/FlexWrapper';
 import Card from '../../Reuseable/Card';
-import { TheadBody, TheadHeader, cardbody2, figure2 } from '../../Mapables';
+import { TheadBody, TheadHeader, figure2 } from '../../Mapables';
 import Box from '../../Reuseable/Box';
 import Reusetable from '../../Reuseable/Reusetable';
 import FlexItems from '../../Reuseable/FlexItems';
 import { OhentpayHead, OhentpayBody } from "../../Mapables";
+import contact from "../../assets/contact.png";
+import successful from "../../assets/successful.png";
+import pending from "../../assets/pending.png";
+import cancelled from "../../assets/cancelled.png";
+import down from "../../assets/down.svg";
+import test from "../../assets/test.svg";
 // 
 import gb from "../../assets/gb.svg";
 import rb from "../../assets/rb.svg";
 import Loader from '../../Reuseable/Loader';
 import tablearrow from "../../assets/tablearrow.svg";
 import ngn from "../../assets/ngn.svg";
+import { Dropdown } from "rsuite";
+import "rsuite/dist/rsuite.min.css";
+import opt from "../../assets/opt.svg";
 
 
 const Hopeps = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(null);
+  const [getUser, setUser] = useState(null);
   const [trx, settrx] = useState(null);
+  const sorted = getUser?.data?.payOutClientWalletPayOutProviders[0]?.walletTransactionVolume;
+  const balance = getUser?.data?.payOutClientWalletPayOutProviders[0]?.wallet;
+  console.log("🚀 ~ file: Hopeps.jsx:30 ~ Hopeps ~ getUser:", balance)
+
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency:"NGN",
+    // currency: balance?.country?.currencyCode,
+  });
+
+
 
   const OhentpayHead = [
     {
@@ -104,12 +125,57 @@ const Hopeps = () => {
     },
   ]
 
+  const cardbody2 = [
+    {
+      Image: contact,
+      name: "Total Transaction Count",
+      downImg: down,
+      count:sorted?.total,
+      day: "count",
+    },
+    {
+      Image: successful,
+      name: `Successful`,
+      downImg: down,
+      count:sorted?.successful,
+      day: "count",
+      border: "border",
+      padding: "padding",
+    },
+    {
+      Image: pending,
+      name: "Pending",
+      downImg: down,
+      count:sorted?.pending,
+      day: "count",
+      border: "border",
+      padding: "padding",
+    },
+    {
+      Image: cancelled,
+      name: "Cancelled",
+      downImg: down,
+      count:sorted?.cancelled,
+      day: "count",
+      border: "border",
+      padding: "padding",
+    },
+  ];
+
+  const figure2 = [
+    { number: formatter?.format(sorted?.totalAmount) },
+    { number: formatter?.format(sorted?.successfulAmount) },
+    { number:formatter?.format(sorted?.pendingAmount) },
+    { number: formatter?.format(sorted?.cancelledAmount) },
+    // { number: 18 },
+  ];
 
 
   useEffect(() => {
 
     setLoading(true)
     const userId = JSON.parse(localStorage.getItem("userDetails"))
+    setUser(userId);
 
     const fetchData = async () => {
       try {
@@ -142,7 +208,7 @@ const Hopeps = () => {
     <Layout>
       {loading && <Loader/>}
         <HopepsBox>
-            <FlexWrapper name="Hope PS Bank" subname="[Payarena]" amount="600, 022.89" word="This overview provides a comprehensive snapshot of wallet transactions on your system" />
+            <FlexWrapper name="Hope PS Bank" subname="[Payarena]" amount={balance?.balance} word="This overview provides a comprehensive snapshot of wallet transactions on your system" />
             <CardContainer>
                 <Card cardbody={cardbody2} figure={figure2} padding="0 0 0 10px" width="max-content" />
             </CardContainer>
@@ -188,13 +254,35 @@ const Hopeps = () => {
                         <span className="cancel"><img src={rb} alt="" />{mb.status}</span>
                       )}
                       </td>
-                      {/* <td>{mb.actions}</td> */}
+                      {/* <Dropdown
+                      title={<img src={opt} height="20px" />}
+                      >
+                        <Dropdown.Item
+                         
+           
+                        >
+                          Activate User
+                        </Dropdown.Item>
+
+                        <Dropdown.Item
+                         
+                          
+                        >
+                          De-activate User
+                        </Dropdown.Item>
+                        <Dropdown.Item
+                         
+                        >
+                          Re-activate User
+                        </Dropdown.Item>
+                      </Dropdown> */}
+                      {/* <td>{mb.actions}</td>
                        {mb.status ===  "Pending" ? (
                           <span className="cancel" style={{background:"#FEF3F2",padding:"2px 10px",borderRadius:"10px",color:"red"}}>
                             <img src={rb} alt="" /><small>cancel</small>
                             </span>
                       ) : ""
-                      }
+                      } */}
                     </tr>
                   );
                 })}
@@ -257,7 +345,7 @@ const TableWraptwo = styled.div`
   table {
     /* height: 300px; */
     border-collapse: collapse;
-    width: max-content;
+    width: 100%;
     padding: 20px;
     thead {
       border-top: 1px solid #e9edf5;

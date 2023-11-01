@@ -28,29 +28,40 @@ import Details from "./Pages/Security/Details";
 import UserManagement from "./Pages/Security/UserManagement";
 import Login from "./Pages/Onboarding/Login";
 import LoginR from "./Pages/Onboarding/LoginR";
+import InActivityTimeOut from "./hooks/InActivityTimeOut";
+import { ProtectedRoute } from "./hooks";
+import "@arco-design/web-react/dist/css/arco.css"
 
 function App() {
   const [count, setCount] = useState(0);
 
   return (
     <Router>
-        <Routes>
-          <Route path='/' element={<LoginR />} />
-          <Route path='/signup' element={<Login />} />
-          <Route path='/overview' element={<Overview />} />
-            <Route path='/ohentpay' element={<Ohentpay />} />
-            <Route path='/hopebank' element={<Hopeps />} />
-            <Route path='/marketplace' element={<Marketplace />} />
-            <Route path='/transaction' element={<Transactions />} />
-            <Route path='/security' element={<Settings />} />
-            <Route path='/security/company' element={<Company />} />
-            <Route path='/security/change-password' element={<Changepassword />} />
-            <Route path='/security/change-password' element={<Changepassword />} />
-            <Route path='/security/API' element={<Details />} />
-            <Route path='/security/user-management' element={<UserManagement />} />
+      <Routes>
+      <Route element={<InActivityTimeOut />}>
+              <Route path='/' element={<LoginR />} />
+                    <Route path='/signup' element={<Login />} />
+        
+          {/* Dashboard Routes */}
+          <Route element={<ProtectedRoute />}>
+                        <Route path='/overview' element={<Overview />} />
+                        <Route path='/ohentpay' element={<Ohentpay />} />
+                        <Route path='/hopebank' element={<Hopeps />} />
+                        <Route path='/marketplace' element={<Marketplace />} />
+                        <Route path='/transaction' element={<Transactions />} />
+                        <Route path='/security' element={<Settings />} />
+                        <Route path='/security/company' element={<Company />} />
+                        <Route path='/security/change-password' element={<Changepassword />} />
+                        <Route path='/security/change-password' element={<Changepassword />} />
+                        <Route path='/security/API' element={<Details />} />
+                        <Route path='/security/user-management' element={<UserManagement />} />
+          </Route>
+           {/* <Route path='*' element={<h1>Error</h1>} /> */}
 
-        </Routes>
+        </Route>
+      </Routes>
     </Router>
+
   );
 }
 

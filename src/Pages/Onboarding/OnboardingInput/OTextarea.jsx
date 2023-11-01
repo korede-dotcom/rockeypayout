@@ -30,13 +30,15 @@ textarea{
     width: 100%;
     padding: 10px;
     border-radius: 8px;
-    border: 1px solid #D0D5DD;
+    /* border: 1px solid #D0D5DD; */
     background: #FFF;
     box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
     outline: none;
     color: black;
     text-transform: capitalize;
     resize: none;
+    border-bottom: 1px solid #000;
+    /* border: none; */
     &::placeholder{
         color: #A1A9B8;
         font-size: 12px;

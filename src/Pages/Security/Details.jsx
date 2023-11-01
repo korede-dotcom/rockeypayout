@@ -35,6 +35,7 @@ import php from "../../assets/Webhooks/php.svg";
 import node from "../../assets/Webhooks/node.png";
 import alb from "../../assets/alb.png";
 import ngn from '../../assets/ngn.svg'
+import { toast } from "react-hot-toast";
 
 
 
@@ -44,33 +45,11 @@ const Details = () => {
   const [mod2, setMo2] = useState(false);
   const [reveal, setReveal] = useState(false);
   const [others, setOther] = useState(false);
-  const [copied, setCopied] = useState(false);
-  const [WebhooksHHead, setWebhooksHead] = useState([
-    {
-      name: "curl",
-      image: <img src={curl} alt="" />,
-    },
-    {
-      name: "c",
-      image: <img src={cc} alt="" />,
-    },
-    {
-      name: "Java",
-      image: <img src={java} alt="" />,
-    },
-    {
-      name: "C#",
-      image: <img src={csharp} alt="" />,
-    },
-    {
-      name: "PHP",
-      image: <img src={php} alt="" />,
-    },
-    {
-      name: "NODE JS",
-      image: <img style={{ width: "40px" }} src={node} alt="" />,
-    },
-  ]);
+  const [loading, setLoading] = useState(false);
+  const [current, setCurrent] = useState(null);
+  const [info, setInfo] = useState("");
+
+  const [WebhooksHHead, setWebhooksHead] = useState(null);
   const [createApp, setcreateApp] = useState(
     {
       "clientId": "",
@@ -87,29 +66,413 @@ const Details = () => {
   },[])
 
   const [othermap,setOthermap] = useState([
-    {name: 'C', image: cc},
-    {name: 'C++', image: cplus},
-    {name: 'Go', image: gosimg},
-    {name: 'HTTP', image: cc},
-    {name: 'Javascript', image: jsimg},
-    {name: 'JSON', image: cc},
-    {name: 'Kotlin', image: kotlin},
-    {name: 'Objective-C', image: objectc},
-    {name: 'PowerShell', image: cc},
-    {name: 'Python', image: python},
-    {name: 'R', image: rlang},
-    {name: 'Swift', image: swift}
+    {name: 'C', image: cc ,id:1,code:`
+    var client = new HttpClient()
+    var request = new HttpRequestMessage(HttpMethod.Get, "https://apidoc.transferrocket.co.uk/getcurrencytype");
+    var response = await client.SendAsync(request)
+    response.EnsureSuccessStatusCode()
+    Console.WriteLine(await response.Content.ReadAsStringAsync())
+    `,
+    codetwo:`
+    var client = new HttpClient();
+    var request = new HttpRequestMessage(HttpMethod.Post, "https://apidoc.transferrocket.co.uk//walletfundingrequest");
+    var content = new StringContent("\n{\n    \"userId\": 45586980,\n    \"amountRequested\": 150000,\n    \"userWallet\": {\n        \"walletId\": 19680003\n    },\n    \"comment\": \"Hello\",\n    \"lastUpdatedBy\" : 0\n}", null, "text/plain");
+    request.Content = content;
+    var response = await client.SendAsync(request);
+    response.EnsureSuccessStatusCode();
+    Console.WriteLine(await response.Content.ReadAsStringAsync());
+    
+    `,
+    codethree:`
+    var client = new HttpClient();
+    var request = new HttpRequestMessage(HttpMethod.Get, "https://apidoc.transferrocket.co.uk//getuserwalletfundrequest?userId=45586980&requestId=0");
+    var response = await client.SendAsync(request);
+    response.EnsureSuccessStatusCode();
+    Console.WriteLine(await response.Content.ReadAsStringAsync());
+    
+    
+    `
+  
+    }
+    ,
+    // {name: 'C++', image: cplus,id:2},
+    {name: 'Go', image: gosimg,id:2,
+    code:`
+    v url := "https://apidoc.transferrocket.co.uk/getcurrencytype"
+    method := "GET"
+  
+    client := &http.Client {
+    }
+    req, err := http.NewRequest(method, url, nil)
+  
+    if err != nil {
+      fmt.Println(err)
+      return
+    }
+    res, err := client.Do(req)
+    if err != nil {
+      fmt.Println(err)
+      return
+    }
+    defer res.Body.Close()
+  
+    body, err := ioutil.ReadAll(res.Body)
+    if err != nil {
+      fmt.Println(err)
+      return
+    }
+    fmt.Println(string(body))
+    `,
+    codetwo:`
+    var client = new HttpClient();
+    var request = new HttpRequestMessage(HttpMethod.Post, "https://apidoc.transferrocket.co.uk//walletfundingrequest");
+    var content = new StringContent("{\n    \"userId\": 45586980,\n    \"amountRequested\": 150000,\n    \"userWallet\": {\n        \"walletId\": 19680003\n    },\n    \"comment\": \"Hello\",\n    \"astUpdatedBy\" : 0\n}", null, "text/plain");
+    request.Content = content;
+    var response = await client.SendAsync(request);
+    response.EnsureSuccessStatusCode();
+    Console.WriteLine(await response.Content.ReadAsStringAsync());
+    
+    `,
+    codethree:`
+    package main
+
+    import (
+      "fmt"
+      "net/http"
+      "io/ioutil"
+    )
+    
+    func main() {
+    
+      url := "https://apidoc.transferrocket.co.uk//getuserlog/8230145"
+      method := "GET"
+    
+      client := &http.Client {
+      }
+      req, err := http.NewRequest(method, url, nil)
+    
+      if err != nil {
+        fmt.Println(err)
+        return
+      }
+      res, err := client.Do(req)
+      if err != nil {
+        fmt.Println(err)
+        return
+      }
+      defer res.Body.Close()
+    
+      body, err := ioutil.ReadAll(res.Body)
+      if err != nil {
+        fmt.Println(err)
+        return
+      }
+      fmt.Println(string(body))
+    }
+    `
+    },
+    {name: 'HTTP', image: cc,id:3,
+      code:`
+      GET /getcurrencytype HTTP/1.1
+      Host: https://apidoc.transferrocket.co.uk
+      `,
+      codetwo:`
+      POST //walletfundingrequest HTTP/1.1
+      Host: apidoc.transferrocket.co.uk
+      Content-Length: 161
+      
+      {
+          "userId": 45586980,
+          "amountRequested": 150000,
+          "userWallet": {
+              "walletId": 19680003
+          },
+          "comment": "Hello",
+          "astUpdatedBy" : 0
+      }
+      `,
+      codethree:`
+      GET //getuserlog/8230145 HTTP/1.1
+      Host: apidoc.transferrocket.co.uk
+      `
+    },
+    {name: 'Javascript', image: jsimg,id:4,code:`
+    var requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+    };
+    
+    fetch("https://apidoc.transferrocket.co.uk/getcurrencytype", requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
+    `,
+    codetwo:`
+    var raw = "{\n    \"userId\": 45586980,\n    \"amountRequested\": 150000,\n    \"userWallet\": {\n        \"walletId\": 19680003\n    },\n    \"comment\": \"Hello\",\n    \"astUpdatedBy\" : 0\n}";
+
+    var requestOptions = {
+      method: 'POST',
+      body: raw,
+      redirect: 'follow'
+    };
+    
+    fetch("https://apidoc.transferrocket.co.uk//walletfundingrequest", requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
+    `,
+    codethree:`
+    var requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+    };
+    
+    fetch("https://apidoc.transferrocket.co.uk//getuserwalletfundrequest?userId=45586980&requestId=0", requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
+    `
+  },
+    
+    {name: 'Kotlin', image: kotlin,id:5},
+    {name: 'Dart', image: kotlin,id:6,code:`
+    var request = http.Request('GET', Uri.parse('https://apidoc.transferrocket.co.uk/getcurrencytype'));
+
+
+    http.StreamedResponse response = await request.send();
+    
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+    }
+    else {
+      print(response.reasonPhrase);
+    }
+    
+    `,
+    codetwo:`
+    var request = http.Request('POST', Uri.parse('https://apidoc.transferrocket.co.uk//walletfundingrequest'));
+    request.body = '''{\n    "userId": 45586980,\n    "amountRequested": 150000,\n    "userWallet": {\n        "walletId": 19680003\n    },\n    "comment": "Hello",\n    "astUpdatedBy" : 0\n}''';
+    
+    http.StreamedResponse response = await request.send();
+    
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+    }
+    else {
+      print(response.reasonPhrase);
+    }
+    
+    `,
+    codethree:`
+    var request = http.Request('GET', Uri.parse('https://apidoc.transferrocket.co.uk//getuserwalletfundrequest?userId=45586980&requestId=0'));
+
+
+    http.StreamedResponse response = await request.send();
+    
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+    }
+    else {
+      print(response.reasonPhrase);
+    }
+    
+    `
+  },
+    {name: 'Objective-C', image: objectc,id:7,code:`
+    #import <Foundation/Foundation.h>
+
+    dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://apidoc.transferrocket.co.uk/getcurrencytype"]
+      cachePolicy:NSURLRequestUseProtocolCachePolicy
+      timeoutInterval:10.0];
+    
+    [request setHTTPMethod:@"GET"];
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
+    completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+      if (error) {
+        NSLog(@"%@", error);
+        dispatch_semaphore_signal(sema);
+      } else {
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
+        NSError *parseError = nil;
+        NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:&parseError];
+        NSLog(@"%@",responseDictionary);
+        dispatch_semaphore_signal(sema);
+      }
+    }];
+    [dataTask resume];
+    dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
+    `,
+    codetwo:`
+    #import <Foundation/Foundation.h>
+
+    dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://apidoc.transferrocket.co.uk//walletfundingrequest"]
+      cachePolicy:NSURLRequestUseProtocolCachePolicy
+      timeoutInterval:10.0];
+    NSData *postData = [[NSData alloc] initWithData:[@"{\n    \"userId\": 45586980,\n    \"amountRequested\": 150000,\n    \"userWallet\": {\n        \"walletId\": 19680003\n    },\n    \"comment\": \"Hello\",\n    \"astUpdatedBy\" : 0\n}" dataUsingEncoding:NSUTF8StringEncoding]];
+    [request setHTTPBody:postData];
+    
+    [request setHTTPMethod:@"POST"];
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
+    completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+      if (error) {
+        NSLog(@"%@", error);
+        dispatch_semaphore_signal(sema);
+      } else {
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
+        NSError *parseError = nil;
+        NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:&parseError];
+        NSLog(@"%@",responseDictionary);
+        dispatch_semaphore_signal(sema);
+      }
+    }];
+    [dataTask resume];
+    dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
+    `,
+    codethree:`
+    #import <Foundation/Foundation.h>
+
+    dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://apidoc.transferrocket.co.uk//getuserwalletfundrequest?userId=45586980&requestId=0"]
+      cachePolicy:NSURLRequestUseProtocolCachePolicy
+      timeoutInterval:10.0];
+    
+    [request setHTTPMethod:@"GET"];
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
+    completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+      if (error) {
+        NSLog(@"%@", error);
+        dispatch_semaphore_signal(sema);
+      } else {
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
+        NSError *parseError = nil;
+        NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:&parseError];
+        NSLog(@"%@",responseDictionary);
+        dispatch_semaphore_signal(sema);
+      }
+    }];
+    [dataTask resume];
+    dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
+    `
+  },
+    {name: 'PowerShell', image: cc,id:8,code:`
+    $response = Invoke-RestMethod 'https://apidoc.transferrocket.co.uk/getcurrencytype' -Method 'GET' -Headers $headers
+    $response | ConvertTo-Json
+    `,
+    codetwo:``,
+    codethree:`
+    $response = Invoke-RestMethod 'https://apidoc.transferrocket.co.uk//getuserwalletfundrequest?userId=45586980&requestId=0' -Method 'GET' -Headers $headers
+    $response | ConvertTo-Json
+    `
+  
+   },
+
+    {name: 'Python', image: python,id:10,code:`
+    import requests
+
+    url = "https://apidoc.transferrocket.co.uk/getcurrencytype"
+    
+    payload={}
+    headers = {}
+    
+    response = requests.request("GET", url, headers=headers, data=payload)
+    
+    print(response.text)
+    
+    `,
+    codetwo:`
+    import requests
+
+    url = "https://apidoc.transferrocket.co.uk//walletfundingrequest"
+    
+    payload = "\n{\n    \"userId\": 45586980,\n    \"amountRequested\": 150000,\n    \"userWallet\": {\n        \"walletId\": 19680003\n    },\n    \"comment\": \"Hello\",\n    \"lastUpdatedBy\" : 0\n}"
+    headers = {}
+    
+    response = requests.request("POST", url, headers=headers, data=payload)
+    
+    print(response.text)
+    
+    
+    `,
+    codethree:`
+    import requests
+
+    url = "https://apidoc.transferrocket.co.uk//getuserwalletfundrequest?userId=45586980&requestId=0"
+    
+    payload={}
+    headers = {}
+    
+    response = requests.request("GET", url, headers=headers, data=payload)
+    
+    print(response.text)
+    
+    `
+  },
+    {name: 'R', image: rlang,id:11},
+    {name: 'Swift', image: swift,id:12,code:`
+    var request = URLRequest(url: URL(string: "https://apidoc.transferrocket.co.uk/getcurrencytype")!,timeoutInterval: Double.infinity)
+    request.httpMethod = "GET"
+    
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in 
+      guard let data = data else {
+        print(String(describing: error))
+        return
+      }
+      print(String(data: data, encoding: .utf8)!)
+    }
+    
+    task.resume()
+    
+    `,
+    codetwo:`
+    let parameters = "\n{\n    \"userId\": 45586980,\n    \"amountRequested\": 150000,\n    \"userWallet\": {\n        \"walletId\": 19680003\n    },\n    \"comment\": \"Hello\",\n    \"lastUpdatedBy\" : 0\n}"
+    let postData = parameters.data(using: .utf8)
+    
+    var request = URLRequest(url: URL(string: "https://apidoc.transferrocket.co.uk//walletfundingrequest")!,timeoutInterval: Double.infinity)
+    request.httpMethod = "POST"
+    request.httpBody = postData
+    
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in 
+      guard let data = data else {
+        print(String(describing: error))
+        return
+      }
+      print(String(data: data, encoding: .utf8)!)
+    }
+    
+    task.resume()
+    
+    
+    `,
+    codethree:`
+    var request = URLRequest(url: URL(string: "https://apidoc.transferrocket.co.uk//getuserwalletfundrequest?userId=45586980&requestId=0")!,timeoutInterval: Double.infinity)
+    request.httpMethod = "GET"
+    
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in 
+      guard let data = data else {
+        print(String(describing: error))
+        return
+      }
+      print(String(data: data, encoding: .utf8)!)
+    }
+    
+    task.resume()
+     
+    `
+  }
   ])
 
-  const handleCopyClick = async () => {
-    try {
-      await copys(textToCopy);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500); // Reset copied state after 1.5 seconds
-    } catch (error) {
-      console.error('Failed to copy: ', error);
-    }
-  };
+ 
 
   const handlecreateuser = (e) => {
     const {name,value} = e?.target;
@@ -124,6 +487,19 @@ const Details = () => {
 
   }
 
+  const handleCopyClick = async (element) => {
+
+    let copyGfGText = document.getElementById(element);
+
+    copyGfGText.select();
+
+    document.execCommand("copy");
+    navigator.clipboard.writeText(copyGfGText.value)
+    toast.success("copied")
+ 
+  
+}
+
 const submitCreateApp = async ()  => {
 
   var requestOptions = {
@@ -133,7 +509,19 @@ const submitCreateApp = async ()  => {
   };
   
   const response = await fetch("https://apidoc.transferrocket.co.uk//createpayoutclientapp", requestOptions)
-  const data = await response.json()
+  const data = await response.json();
+
+  if(data?.status){
+    setLoading(false)
+      setInfo(data?.message)
+      setTimeout(() => {
+     setInfo("")
+     setMo2(!mod2)
+
+   }, 1000);
+  }
+
+
   console.log("🚀 ~ file: Details.jsx:97 ~ submitCreateApp ~ data:", data)
 
 }
@@ -141,8 +529,9 @@ const submitCreateApp = async ()  => {
 
 const handleSelect = (name) => {
   console.log("🚀 ~ file: Details.jsx:109 ~ handleSelect ~ name:", name)
-  let selectedLanguage = WebhooksHHead.find((language) => language.name.toLowerCase() === name.toLowerCase());
-  setWebhooksHead([selectedLanguage])
+  let selectedLanguage = othermap.find((language) => language.name.toLowerCase() === name.toLowerCase());
+  setWebhooksHead(selectedLanguage)
+ setOther(!others)
   // setOthermap([selectedLanguage])
   console.log("🚀 ~ file: Details.jsx:110 ~ handleSelect ~ selectedLanguage:", selectedLanguage)
   // setOther(!others)
@@ -188,8 +577,9 @@ const handleSelect = (name) => {
                         type={reveal ? "text" : "password"}
                         value={getUser?.data?.clientKeys?.testKey}
                         readOnly
+                        id="testKey"
                       />
-                      <img src={copy} alt="" onClick={handleCopyClick} />
+                      <img src={copy} alt="" onClick={() => handleCopyClick("testKey")} />
                     </div>
                   </div>
                   <div className="textes">
@@ -199,8 +589,9 @@ const handleSelect = (name) => {
                         type={reveal ? "text" : "password"}
                         value={getUser?.data?.clientKeys?.liveKey}
                         readOnly
+                        id="liveKey"
                       />
-                      <img src={copy} alt="" />
+                      <img src={copy} alt="" onClick={() => handleCopyClick("testKey")} />
                     </div>
                   </div>
                   <div className="re" onClick={() => setReveal(!reveal)}>
@@ -221,6 +612,7 @@ const handleSelect = (name) => {
                 handleSubmit={submitCreateApp}
                 cancleModal={() => setMo2(!mod2)}
               >
+                {info && <p style={{color:"green"}}>{info}</p>}
                 <div style={{paddingInline:"20px"}}>
                 <OInput label="appName" name="appName" onChange={handlecreateuser}/>
                 <OInput label="appDescription" name="appDescription" onChange={handlecreateuser} />
@@ -356,7 +748,14 @@ const handleSelect = (name) => {
             </div>
             <div className="other">
               <p className="sh" onClick={() => setOther(!others)}>
-                Other Languages
+               {
+                WebhooksHHead ? (
+                  <span style={{display:"flex",gap:"10px"}} >
+                     <img src={WebhooksHHead?.image} />
+                    <span>{WebhooksHHead?.name}</span>
+                  </span>
+                ) : "Other Languages"
+               } 
               </p>
 
               {others && <div className="showothers"  >
@@ -383,30 +782,85 @@ const handleSelect = (name) => {
 
           <Tabs>
     <TabList>
-      <Tab>Step 1</Tab>
-      <Tab>Step 2</Tab>
-      <Tab>Step 3</Tab>
+      <Tab>Get currency</Tab>
+      <Tab>Make payout request</Tab>
+      <Tab>Get transactions status</Tab>
     </TabList>
 
     <TabPanel>
             <div className="table">
               <div className="thead">
-                {WebhooksHHead.map((m, i) => (
-                  <div key={i} className="tdd">
-                    {m?.image}
-                    <span>{m?.name}</span>
+                {WebhooksHHead && (
+                  <div  className="tdd">
+                    <img src={WebhooksHHead?.image} />
+                    <span>{WebhooksHHead?.name}</span>
                   </div>
-                ))}
+                )
+                }
               </div>
               <div className="tbod">
-                {WebhooksBody.map((m, i) => (
-                  <div className="bod">{m?.text}</div>
-                ))}
+              {WebhooksHHead && (
+                  <div  className="tdd">
+                    {/* <img src={WebhooksHHead?.image} /> */}
+                    <div className="tddcontent">
+                    <pre>{WebhooksHHead?.code}</pre>
+
+                    </div>
+                  </div>
+                )
+              }
               </div>
             </div>
     </TabPanel>
     <TabPanel>
-      <h2>Any content 2</h2>
+    <div className="table">
+              <div className="thead">
+                {WebhooksHHead && (
+                  <div  className="tdd">
+                    <img src={WebhooksHHead?.image} />
+                    <span>{WebhooksHHead?.name}</span>
+                  </div>
+                )
+                }
+              </div>
+              <div className="tbod">
+              {WebhooksHHead && (
+                  <div  className="tdd">
+                    {/* <img src={WebhooksHHead?.image} /> */}
+                    <div className="tddcontent">
+                    <pre>{WebhooksHHead?.codetwo}</pre>
+
+                    </div>
+                  </div>
+                )
+              }
+              </div>
+            </div>
+    </TabPanel>
+    <TabPanel>
+    <div className="table">
+              <div className="thead">
+                {WebhooksHHead && (
+                  <div  className="tdd">
+                    <img src={WebhooksHHead?.image} />
+                    <span>{WebhooksHHead?.name}</span>
+                  </div>
+                )
+                }
+              </div>
+              <div className="tbod">
+              {WebhooksHHead && (
+                  <div  className="tdd">
+                    {/* <img src={WebhooksHHead?.image} /> */}
+                    <div className="tddcontent">
+                    <pre>{WebhooksHHead?.codethree}</pre>
+
+                    </div>
+                  </div>
+                )
+              }
+              </div>
+            </div>
     </TabPanel>
   </Tabs>
             
@@ -594,7 +1048,7 @@ const Retable = styled.div`
     // width: 100% !important;
     height: 300px;
     border-collapse: collapse;
-    width: max-content;
+    width: 100%;
     padding: 20px;
     thead {
       border-top: 1px solid #e9edf5;
@@ -788,8 +1242,18 @@ const Retabletwo = styled.div`
     display: flex;
     align-items: center;
     gap: 5px;
-    width: 230px;
+    width: max-content;
+
     /* gap: 10px; */
+  }
+  .tddcontent{
+    box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.08), 0px 15px 35px -5px rgba(17, 24, 38, 0.15), 0px 0px 0px 1px rgba(152, 161, 178, 0.10);
+    padding: 10px;
+    border-radius: 20px;
+    color: #5a6376;
+    &:hover{
+      cursor: pointer;
+    }
   }
   .tdd img {
     width: 30px;

@@ -235,7 +235,7 @@ const TableWraptwo = styled.div`
   table {
     height: 300px;
     border-collapse: collapse;
-    width: max-content;
+    width: 100%;
     padding: 20px;
     thead {
       border-top: 1px solid #e9edf5;

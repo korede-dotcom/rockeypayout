@@ -741,6 +741,32 @@ export const WebhooksBody = [
     `,
     id:5
   },
+  {
+    text: `var requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+    };
+    
+    fetch("http://93.114.128.117:8585/bcon/getcurrencytype", requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
+    `,
+    id:5
+  },
+  {
+    text: `var requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+    };
+    
+    fetch("http://93.114.128.117:8585/bcon/getcurrencytype", requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
+    `,
+    id:6
+  },
   // {
   //   text: "fetch  httpsjsonplaceholdertypicodecomusersthenesponsereturnrespsejsonthenusersconsoleogusers",
   // },

@@ -11,7 +11,6 @@ import lock from "../assets/SidebarImg/lock.png";
 import cprofile from "../assets/SidebarImg/cprofile.png";
 import hope from "../assets/SidebarImg/hope.svg";
 
-
 //
 import logo from "../assets/SidebarImg/logo.svg";
 
@@ -19,7 +18,7 @@ const Sidebar = ({ selectedCategory }) => {
   const [isOpen, setIsOpen] = useState(true);
 
   const Navigate = useNavigate();
-  const [market,setMarket] = useState([])
+  const [market, setMarket] = useState([]);
 
   const SidebarData = [
     {
@@ -92,44 +91,55 @@ const Sidebar = ({ selectedCategory }) => {
         },
       ],
     },
+    {
+      pageName: "Beneficiary",
+      Name: "Beneficiary",
+      path: "/beneficairy",
+    },
   ];
-  
+
   function generateGatewayItems() {
     const market = useMarketData(); // Fetch market data
     return market?.map((d) => ({
       title: d?.name,
       path: d?.name?.includes("HopePSB") ? "/hopebank" : "/ohentpay",
-      image:d?.name?.includes("HopePSB") ? <img src={hope} alt="" /> : <img src={Ohentpay} alt="" />,
+      image: d?.name?.includes("HopePSB") ? (
+        <img src={hope} alt="" />
+      ) : (
+        <img src={Ohentpay} alt="" />
+      ),
     }));
   }
-  
+
   function useMarketData() {
-  
     useEffect(() => {
       const fetchMarketData = async () => {
         try {
           const requestOptions = {
-            method: 'GET',
-            redirect: 'follow',
+            method: "GET",
+            redirect: "follow",
           };
-  
-          const response = await fetch("https://apidoc.transferrocket.co.uk//getpayoutprovider", requestOptions);
+
+          const response = await fetch(
+            "https://apidoc.transferrocket.co.uk//getpayoutprovider",
+            requestOptions
+          );
           const data = await response.json();
           setMarket(data?.data);
-          console.log("🚀 ~ file: Marketplace.jsx:22 ~ makeRequest ~ data:", data);
+          console.log(
+            "🚀 ~ file: Marketplace.jsx:22 ~ makeRequest ~ data:",
+            data
+          );
         } catch (error) {
-          console.error('Error fetching market data: ', error);
+          console.error("Error fetching market data: ", error);
         }
       };
-  
+
       fetchMarketData();
     }, []);
-  
+
     return market;
   }
-
-
-
 
   useEffect(() => {
     const updateIsOpen = () => {

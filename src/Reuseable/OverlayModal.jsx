@@ -28,6 +28,7 @@ const Content = styled.div`
     align-items: center;
     height: 100%;
     width: 100%;
+    z-index: 999;
   }
   .header {
     display: flex;

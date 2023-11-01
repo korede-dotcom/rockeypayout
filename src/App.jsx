@@ -30,7 +30,8 @@ import Login from "./Pages/Onboarding/Login";
 import LoginR from "./Pages/Onboarding/LoginR";
 import InActivityTimeOut from "./hooks/InActivityTimeOut";
 import { ProtectedRoute } from "./hooks";
-import "@arco-design/web-react/dist/css/arco.css"
+import "@arco-design/web-react/dist/css/arco.css";
+import Beneficiary from "./Pages/Beneficiary/Beneficairy";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -38,30 +39,38 @@ function App() {
   return (
     <Router>
       <Routes>
-      <Route element={<InActivityTimeOut />}>
-              <Route path='/' element={<LoginR />} />
-                    <Route path='/signup' element={<Login />} />
-        
+        <Route element={<InActivityTimeOut />}>
+          <Route path="/" element={<LoginR />} />
+          <Route path="/signup" element={<Login />} />
+
           {/* Dashboard Routes */}
           <Route element={<ProtectedRoute />}>
-                        <Route path='/overview' element={<Overview />} />
-                        <Route path='/ohentpay' element={<Ohentpay />} />
-                        <Route path='/hopebank' element={<Hopeps />} />
-                        <Route path='/marketplace' element={<Marketplace />} />
-                        <Route path='/transaction' element={<Transactions />} />
-                        <Route path='/security' element={<Settings />} />
-                        <Route path='/security/company' element={<Company />} />
-                        <Route path='/security/change-password' element={<Changepassword />} />
-                        <Route path='/security/change-password' element={<Changepassword />} />
-                        <Route path='/security/API' element={<Details />} />
-                        <Route path='/security/user-management' element={<UserManagement />} />
+            <Route path="/overview" element={<Overview />} />
+            <Route path="/ohentpay" element={<Ohentpay />} />
+            <Route path="/hopebank" element={<Hopeps />} />
+            <Route path="/marketplace" element={<Marketplace />} />
+            <Route path="/transaction" element={<Transactions />} />
+            <Route path="/beneficiary" element={<Beneficiary />} />
+            <Route path="/security" element={<Settings />} />
+            <Route path="/security/company" element={<Company />} />
+            <Route
+              path="/security/change-password"
+              element={<Changepassword />}
+            />
+            <Route
+              path="/security/change-password"
+              element={<Changepassword />}
+            />
+            <Route path="/security/API" element={<Details />} />
+            <Route
+              path="/security/user-management"
+              element={<UserManagement />}
+            />
           </Route>
-           {/* <Route path='*' element={<h1>Error</h1>} /> */}
-
+          {/* <Route path='*' element={<h1>Error</h1>} /> */}
         </Route>
       </Routes>
     </Router>
-
   );
 }
 

@@ -164,7 +164,7 @@ const Beneficiary = () => {
           <TextInput label="Beneficiary Name" />
           <TextInput label="Beneficiary Phonenumber" />
           <TextInput label="Beneficiary Account Number" />
-          <SelectOption title="Bank Details" optionLabel={details} />
+          {/* <SelectOption title="Bank Details" optionLabel={details} /> */}
           <Btn children="ADD BENEFICIARY" />
         </OverlayModal>
       )}
@@ -283,10 +283,11 @@ const TableWraptwo = styled.div`
     border-radius: 100px;
   }
   table {
-    height: 300px;
+    /* height: 300px; */
     border-collapse: collapse;
     width: max-content;
     padding: 20px;
+    width: 100%;
     thead {
       border-top: 1px solid #e9edf5;
       border-bottom: 1px solid #e9edf5;

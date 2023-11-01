@@ -19,8 +19,8 @@ import java from "./assets/Webhooks/java.svg";
 import php from "./assets/Webhooks/php.svg";
 import node from "./assets/Webhooks/node.png";
 import alb from "./assets/alb.png";
-import ngn from './assets/ngn.svg'
-import cc from './assets/languagesImg/c.svg'
+import ngn from "./assets/ngn.svg";
+import cc from "./assets/languagesImg/c.svg";
 //
 
 export const SidebarData = [
@@ -100,6 +100,18 @@ export const SidebarData = [
         title: "User Details",
         path: "/security/user-management",
         image: <img src={market} alt="" />,
+      },
+    ],
+  },
+  {
+    pageName: "Beneficiary",
+    Name: "Beneficiary",
+    path: "/beneficairy",
+    Gateway: [
+      {
+        title: "User Profile",
+        path: "/security",
+        image: <img src={user} alt="" />,
       },
     ],
   },
@@ -262,24 +274,23 @@ export const ApiBody = [
   },
 ];
 
-    // {name: 'C', image: cc},
-    // {name: 'C++', image: cplus},
-    // {name: 'C#', image: csharp},
-    // {name: 'Go', image: gosimg},
-    // {name: 'PHP', image: php},
-    // {name: 'HTTP', image: cc},
-    // {name: 'nodejs', image: node},
-    // {name: 'Javascript', image: jsimg},
-    // {name: 'JSON', image: cc},
-    // {name: 'Kotlin', image: kotlin},
-    // {name: 'Objective-C', image: objectc},
-    // {name: 'PowerShell', image: cc},
-    // {name: 'Python', image: python},
-    // {name: 'R', image: rlang},
-    // {name: 'Swift', image: swift},
-    // {name: 'curl', image: curl},
-    // {name: 'java', image: java},
-
+// {name: 'C', image: cc},
+// {name: 'C++', image: cplus},
+// {name: 'C#', image: csharp},
+// {name: 'Go', image: gosimg},
+// {name: 'PHP', image: php},
+// {name: 'HTTP', image: cc},
+// {name: 'nodejs', image: node},
+// {name: 'Javascript', image: jsimg},
+// {name: 'JSON', image: cc},
+// {name: 'Kotlin', image: kotlin},
+// {name: 'Objective-C', image: objectc},
+// {name: 'PowerShell', image: cc},
+// {name: 'Python', image: python},
+// {name: 'R', image: rlang},
+// {name: 'Swift', image: swift},
+// {name: 'curl', image: curl},
+// {name: 'java', image: java},
 
 export const WebhooksHHead = [
   {
@@ -369,7 +380,7 @@ export const OverviewHeader = [
     name: "ACTIONS",
     // image: <img src={tablearrow} alt="" />,
   },
-]
+];
 export const OhentpayHead = [
   {
     id: 0,
@@ -421,7 +432,7 @@ export const OhentpayHead = [
     name: "ACTIONS",
     // image: <img src={tablearrow} alt="" />,
   },
-]
+];
 export const OverviewBody = [
   {
     trans: "TX19784903",
@@ -436,7 +447,7 @@ export const OverviewBody = [
     amount: "30.00",
     transferfee: 0.0,
     transactiontatus: "Deposited",
-    actions: "view details"
+    actions: "view details",
   },
   {
     trans: "TX19784903",
@@ -451,7 +462,7 @@ export const OverviewBody = [
     amount: "30.00",
     transferfee: 0.0,
     transactiontatus: "cancelled",
-    actions: "view details"
+    actions: "view details",
   },
   {
     trans: "TX19784903",
@@ -466,7 +477,7 @@ export const OverviewBody = [
     amount: "30.00",
     transferfee: 0.0,
     transactiontatus: "Deposited",
-    actions: "view details"
+    actions: "view details",
   },
   {
     trans: "TX19784903",
@@ -481,7 +492,7 @@ export const OverviewBody = [
     amount: "30.00",
     transferfee: 0.0,
     transactiontatus: "Deposited",
-    actions: "view details"
+    actions: "view details",
   },
   {
     trans: "TX19784903",
@@ -496,7 +507,7 @@ export const OverviewBody = [
     amount: "30.00",
     transferfee: 0.0,
     transactiontatus: "Deposited",
-    actions: "view details"
+    actions: "view details",
   },
   {
     trans: "TX19784903",
@@ -511,7 +522,7 @@ export const OverviewBody = [
     amount: "30.00",
     transferfee: 0.0,
     transactiontatus: "cancelled",
-    actions: "view details"
+    actions: "view details",
   },
   {
     trans: "TX19784903",
@@ -526,11 +537,11 @@ export const OverviewBody = [
     amount: "30.00",
     transferfee: 0.0,
     transactiontatus: "cancelled",
-    actions: "view details"
+    actions: "view details",
   },
   {
     trans: "TX19784903",
-     date: "23/09/23  09:11:24",
+    date: "23/09/23  09:11:24",
     img: <img src={Ohentpay} alt="" />,
     gateway: "ohentpay",
     receiver: "AINA JOHNSON",
@@ -541,7 +552,7 @@ export const OverviewBody = [
     amount: "30.00",
     transferfee: 0.0,
     transactiontatus: "Deposited",
-    actions: "view details"
+    actions: "view details",
   },
   {
     trans: "TX19784903",
@@ -556,9 +567,9 @@ export const OverviewBody = [
     amount: "30.00",
     transferfee: 0.0,
     transactiontatus: "Deposited",
-    actions: "view details"
-  }
-]
+    actions: "view details",
+  },
+];
 export const OhentpayBody = [
   {
     trans: "TX19784903",
@@ -571,7 +582,7 @@ export const OhentpayBody = [
     amount: "30.00",
     transferfee: 0.0,
     transactiontatus: "Deposited",
-    actions: "view details"
+    actions: "view details",
   },
   {
     trans: "TX19784903",
@@ -584,7 +595,7 @@ export const OhentpayBody = [
     amount: "30.00",
     transferfee: 0.0,
     transactiontatus: "cancelled",
-    actions: "view details"
+    actions: "view details",
   },
   {
     trans: "TX19784903",
@@ -597,7 +608,7 @@ export const OhentpayBody = [
     amount: "30.00",
     transferfee: 0.0,
     transactiontatus: "Deposited",
-    actions: "view details"
+    actions: "view details",
   },
   {
     trans: "TX19784903",
@@ -610,7 +621,7 @@ export const OhentpayBody = [
     amount: "30.00",
     transferfee: 0.0,
     transactiontatus: "Deposited",
-    actions: "view details"
+    actions: "view details",
   },
   {
     trans: "TX19784903",
@@ -623,7 +634,7 @@ export const OhentpayBody = [
     amount: "30.00",
     transferfee: 0.0,
     transactiontatus: "Deposited",
-    actions: "view details"
+    actions: "view details",
   },
   {
     trans: "TX19784903",
@@ -636,7 +647,7 @@ export const OhentpayBody = [
     amount: "30.00",
     transferfee: 0.0,
     transactiontatus: "cancelled",
-    actions: "view details"
+    actions: "view details",
   },
   {
     trans: "TX19784903",
@@ -649,20 +660,7 @@ export const OhentpayBody = [
     amount: "30.00",
     transferfee: 0.0,
     transactiontatus: "cancelled",
-    actions: "view details"
-  },
-  {
-    trans: "TX19784903",
-     date: "23/09/23  09:11:24",
-    receiver: "AINA JOHNSON",
-    bank: "Access Bank",
-    accNo: "0012345678",
-    flag: <img src={ngn} alt="" />,
-    currency: "NGN",
-    amount: "30.00",
-    transferfee: 0.0,
-    transactiontatus: "Deposited",
-    actions: "view details"
+    actions: "view details",
   },
   {
     trans: "TX19784903",
@@ -675,9 +673,22 @@ export const OhentpayBody = [
     amount: "30.00",
     transferfee: 0.0,
     transactiontatus: "Deposited",
-    actions: "view details"
-  }
-]
+    actions: "view details",
+  },
+  {
+    trans: "TX19784903",
+    date: "23/09/23  09:11:24",
+    receiver: "AINA JOHNSON",
+    bank: "Access Bank",
+    accNo: "0012345678",
+    flag: <img src={ngn} alt="" />,
+    currency: "NGN",
+    amount: "30.00",
+    transferfee: 0.0,
+    transactiontatus: "Deposited",
+    actions: "view details",
+  },
+];
 export const WebhooksBody = [
   {
     text: `var client = new HttpClient()
@@ -686,7 +697,7 @@ export const WebhooksBody = [
     response.EnsureSuccessStatusCode()
     Console.WriteLine(await response.Content.ReadAsStringAsync())
     `,
-    id:1
+    id: 1,
   },
   {
     text: `v url := "http://93.114.128.117:8585/bcon/getcurrencytype"
@@ -714,19 +725,19 @@ export const WebhooksBody = [
     }
     fmt.Println(string(body))
     `,
-    id:2
+    id: 2,
   },
   {
     text: `GET /bcon/getcurrencytype HTTP/1.1
     Host: 93.114.128.117:8585
     `,
-    id:3
+    id: 3,
   },
   {
     text: `GET /bcon/getcurrencytype HTTP/1.1
     Host: 93.114.128.117:8585
     `,
-    id:4
+    id: 4,
   },
   {
     text: `var requestOptions = {
@@ -739,7 +750,7 @@ export const WebhooksBody = [
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
     `,
-    id:5
+    id: 5,
   },
   {
     text: `var requestOptions = {
@@ -752,7 +763,7 @@ export const WebhooksBody = [
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
     `,
-    id:5
+    id: 5,
   },
   {
     text: `var requestOptions = {
@@ -765,7 +776,7 @@ export const WebhooksBody = [
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
     `,
-    id:6
+    id: 6,
   },
   // {
   //   text: "fetch  httpsjsonplaceholdertypicodecomusersthenesponsereturnrespsejsonthenusersconsoleogusers",
@@ -1168,7 +1179,8 @@ export const marketplaces = [
     logo: Ohentpay,
     name: "Ohentpay",
     company: "[Providus]",
-    word: "A short description about the header goes here. A short description about the header goes here.",
+    word:
+      "A short description about the header goes here. A short description about the header goes here.",
     subscribe: "Subscribe",
     subscribeStatus: "false",
   },
@@ -1176,7 +1188,8 @@ export const marketplaces = [
     logo: hope,
     name: "Hope PS Bank",
     company: "[Payarena]",
-    word: "A short description about the header goes here. A short description about the header goes here.",
+    word:
+      "A short description about the header goes here. A short description about the header goes here.",
     subscribe: "Subscribe",
     subscribeStatus: "true",
   },
@@ -1184,7 +1197,8 @@ export const marketplaces = [
     logo: "",
     name: "PayU",
     company: "[Zenith]",
-    word: "A short description about the header goes here. A short description about the header goes here.",
+    word:
+      "A short description about the header goes here. A short description about the header goes here.",
     subscribe: "Subscribe",
     subscribeStatus: "true",
   },
@@ -1192,7 +1206,8 @@ export const marketplaces = [
     logo: Ohentpay,
     name: "Ohentpay",
     company: "[Providus]",
-    word: "A short description about the header goes here. A short description about the header goes here.",
+    word:
+      "A short description about the header goes here. A short description about the header goes here.",
     subscribe: "Subscribe",
     subscribeStatus: "true",
   },
@@ -1200,7 +1215,8 @@ export const marketplaces = [
     logo: hope,
     name: "Hope PS Bank",
     company: "[Payarena]",
-    word: "A short description about the header goes here. A short description about the header goes here.",
+    word:
+      "A short description about the header goes here. A short description about the header goes here.",
     subscribe: "Subscribe",
     subscribeStatus: "true",
   },
@@ -1208,7 +1224,8 @@ export const marketplaces = [
     logo: "",
     name: "PayU",
     company: "[Zenith]",
-    word: "A short description about the header goes here. A short description about the header goes here.",
+    word:
+      "A short description about the header goes here. A short description about the header goes here.",
     subscribe: "Subscribe",
     subscribeStatus: "true",
   },
@@ -1216,7 +1233,8 @@ export const marketplaces = [
     logo: Ohentpay,
     name: "Ohentpay",
     company: "[HSBC]",
-    word: "A short description about the header goes here. A short description about the header goes here.",
+    word:
+      "A short description about the header goes here. A short description about the header goes here.",
     subscribe: "Subscribe",
     subscribeStatus: "true",
   },
@@ -1224,7 +1242,8 @@ export const marketplaces = [
     logo: hope,
     name: "Hope PS Bank",
     company: "[Payarena]",
-    word: "A short description about the header goes here. A short description about the header goes here.",
+    word:
+      "A short description about the header goes here. A short description about the header goes here.",
     subscribe: "Subscribe",
     subscribeStatus: "true",
   },
@@ -1232,7 +1251,8 @@ export const marketplaces = [
     logo: "",
     name: "Ohentpay",
     company: "[Providus]",
-    word: "A short description about the header goes here. A short description about the header goes here.",
+    word:
+      "A short description about the header goes here. A short description about the header goes here.",
     subscribe: "Subscribe",
     subscribeStatus: "true",
   },

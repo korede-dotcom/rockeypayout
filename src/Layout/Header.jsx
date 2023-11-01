@@ -29,10 +29,14 @@ const Header = ({ setPropsPassed, SelectedCategory }) => {
       name: "Security",
       path: "/security",
     },
+    {
+      id: 3,
+      name: "Beneficairy",
+      path: "/beneficiary",
+    },
   ];
   const [headtab, setHeadTab] = useState(0);
   const [showProfile, setShowProfile] = useState(false);
-
 
   const handleTabClick = (name, path) => {
     setHeadTab(headerTab.find((tab) => tab.name === name).id);
@@ -120,7 +124,7 @@ const HeaderContainer = styled.header`
   align-items: center;
   justify-content: space-between;
   padding: 0 15px 0 10px;
-  
+
   background: #fff;
   .left {
     display: flex;

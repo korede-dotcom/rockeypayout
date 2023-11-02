@@ -343,7 +343,7 @@ const LoginCotainer = styled.div`
 
         .side1{
             width: 50%;
-            height: 100%;
+            height: 100vh;
             background: var(--Primary-Colour, #00A85A);
         }
         .side2{

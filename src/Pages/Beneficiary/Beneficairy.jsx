@@ -173,10 +173,9 @@ const Beneficiary = () => {
           <div className="head">
             <div className="logs">
               <div>
-                <h1>Transaction Log</h1>
+                <h1>Beneficiaries</h1>
                 <p>
-                  This overview provides a comprehensive snapshot of wallet
-                  transactions on your system
+                 List of Beneficiaries
                 </p>
               </div>
               <div>

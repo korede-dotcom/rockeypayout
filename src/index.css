@@ -75,7 +75,7 @@ main{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
-  --small-color-font: var(--gray-500, #667085);
+  --small-color-font: var(--gray-500, #f0f2f7);
   --primary-color: var(--Primary-Colour, #00A85A);
 
 

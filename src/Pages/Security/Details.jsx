@@ -334,6 +334,14 @@ const Details = () => {
       ]
     }
     `,
+    code2res:`
+    {
+      "transactionRef": "SUCCESS",
+      "status": true,
+      "message": "Wallet funding request succesfully created.",
+      "data": ""
+    }
+    `,
     code1res:`
     {
       "transactionRef": "Currency recieved",

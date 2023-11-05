@@ -24,6 +24,7 @@ import ngn from "../../assets/ngn.svg";
 import { Dropdown } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 import opt from "../../assets/opt.svg";
+import TransactionList from '../../reuseables/Tranx';
 
 
 const Hopeps = () => {
@@ -212,84 +213,8 @@ const Hopeps = () => {
             <CardContainer>
                 <Card cardbody={cardbody2} figure={figure2} padding="0 0 0 10px" width="max-content" />
             </CardContainer>
-            <Box  width="100%" border="none" radius="15px" flexDirection="column" padding="30px 0 40px 0">
-              <FlexItems text="Transactions" />
-                {/* <Reusetable theads={TheadHeader} tbodies={TheadBody} /> */}
-                <TableWraptwo>
-            <table>
-              <thead>
-                <tr>
-                  {OhentpayHead.map((m, i) => (
-                    <th key={i}>
-                      <span>
-                        {m.name}
-                        {m.image}
-                      </span>
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {data?.data?.map((mb, i) => {
-                  return (
-                    <tr key={i}>
-                      <td>{mb.id}</td>
-                      <td>{mb.dateCreated}</td>
-                      <td>{mb.amountApproved}</td>
-                      <td>{mb.balanceBeforeRequest}</td>
-                      <td>{mb.amountRequested}</td>
-                      <td className="currency">
-                        {mb.flag}
-                        <span> {mb?.userWallet?.country?.name}</span>
-                      </td>
-                      <td>{mb.userWallet.balance}</td>
-                      {/* <td className="receiver">{mb.receiver}</td> */}
-                      <td>{mb.userWallet.name}</td>
-                      <td>
-                      {mb.status ===  "Pending" ? (
-                        <span className="depo">
-                          <img src={gb} alt="" />{mb.status}
-                          </span>
-                      ) : (
-                        <span className="cancel"><img src={rb} alt="" />{mb.status}</span>
-                      )}
-                      </td>
-                      {/* <Dropdown
-                      title={<img src={opt} height="20px" />}
-                      >
-                        <Dropdown.Item
-                         
            
-                        >
-                          Activate User
-                        </Dropdown.Item>
-
-                        <Dropdown.Item
-                         
-                          
-                        >
-                          De-activate User
-                        </Dropdown.Item>
-                        <Dropdown.Item
-                         
-                        >
-                          Re-activate User
-                        </Dropdown.Item>
-                      </Dropdown> */}
-                      {/* <td>{mb.actions}</td>
-                       {mb.status ===  "Pending" ? (
-                          <span className="cancel" style={{background:"#FEF3F2",padding:"2px 10px",borderRadius:"10px",color:"red"}}>
-                            <img src={rb} alt="" /><small>cancel</small>
-                            </span>
-                      ) : ""
-                      } */}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </TableWraptwo>
-            </Box>
+                  <TransactionList/>
         </HopepsBox>
     </Layout>
   )

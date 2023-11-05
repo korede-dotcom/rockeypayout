@@ -1,10 +1,173 @@
-import React from "react";
+import React,{useState,useEffect,useRef} from "react";
 import styled from "styled-components";
 import File from "../../../Reuseable/Inputs/File";
+import ReusableModal from "../../../reuseables/ReusableModal";
+import Btn from "../../../reuseables/Btn";
 
 const Documnets = () => {
+  const [getUser,setUser] = useState()
+  const [show,setShow] = useState(false)
+  const [show2,setShow2] = useState(false)
+  const [getUserFiles,setUserFiles] = useState(null)
+  const [cimage,setcimage] = useState(null)
+  const [getc,setc] = useState(null)
+  console.log("🚀 ~ file: File.jsx:12 ~ File ~ getUser:", getUserFiles)
+useEffect(() => {
+
+setUser(JSON.parse(localStorage.getItem("userDetails")))
+},[])
+
+useEffect(() => {
+
+  setUserFiles([
+    {img: getUser?.data?.formCo7URL,id:1,name:"formCo7URL"},
+    { img: getUser?.data?.formCo2URL,id:2,name:"formCo2URL"},
+    {img: getUser?.data?.idURL,id:3,name:"idURL"},
+    {img: getUser?.data?.companyCertificateURL,id:4,name:"companyCertificateURL"},
+    {img: getUser?.data?.articlesAndMemorandumOfAssociation,id:5,name:"articlesAndMemorandumOfAssociation"},
+    {img: getUser?.data?.utilityBill,id:6,name:"utilityBill"},
+  ])
+  
+}, [getUser])
+
+
+const handleView = id => {
+ console.log("🚀 ~ file: Documnets.jsx:31 ~ handleView ~ id:", id)
+ const n = getUserFiles?.filter(d => {
+  if (id === d?.id) {
+    return d
+  }
+ })
+ setcimage(n[0].img)
+ setc({name:n[0].name,id:id})
+ console.log("🚀 ~ file: Documnets.jsx:37 ~ n ~ n:", cimage)
+ setShow(true)
+}
+const [selectedFile, setSelectedFile] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
+  const [editable, setEditable] = useState(null);
+  const fileInputRef = useRef(null);
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setSelectedFile(file);
+
+    // Create a temporary URL for the selected file
+    const fileURL = URL.createObjectURL(file);
+    setPreviewImage(fileURL); // Set the temporary URL to the state
+  };
+
+  const handleFileSelectClick = () => {
+    fileInputRef.current.click(); // Trigger click on the hidden file input
+  };
+
+  const hadleClose = () => {
+    setShow(!show)
+    setPreviewImage(null)
+    setSelectedFile(null)
+  }
+  const hadleClose2 = () => {
+    setShow2(!show2)
+    setPreviewImage(null)
+    setSelectedFile(null)
+  }
+
+  const handleFileInputChange = async () => {
+
+    var formdata = new FormData();
+    formdata.append("file", selectedFile);
+    console.log("🚀 ~ file: Documnets.jsx:72 ~ handleFileInputChange ~ selectedFile:", selectedFile)
+    
+    var requestOptions = {
+      method: 'POST',
+      body: formdata,
+      redirect: 'follow'
+    };
+    
+   const response = await fetch("https://apidoc.transferrocket.co.uk//FileUploadAPI", requestOptions)
+    const responseData = await response.json()
+    console.log("🚀 ~ file: Login.jsx:98 ~ handleFileInputChange ~ responseData:", responseData)
+
+
+
+   
+  };
+const handleEdit = (id) => {
+  const n = getUserFiles?.filter(d => {
+   if (id === d?.id) {
+     return d
+   }
+  })
+  // setcimage(n[0].img)
+  setPreviewImage(n[0].img)
+  setEditable(true)
+  setShow2(!show)
+
+}
   return (
     <DocumentsBox>
+      { show &&
+      <ReusableModal customStyle={{height:"450px"}} isOpen={show} onClose={hadleClose} >
+      {
+        cimage?.toString()?.includes("https") ? (
+          <img src={cimage && cimage} height="100%"/>
+
+        ) : (
+          <div style={{display:"flex",flexDirection:"column",gap:"10px"}}>
+          <p>Upload a File</p>
+          {selectedFile && <p>Selected File: {selectedFile.name}</p>}
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            style={{ display: 'none' }} // Hide the file input
+            />
+
+              <File value={"https://res.cloudinary.com/"}  name={"Upload your file"} noTags={true} handleView={handleFileSelectClick}/>
+              <br/>
+            {previewImage &&   <img src={previewImage} alt="Selected" height="250px" />}
+        </div>
+        )
+      }
+      <br/>
+      {
+     
+        previewImage && <Btn width={"100%"} clicking={handleFileInputChange}>Upload your File</Btn>
+      }
+      </ReusableModal>
+
+      }
+      { show2 &&
+      <ReusableModal customStyle={{height:"450px"}} isOpen={show2} onClose={hadleClose2} >
+      {/* {
+        cimage?.toString()?.includes("https") ? (
+          <img src={cimage && cimage} height="100%"/>
+
+        ) : ( */}
+          <div style={{display:"flex",flexDirection:"column",gap:"10px"}}>
+          <p>Edit your File</p>
+          {selectedFile && <p>Selected File: {selectedFile.name}</p>}
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            style={{ display: 'none' }} // Hide the file input
+            />
+
+              <File value={"https://res.cloudinary.com/"}  name={"Upload your file"} noTags={true} handleView={handleFileSelectClick}/>
+              <br/>
+            {previewImage &&   <img src={previewImage} alt="Selected" height="250px" />}
+        </div>
+        {/* ) */}
+      {/* } */}
+      <br/>
+      {
+     
+       ( previewImage && selectedFile) && <Btn width={"100%"} clicking={handleFileInputChange}>set your new File</Btn>
+      }
+      </ReusableModal>
+
+      }
       
       <div className="head">
         <h1>ID Document</h1>
@@ -17,72 +180,28 @@ const Documnets = () => {
           border: ".7px solid #EAECF0",
         }}
       />
-      <InputWrapBox>
-        <p>Form Co2</p>
-        <File name="Form Co2" />
-      </InputWrapBox>
-      <hr
-        style={{
-          width: "100%",
-          margin: "15px 0",
-          border: ".7px solid #EAECF0",
-        }}
-      />
-      <InputWrapBox>
-        <p>Form Co7</p>
-        <File name="Form Co7" />
-      </InputWrapBox>
-      <hr
-        style={{
-          width: "100%",
-          margin: "15px 0",
-          border: ".7px solid #EAECF0",
-        }}
-      />
-      <InputWrapBox>
-        <p>Company Certification</p>
-        <File name="Company Certification" />
-      </InputWrapBox>
-      <hr
-        style={{
-          width: "100%",
-          margin: "15px 0",
-          border: ".7px solid #EAECF0",
-        }}
-      />
-      <InputWrapBox>
-        <p>Memorandum of Association</p>
-        <File name="Memorandum of Association" />
-      </InputWrapBox>
-      <hr
-        style={{
-          width: "100%",
-          margin: "15px 0",
-          border: ".7px solid #EAECF0",
-        }}
-      />
-      <InputWrapBox>
-        <p>Article of Association</p>
-        <File name="Article of Association" />
-      </InputWrapBox>
-      <hr
-        style={{
-          width: "100%",
-          margin: "15px 0",
-          border: ".7px solid #EAECF0",
-        }}
-      />
-      <InputWrapBox>
-        <p>Utility Bill</p>
-        <File name="Utility Bill" />
-      </InputWrapBox>
-      <hr
-        style={{
-          width: "100%",
-          margin: "15px 0",
-          border: ".7px solid #EAECF0",
-        }}
-      />
+      {
+        getUserFiles && getUserFiles?.map(d => {
+          return (
+            <>
+            <InputWrapBox>
+              <p>{d?.name}</p>
+              <File value={d?.img} name={d?.name} handleView={() => handleView(d?.id)} handleEdit={() =>handleEdit(d?.id)} />
+            </InputWrapBox>
+            <hr
+              style={{
+                width: "100%",
+                margin: "15px 0",
+                border: ".7px solid #EAECF0",
+              }}
+            />
+            
+            </>
+
+          )
+        })
+      }
+   
             <EndBtn>
         <div className="btns">
           <p className="cancel">Cancel</p>

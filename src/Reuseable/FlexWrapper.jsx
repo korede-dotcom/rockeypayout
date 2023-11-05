@@ -198,7 +198,7 @@ const FlexWrapper = ({
                 >
                   {info && (<p style={{color:"green"}}>{info}</p>)}
                   <ModalInner>
-                    <TextInput label="Amount" name="amountRequested" placeholder="200" change={handlechange}/>
+                    <TextInput label="Amount" name="amountRequested" placeholder="input amount" change={handlechange}/>
                     <Textarea
                       width="100%"
                       placeholder="Type a narration..."
@@ -306,7 +306,9 @@ const FlexWrapperBox = styled.div`
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: space-around;
+      /* gap: 30px; */
+      min-width:150px;
       padding: 10px;
       border-radius: 8px;
       background: #fff;

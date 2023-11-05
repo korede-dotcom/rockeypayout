@@ -13,6 +13,10 @@ const Header = ({ setPropsPassed, SelectedCategory }) => {
   const [live, setLive] = useState(false);
   const { pathname } = useLocation();
   const Navigate = useNavigate();
+  useEffect(() => {
+  
+  }, [])
+  
   const headerTab = [
     {
       id: 0,

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+import React, { useState,height } from 'react';
 
 // CSS styles for the modal
 const modalStyles = {
@@ -43,7 +43,7 @@ const modalStyles = {
   }
 };
 
-function ReusableModal({ isOpen, onClose, children }) {
+function ReusableModal({ isOpen, onClose, children, customStyle }) {
   if (!isOpen) return null;
 
   return (
@@ -51,11 +51,11 @@ function ReusableModal({ isOpen, onClose, children }) {
       <div style={modalStyles.modal}>
         <span
           onClick={onClose}
-          style={modalStyles.closeButton}
+          style={ modalStyles.closeButton}
         >
           &#x2715;
         </span >
-        <div style={modalStyles.span}>
+        <div style={customStyle ||modalStyles.span}>
 
         {children}
         </div>

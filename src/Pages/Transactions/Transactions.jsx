@@ -8,6 +8,7 @@ import { TheadBody, TheadHeader } from "../../Mapables";
 import { OhentpayHead, OhentpayBody } from "../../Mapables";
 import tablearrow from "../../assets/tablearrow.svg";
 //
+import Trnx from "../../reuseables/Tranx"
 import gb from "../../assets/gb.svg";
 import rb from "../../assets/rb.svg";
 import Loader from "../../Reuseable/Loader";
@@ -101,87 +102,8 @@ const Transactions = () => {
   return (
     <Layout>
       {loading && <Loader/>}
-      <TransactionsBox>
-        <div className="head">
-          <h1>Transaction Log</h1>
-          <p>
-            This overview provides a comprehensive snapshot of wallet
-            transactions on your system
-          </p>
-          <Box
-            alignItems="flex-start"
-            margin="20px 0"
-            width="100%"
-            border="none"
-            radius="15px"
-            padding="25px 0 20px 0"
-            flexDirection="column"
-          >
-            <Search margin="10px 0 30px 20px" />
-            {/* <Reusetable theads={TheadHeader} tbodies={TheadBody} /> */}
-            <TableWraptwo>
-              <table>
-                <thead>
-                  <tr>
-                    {OverviewHeaders.map((m, i) => (
-                      <th key={i}>
-                        <span>
-                          {m.name}
-                          {m.image}
-                        </span>
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {trx?.map((mb, i) => {
-                    return (
-                      <tr key={i}>
-                         <td>{mb?.id}</td>
-                      <td>{mb?.Amount}</td>
-                      <td>{mb?.payoutclientid}</td>
-                      <td>{mb?.transferFee}</td>
-                      <td>{mb?.beneficiary?.beneficiaryName}</td>
-                      <td>{mb?.beneficiary?.beneficiaryPhoneNumber}</td>
-                      <td>{mb?.beneficiary?.beneficiaryBank?.bankName}</td>
-                      <td>{mb?.payOutProvider?.name}</td>
-                      <td>{mb?.status}</td>
-                      <td>{mb?.dateCreated}</td>
-                        {/* <td>{mb.trans}</td>
-                        <td>{mb.date}</td>
-                        <td>{mb.receiver}</td>
-                        <td>{mb.bank}</td>
-                        <td>{mb.accNo}</td>
-                        <td className="currency">
-                          {mb.flag}
-                          <span> {mb.currency}</span>
-                        </td>
-                        <td>{mb.amount}</td> */}
-                        {/* <td className="receiver">{mb.receiver}</td> */}
-                        {/* <td>{mb.transferfee}</td>
-                        <td>
-                          {mb.transactiontatus === "Deposited" ? (
-                            <span className="depo">
-                              <img src={gb} alt="" />
-                              {mb.transactiontatus}
-                            </span>
-                          ) : (
-                            <span className="cancel">
-                              <img src={rb} alt="" />
-                              {mb.transactiontatus}
-                            </span>
-                          )}
-                        </td>
-                        <td>{mb.actions}</td> */}
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </TableWraptwo>
-          </Box>
-        </div>
-      </TransactionsBox>
+      <Trnx/>
+   
     </Layout>
   );
 };

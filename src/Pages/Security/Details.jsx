@@ -844,7 +844,7 @@ const newData =getUser?.data?.clientApps?.map((item, index) => {
               <div style={{display:"flex",justifyContent:"space-between",textAlign:"center"}}>
               <h3>Application Tokens</h3>
               <div className="btn" onClick={() => setMo2(!mod2)}>
-                <Button>Create App</Button>
+                  <p style={{fontSize:"15px",backgroundColor:"#00a85a",padding:"9px 30px",color:"#fff",borderRadius:"8px"}}>Create App</p>
 
               </div>
 

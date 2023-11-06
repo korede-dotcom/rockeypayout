@@ -84,10 +84,10 @@ const Overview = () => {
   ];
 
    const figures = [
-    { number: formatter.format(sorted?.totalAmount) },
-    { number: formatter.format(sorted?.successfulAmount) },
-    { number: formatter.format(sorted?.pendingAmount)},
-    { number: formatter.format(sorted?.cancelledAmount) },
+    { number: formatter.format(sorted?.totalAmount || 0) || 0 },
+    { number: formatter.format(sorted?.successfulAmount || 0) || 0},
+    { number: formatter.format(sorted?.pendingAmount || 0) || 0},
+    { number: formatter.format(sorted?.cancelledAmount || 0) || 0},
   ];
   useEffect(() => {
     setuserDetails(JSON.parse(localStorage.getItem("userDetails")))

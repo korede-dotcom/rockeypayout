@@ -43,6 +43,32 @@ const Hopeps = () => {
   });
 
 
+//   useEffect(() => {
+//     const userId = JSON?.parse(localStorage.getItem("userDetails"))
+//   const fetchData = async () => {
+//     try {
+//       const requestOptions = {
+//         method: 'GET',
+//         redirect: 'follow'
+//       };
+
+//       const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userId?.data?.userId}`, requestOptions);
+//       const result = await response.json();
+      
+//       // Set the fetched data to state
+    
+//       localStorage.setItem("userDetails",JSON.stringify(result))
+//       console.log("Fetched data:", result);
+//     } catch (error) {
+//       console.error("Error fetching data:", error);
+//       // Handle errors here
+//     }
+//   };
+
+//   // Call the fetch function
+//   fetchData();
+// }, []);
+
 
   const OhentpayHead = [
     {

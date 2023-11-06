@@ -22,12 +22,12 @@ setUser(JSON.parse(localStorage.getItem("userDetails")))
 useEffect(() => {
 
   setUserFiles([
-    {img: getUser?.data?.formCo7URL,id:1,name:"formCo7URL"},
+    {img: getUser?.data?.formCo7URL,id:1,name:"formco7"},
     { img: getUser?.data?.formCo2URL,id:2,name:"formco2"},
-    {img: getUser?.data?.idURL,id:3,name:"idURL"},
-    {img: getUser?.data?.companyCertificateURL,id:4,name:"companyCertificateURL"},
-    {img: getUser?.data?.articlesAndMemorandumOfAssociation,id:5,name:"articlesAndMemorandumOfAssociation"},
-    {img: getUser?.data?.utilityBill,id:6,name:"utilityBill"},
+    {img: getUser?.data?.idURL,id:3,name:"idurl"},
+    {img: getUser?.data?.companyCertificateURL,id:4,name:"registationcertificateurl"},
+    {img: getUser?.data?.articlesAndMemorandumOfAssociation,id:5,name:"articleandmemorandumofassociation"},
+    {img: getUser?.data?.utilityBill,id:6,name:"utilitybill"},
   ])
   
 }, [getUser])

@@ -37,6 +37,7 @@ const Overview = () => {
   const [data2, setData2] = useState(null);
   const [trx, settrx] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [userDetails, setuserDetails] = useState(null);
 
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -88,7 +89,9 @@ const Overview = () => {
     { number: formatter.format(sorted?.pendingAmount)},
     { number: formatter.format(sorted?.cancelledAmount) },
   ];
-
+  useEffect(() => {
+    setuserDetails(JSON.parse(localStorage.getItem("userDetails")))
+  },[])
   useEffect(() => {
 
     setLoading(true)
@@ -338,6 +341,7 @@ const Overview = () => {
                   //   objectId: item?.id,
                   //   action: 1,
                   // });
+                  handlePayoutUpdate(1,item?.id,userDetails?.userId)
                 }}
                 style={{
                   padding: "10px",
@@ -387,6 +391,7 @@ const Overview = () => {
                   //   objectId: item?.id,
                   //   action: 0,
                   // });
+                  handlePayoutUpdate(0,item?.id,userDetails?.userId)
                 }}
               >
                 <svg
@@ -439,6 +444,30 @@ const Overview = () => {
       ),
     };
   });
+
+  const handlePayoutUpdate = async (action,id,user) => {
+    // var raw = "{\n    \"updatedBy\" : 0,\n    \"objectId\" :78053836,\n    \"action\" :1\n}";
+
+var requestOptions = {
+  method: 'POST',
+  body: JSON.stringify({
+    updatedBy:parseInt(user),
+    objectId:parseInt(id),
+    action:parseInt(action)
+  }),
+  redirect: 'follow'
+};
+
+const response = await fetch("https://apidoc.transferrocket.co.uk//processwalletfundingrequest", requestOptions)
+const data = await response.json()
+  console.log("🚀 ~ file: Overview.jsx:458 ~ handlePayoutUpdate ~ data:", data)
+  
+  if (data?.status) {
+    window.location.reload()
+  }
+
+
+  }
 
   return (
     <Layout>

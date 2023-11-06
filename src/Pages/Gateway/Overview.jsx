@@ -334,7 +334,7 @@ const Overview = () => {
               }}
               className="absolute border border-gray-200 rounded-lg text-left left-0 top-[160%] bg-white z-10"
             >
-              <div
+              {/* <div
                 onClick={() => {
                   // mutate({
                   //   updatedBy: userDetails?.userId,
@@ -376,7 +376,7 @@ const Overview = () => {
                   </defs>
                 </svg>
                 Approve
-              </div>
+              </div> */}
               <div
                 style={{
                   padding: "10px",

@@ -135,7 +135,7 @@ const FlexWrapper = ({
           </div>
           {show && (
             <div className="smallModal">
-              <div
+              {/* <div
                 className="bx"
                 onClick={() => {
                   setPayout(true);
@@ -143,7 +143,7 @@ const FlexWrapper = ({
               >
                 <img src={add} alt="" />
                 <span>Payout to client</span>
-              </div>
+              </div> */}
 
               {/*  */}
 

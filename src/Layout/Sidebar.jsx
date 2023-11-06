@@ -96,6 +96,11 @@ const Sidebar = ({ selectedCategory }) => {
       Name: "Beneficiary",
       path: "/beneficairy",
     },
+    {
+      pageName: "Logout",
+      Name: "Logout",
+      path: "/",
+    },
   ];
 
   function generateGatewayItems() {
@@ -221,6 +226,10 @@ const Sidebar = ({ selectedCategory }) => {
             </div>
           </nav>
         ))}
+      </div>
+      <div style={{display:"flex",paddingInline:"40px",paddingBlock:"20px"}}>
+        {/* <p style={{backgroundColor:"red",color:"#fff"}}>Logout</p> */}
+
       </div>
       {/* <button onClick={toggle}>click</button> */}
     </SidebarContainer>

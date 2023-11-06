@@ -41,7 +41,7 @@ const Content = styled.div`
     max-width: 600px;
     width: 100%;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 20px;
   }
   .top {
     display: flex;

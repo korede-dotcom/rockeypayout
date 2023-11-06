@@ -69,7 +69,7 @@ const Beneficiary = () => {
         );
         const result = await response.json();
 
-        console.log("Fetched data:", JSON.stringify(result));
+        console.log("banks", JSON.stringify(result));
       } catch (error) {
         console.error("Error fetching data:", error);
         // Handle errors here
@@ -206,6 +206,7 @@ const Beneficiary = () => {
   ];
 
   const [active, setActive] = useState();
+  const [show, setshow] = useState(false);
 
   const flattenedArray = beneficiaryDetails?.map(item => {
     return {
@@ -389,20 +390,24 @@ const Beneficiary = () => {
 
   return (
     <>
-      {newBeneficiary && (
-        <OverlayModal
+      {show && (
+        <OverlayModal 
           title="Add New Beneficiary"
-          onClick={() => setNewBeneficiary(false)}
+          onClick={() => setshow(!show)}
         >
           <TextInput label="Beneficiary Name" />
           <TextInput label="Beneficiary Phonenumber" />
           <TextInput label="Beneficiary Account Number" />
           {/* <SelectOption title="Bank Details" optionLabel={details} /> */}
-          <Btn children="ADD BENEFICIARY" />
+          <Btn children="ADD BENEFICIARY"  />
         </OverlayModal>
       )}
       <Layout>
       <Content>
+        <div style={{display:"flex",justifyContent:"flex-end"}}>
+        <Btn children="add Beneficiary" clicking={() => setshow(!show)} />
+          
+        </div>
         <div className="tablecontent">
         <div className="content">
           <div className="heading">Beneficairy Lists </div>

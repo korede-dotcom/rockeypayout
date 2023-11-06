@@ -11,7 +11,9 @@ const Documnets = () => {
   const [getUserFiles,setUserFiles] = useState(null)
   const [cimage,setcimage] = useState(null)
   const [getc,setc] = useState(null)
-  console.log("🚀 ~ file: File.jsx:12 ~ File ~ getUser:", getUserFiles)
+  const [info,setInfo] = useState("")
+  const [loading,setLoading] = useState(false)
+  console.log("🚀 ~ file: File.jsx:12 ~ File ~ getUser:", getUser)
 useEffect(() => {
 
 setUser(JSON.parse(localStorage.getItem("userDetails")))
@@ -72,8 +74,37 @@ const [selectedFile, setSelectedFile] = useState(null);
     setSelectedFile(null)
   }
 
-  const handleFileInputChange = async () => {
+  const editAndDelete = async (data) => {
+       
+    var requestOptions = {
+      method: 'POST',
+      body: JSON.stringify(
+        {
+          "objectId" : data.userId,
+          "action" : data.action, //0 to update 1, to delete. 
+          "fileName" : data.fileName,  //formco2, formco7, registationcertificateurl, idurl, utilitybill, articleandmemorandumofassociation
+          "fileURL": data.fileURL
+      }
+      ),
+      redirect: 'follow'
+    };
+    
+   const response = await fetch("https://apidoc.transferrocket.co.uk//updatepayoutclientfile", requestOptions)
+    const responseData = await response.json();
+    console.log("🚀 ~ file: Documnets.jsx:92 ~ editAndDelete ~ responseData:", responseData)
+    if (responseData?.status) {
+      window.location.reload()
+    }else{
+      setLoading(false)
+      setInfo(responseData.message)
+      setTimeout(() => {
+        setInfo("")
+      },2000)
+    }
+  }
 
+  const handleFileInputChange = async (name) => {
+    setLoading(true)
     var formdata = new FormData();
     formdata.append("file", selectedFile);
     console.log("🚀 ~ file: Documnets.jsx:72 ~ handleFileInputChange ~ selectedFile:", selectedFile)
@@ -84,13 +115,19 @@ const [selectedFile, setSelectedFile] = useState(null);
       redirect: 'follow'
     };
     
-   const response = await fetch("https://apidoc.transferrocket.co.uk//FileUploadAPI", requestOptions)
-    const responseData = await response.json()
-    console.log("🚀 ~ file: Login.jsx:98 ~ handleFileInputChange ~ responseData:", responseData)
+   const response = await fetch(`https://apidoc.transferrocket.co.uk//FileUploadAPI/${getUser?.data?.userId}`, requestOptions)
+    const responseData = await response.json();
+    console.log("🚀 ~ file: Documnets.jsx:108 ~ handleFileInputChange ~ responseData:", responseData)
+    const data = {
+      userId:getUser?.data?.userId,
+      action:0,
+      fileName:getc?.name,
+      fileURL:responseData?.secure_url
+    }
+    await editAndDelete(data)
+    setLoading(false)
+ 
 
-
-
-   
   };
 const handleEdit = (id) => {
   const n = getUserFiles?.filter(d => {
@@ -114,6 +151,7 @@ const handleEdit = (id) => {
 
         ) : (
           <div style={{display:"flex",flexDirection:"column",gap:"10px"}}>
+            <p>{info}</p>
           <p>Upload a File</p>
           {selectedFile && <p>Selected File: {selectedFile.name}</p>}
           <input
@@ -132,7 +170,7 @@ const handleEdit = (id) => {
       <br/>
       {
      
-        previewImage && <Btn width={"100%"} clicking={handleFileInputChange}>Upload your File</Btn>
+        previewImage && <Btn width={"100%"} clicking={ () => handleFileInputChange(selectedFile.name)}>Upload your File</Btn>
       }
       </ReusableModal>
 
@@ -163,7 +201,7 @@ const handleEdit = (id) => {
       <br/>
       {
      
-       ( previewImage && selectedFile) && <Btn width={"100%"} clicking={handleFileInputChange}>set your new File</Btn>
+       ( previewImage && selectedFile) && <Btn width={"100%"} clicking={handleFileInputChange}>{loading ? "loading ...." : "set your new File"}</Btn>
       }
       </ReusableModal>
 

@@ -21,13 +21,14 @@ const TextInputWrapper = styled.div`
   margin: 7.5px 0;
   label {
     color: #344054;
-    font-size: 12px;
+    font-size: 15px;
     font-weight: 400;
     line-height: 20px;
   }
   input {
     outline: none;
     width: 100%;
+    line-height: 2;
     padding: 10px 5px;
     border-radius: 8px;
     border: 1px solid #d0d5dd;

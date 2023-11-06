@@ -71,7 +71,8 @@ const handleLink = (key) => {
         Navigate("/security/change-password")
       break;
     case 3:
-      
+      localStorage.clear()
+      Navigate("/security/change-password")
       break;
   
     default:
@@ -126,7 +127,7 @@ const handleLink = (key) => {
               <hr
                 style={{ border: ".5px solid #F2F4F7", margin: " 0 0 0 0" }}
               />
-              <div className="bx">
+              <div className="bx" onClick={() => handleLink(3)}>
                 <img src={logout} alt="" />
                 <span style={{color:"red"}}>Log Out</span>
               </div>

@@ -11,10 +11,12 @@ import Checkbox from "../assets/checkbox";
 
 const Header = ({ setPropsPassed, SelectedCategory }) => {
   const [live, setLive] = useState(false);
+  const [user, setUser] = useState(null);
+  console.log("🚀 ~ file: Header.jsx:15 ~ Header ~ user:", user)
   const { pathname } = useLocation();
   const Navigate = useNavigate();
   useEffect(() => {
-  
+    setUser(JSON.parse(localStorage?.getItem("userDetails")))
   }, [])
   
   const headerTab = [
@@ -58,7 +60,24 @@ const Header = ({ setPropsPassed, SelectedCategory }) => {
 
   console.log("Current pathname:", pathname);
   console.log(setPropsPassed);
-
+const handleLink = (key) => {
+  switch (key) {
+    case 1:
+      Navigate("/security/company")
+      
+      break;
+      case 2:
+        
+        Navigate("/security/change-password")
+      break;
+    case 3:
+      
+      break;
+  
+    default:
+      break;
+  }
+}
   return (
     <HeaderContainer>
       <div className="left">
@@ -89,18 +108,18 @@ const Header = ({ setPropsPassed, SelectedCategory }) => {
               <div className="top">
                 <img src={profile} alt="" />
                 <div className="deta">
-                  <p>Nelson Dielson</p>
-                  <p>h2llo@deziuoa@gmail.com</p>
+                  <p>{user?.data?.username}</p>
+                  <p>{user?.data?.email}</p>
                 </div>
               </div>
               <hr
                 style={{ border: ".5px solid #F2F4F7", margin: "10px 0 0 0" }}
               />
-              <div className="bx">
+              <div className="bx" onClick={() => handleLink(1)}>
                 <img src={pro} alt="" />
                 <span>View Profile</span>
               </div>
-              <div className="bx">
+              <div className="bx" onClick={() => handleLink(2)}>
                 <img src={pas} alt="" />
                 <span>Change Password</span>
               </div>
@@ -109,7 +128,7 @@ const Header = ({ setPropsPassed, SelectedCategory }) => {
               />
               <div className="bx">
                 <img src={logout} alt="" />
-                <span>Log Out</span>
+                <span style={{color:"red"}}>Log Out</span>
               </div>
             </Bomodal>
           )}
@@ -231,9 +250,10 @@ const Bomodal = styled.div`
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 7.5px 10px;
+    padding: 9.5px 10px;
     &:hover {
       background: #e9edf5;
+      cursor: pointer;
       // opacity: .9;
     }
     img {

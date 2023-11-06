@@ -35,7 +35,7 @@ useEffect(() => {
 
 useEffect(() => {
 
-  setLoading(true)
+  // setLoading(true)
   const userId = JSON.parse(localStorage.getItem("userDetails"))
 
   const fetchData = async () => {
@@ -53,6 +53,7 @@ useEffect(() => {
       localStorage.setItem("userDetails",JSON.stringify(result))
       if(result?.data?.status){
         setShow(false)
+        setShow2(false)
       }
       console.log("Fetched data:", result);
     } catch (error) {
@@ -108,7 +109,6 @@ const [selectedFile, setSelectedFile] = useState(null);
   }
 
   const handleFileInputChange = async (name) => {
-    setLoading(true)
     var formdata = new FormData();
     formdata.append("file", selectedFile);
     console.log("🚀 ~ file: Documnets.jsx:72 ~ handleFileInputChange ~ selectedFile:", selectedFile)
@@ -129,13 +129,14 @@ const [selectedFile, setSelectedFile] = useState(null);
       fileURL:responseData?.secure_url
     }
     await editAndDelete(data)
-    setLoading(false)
+    // setLoading(false)
  
-
+    
   };
 
   const editAndDelete = async (data) => {
-       
+    setLoading(true)
+    
     var requestOptions = {
       method: 'POST',
       body: JSON.stringify(
@@ -154,6 +155,9 @@ const [selectedFile, setSelectedFile] = useState(null);
     console.log("🚀 ~ file: Documnets.jsx:92 ~ editAndDelete ~ responseData:", responseData)
     if (responseData?.status) {
       setRefetch(true)
+      setPreviewImage(null)
+      setEditable(true)
+      setShow2(!show2)
       // window.location.reload()
     }else{
       setLoading(false)

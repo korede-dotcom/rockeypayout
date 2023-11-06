@@ -13,6 +13,7 @@ const Documnets = () => {
   const [getc,setc] = useState(null)
   const [info,setInfo] = useState("")
   const [loading,setLoading] = useState(false)
+  const [refetch,setRefetch] = useState(null)
   console.log("🚀 ~ file: File.jsx:12 ~ File ~ getUser:", getUser)
 useEffect(() => {
 
@@ -50,6 +51,9 @@ useEffect(() => {
       // Set the fetched data to state
     
       localStorage.setItem("userDetails",JSON.stringify(result))
+      if(result?.data?.status){
+        setShow(false)
+      }
       console.log("Fetched data:", result);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -59,7 +63,7 @@ useEffect(() => {
 
   // Call the fetch function
   fetchData();
-}, []);
+}, [refetch]);
 
 
 const handleView = id => {
@@ -103,35 +107,6 @@ const [selectedFile, setSelectedFile] = useState(null);
     setSelectedFile(null)
   }
 
-  const editAndDelete = async (data) => {
-       
-    var requestOptions = {
-      method: 'POST',
-      body: JSON.stringify(
-        {
-          "objectId" : data.userId,
-          "action" : data.action, //0 to update 1, to delete. 
-          "fileName" : data.fileName,  //formco2, formco7, registationcertificateurl, idurl, utilitybill, articleandmemorandumofassociation
-          "fileURL": data.fileURL
-      }
-      ),
-      redirect: 'follow'
-    };
-    
-   const response = await fetch("https://apidoc.transferrocket.co.uk//updatepayoutclientfile", requestOptions)
-    const responseData = await response.json();
-    console.log("🚀 ~ file: Documnets.jsx:92 ~ editAndDelete ~ responseData:", responseData)
-    if (responseData?.status) {
-      window.location.reload()
-    }else{
-      setLoading(false)
-      setInfo(responseData.message)
-      setTimeout(() => {
-        setInfo("")
-      },2000)
-    }
-  }
-
   const handleFileInputChange = async (name) => {
     setLoading(true)
     var formdata = new FormData();
@@ -158,6 +133,38 @@ const [selectedFile, setSelectedFile] = useState(null);
  
 
   };
+
+  const editAndDelete = async (data) => {
+       
+    var requestOptions = {
+      method: 'POST',
+      body: JSON.stringify(
+        {
+          "objectId" : data.userId,
+          "action" : data.action, //0 to update 1, to delete. 
+          "fileName" : data.fileName,  //formco2, formco7, registationcertificateurl, idurl, utilitybill, articleandmemorandumofassociation
+          "fileURL": data.fileURL
+      }
+      ),
+      redirect: 'follow'
+    };
+    
+   const response = await fetch("https://apidoc.transferrocket.co.uk//updatepayoutclientfile", requestOptions)
+    const responseData = await response.json();
+    console.log("🚀 ~ file: Documnets.jsx:92 ~ editAndDelete ~ responseData:", responseData)
+    if (responseData?.status) {
+      setRefetch(true)
+      // window.location.reload()
+    }else{
+      setLoading(false)
+      setInfo(responseData.message)
+      setTimeout(() => {
+        setInfo("")
+      },2000)
+    }
+  }
+
+
 const handleEdit = (id) => {
   const n = getUserFiles?.filter(d => {
    if (id === d?.id) {

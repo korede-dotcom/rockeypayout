@@ -25,6 +25,8 @@ import visible from '../../assets/view.png'
 import hide from '../../assets/hide.png'
 import { countries } from '../../services/Auth';
 import Success from '../../images/Success.svg'
+import lock from '../../images/padlock.jpeg'
+
 
 
 // Inside your component
@@ -193,8 +195,15 @@ function LoginR() {
         <LoginCotainer>
             
             <div className='flex'>
-                <div className='side1'>
-
+                <div className='side1' >
+                <img
+            style={{
+              width: "300px",
+              height: "300px",
+              borderRadius: "10000px",
+            }}
+            src={lock}
+          />
                 </div>
                 <div className='side2'>
                     <Center>
@@ -342,6 +351,9 @@ const LoginCotainer = styled.div`
         }
 
         .side1{
+            display: flex;
+            justify-content: center;
+            align-items: center;
             width: 50%;
             height: 100vh;
             background: var(--Primary-Colour, #00A85A);

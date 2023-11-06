@@ -16,7 +16,21 @@ import OverlayModal from "../../Reuseable/OverlayModal";
 import TextInput from "../../Reuseable/Inputs/TextInput";
 import SelectOption from "../../Reuseable/Inputs/SelectOption";
 import CustomTable from "../../reuseables/CustomTable";
+import SelectComponent from "@arco-design/web-react/es/Select/select";
+// import { Select, Space } from '@arco-design/web-react';
+// const Option = Select.Option;
+import Select from 'react-select';
 const Beneficiary = () => {
+
+  const [selectedOption, setSelectedOption] = useState(null);
+
+ 
+
+  const handleSelectChange = selectedOption => {
+    setSelectedOption(selectedOption);
+    // Do something with selected option if needed
+  };
+
   // const navigate = useNavigate();
   // post
   const [userId, setUserID] = useState();
@@ -26,12 +40,59 @@ const Beneficiary = () => {
   const [accountNumber, setAccountNumber] = useState();
   const [bankId, setBankid] = useState();
   const [data, setData] = useState(null);
+  const [country, setCountry] = useState([]);
   const [beneficiaryDetails, setBeneficiaryDetail] = useState();
   const [userDetailsData, setUserDetailsData] = useState();
   const [trx, settrx] = useState(null);
   const [newBeneficiary, setNewBeneficiary] = useState(false);
+  
 
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+
+  const options = country.map(option => ({
+    label: option.name,
+    value: option.name
+  }));
+
+  
+
+
+  useEffect(() => {
+    // Fetch countries and set the first country as the default
+    const requestOptions = {
+      method: "GET",
+      redirect: "follow",
+    };
+
+    fetch(
+      "https://apidoc.transferrocket.co.uk/getcountries",
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("🚀 ~ file: Beneficairy.jsx:51 ~ .then ~ data:", data)
+        setCountry(data.data);
+        // if (data.data.length > 0) {
+        //   setCountryId(data.data[0].id);
+        //   setCountryValue(data.data[0].name);
+        // }
+      })
+      .catch((error) => console.log("error", error));
+    fetch(
+      "https://apidoc.transferrocket.co.uk//getbanks",
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("🚀 ~ file: Beneficairy.jsx:64 ~ .then ~ data:", data)
+        // setIdTypes(data.data);
+        // if (data.data.length > 0) {
+        //   setCountryId(data.data[0].id);
+        //   setCountryValue(data.data[0].name);
+        // }
+      })
+      .catch((error) => console.log("error", error));
+  }, []);
 
   useEffect(() => {
     setBeneficiaryDetail(userDetails?.data?.beneficiaries);
@@ -79,33 +140,7 @@ const Beneficiary = () => {
     fetchData();
   }, []);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const requestOptions = {
-  //         method: "GET",
-  //         redirect: "follow",
-  //       };
 
-  //       const response = await fetch(
-  //         "https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/45586980",
-  //         requestOptions
-  //       );
-  //       const result = await response.json();
-
-  //       // Set the fetched data to state
-  //       setData(result);
-  //       settrx(result?.data?.payOutTransactions);
-  //       console.log("Fetched data:", result);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //       // Handle errors here
-  //     }
-  //   };
-
-  //   // Call the fetch function
-  //   fetchData();
-  // }, []);
 
   const OverviewHeaders = [
     {
@@ -395,7 +430,35 @@ const Beneficiary = () => {
           title="Add New Beneficiary"
           onClick={() => setshow(!show)}
         >
+     <Select
+      placeholder="Select Country"
+      styles={{
+        control: styles => ({
+          ...styles,
+          backgroundColor: 'white',
+          width: 554,
+          // border:"1px solid #000"
+          // border: 'none', // Remove the border
+          // boxShadow: 'none', // Remove the box shadow
+        }),
+        singleValue: styles => ({
+          ...styles,
+          color: '#000'
+        }),
+        option: (styles, { isFocused }) => ({
+          ...styles,
+          backgroundColor: isFocused ? 'rgb(0, 168, 90)' : 'white',
+          color: isFocused ? 'white' : 'black'
+        })
+    
+        // Custom styles if needed
+      }}
+      value={selectedOption}
+      onChange={handleSelectChange}
+      options={options}
+    />
           <TextInput label="Beneficiary Name" />
+        
           <TextInput label="Beneficiary Phonenumber" />
           <TextInput label="Beneficiary Account Number" />
           {/* <SelectOption title="Bank Details" optionLabel={details} /> */}

@@ -774,7 +774,7 @@ const Login = () => {
           "id" : 1
       },
       "idnumber": "",
-      "idURL": "",
+      // "idURL": "",
       "companyRegistrationNumber": "",
       "companyCertificateURL": "",
       "dateRegistered": "",
@@ -1116,7 +1116,7 @@ const Login = () => {
                 name="idnumber"
                 forhtml="idnumber"
               />
-                <OInput
+                {/* <OInput
                 type="text"
                 label="Identification Url"
                 placeholder="Id Url"
@@ -1124,7 +1124,7 @@ const Login = () => {
                 value={formData.idURL}
                 name="idURL"
                 forhtml="bvn"
-              />
+              /> */}
                 {/* </Wrap> */}
               <Wrap>
                 <Selector>
@@ -1235,7 +1235,7 @@ const Login = () => {
                 
               </Wrap>{" "}
               {
-            formData?.country?.id?.toString().length &&  formData?.state?.id?.toString().length && formData?.city?.id?.toString().length && formData?.idType?.id?.toString().length &&  formData?.idURL.length > 1 && formData?.email.length > 1 && formData?.phone.length > 1 && formData.bvn.length  > 1 && formData.address.length > 1 ? (
+            formData?.country?.id?.toString().length &&  formData?.state?.id?.toString().length && formData?.city?.id?.toString().length && formData?.idType?.id?.toString().length && formData?.email.length > 1 && formData?.phone.length > 1 && formData.bvn.length  > 1 && formData.address.length > 1 ? (
                   <div className="next" onClick={handleContinueClick}>
                     <button>continue</button>
                   </div>

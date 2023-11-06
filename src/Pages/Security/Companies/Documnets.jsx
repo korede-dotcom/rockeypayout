@@ -23,7 +23,7 @@ useEffect(() => {
 
   setUserFiles([
     {img: getUser?.data?.formCo7URL,id:1,name:"formCo7URL"},
-    { img: getUser?.data?.formCo2URL,id:2,name:"formCo2URL"},
+    { img: getUser?.data?.formCo2URL,id:2,name:"formc02"},
     {img: getUser?.data?.idURL,id:3,name:"idURL"},
     {img: getUser?.data?.companyCertificateURL,id:4,name:"companyCertificateURL"},
     {img: getUser?.data?.articlesAndMemorandumOfAssociation,id:5,name:"articlesAndMemorandumOfAssociation"},
@@ -120,7 +120,7 @@ const [selectedFile, setSelectedFile] = useState(null);
     console.log("🚀 ~ file: Documnets.jsx:108 ~ handleFileInputChange ~ responseData:", responseData)
     const data = {
       userId:getUser?.data?.userId,
-      action:0,
+      action:1,
       fileName:getc?.name,
       fileURL:responseData?.secure_url
     }

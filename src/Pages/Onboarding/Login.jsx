@@ -1370,54 +1370,82 @@ const Login = () => {
             
             )} 
             {activeTab == 3 && (
-            <>
-              <File
-                label={formData?.companyCertificateURL?.length > 0 ? `${'Company Certificate uploaded'}`: "Company Certificate"}
-                onChange={(event) =>
-                  handleFileInputChange(event, "companyCertificateURL")
-                }
-                doneImg={formData?.companyCertificateURL?.length > 0 ? Success : false}
-              />
-              <File
-                label="Form Co7"
-                onChange={(event) => handleFileInputChange(event, "formCo7URL")}
-                doneImg={formData?.formCo7URL?.length > 0 ? Success : false}
-              />
-              <File
-                label="Form Co2"
-                onChange={(event) => handleFileInputChange(event, "formCo2URL")}
-                doneImg={formData?.formCo2URL?.length > 0 ? Success : false}
-              />
-              <File
-                label="Article of Association"
-                onChange={(event) =>
-                  handleFileInputChange(
-                    event,
-                    "articlesAndMemorandumOfAssociation"
-                  )
-                }
-                doneImg={formData?.articlesAndMemorandumOfAssociation?.length > 0 ? Success : false}
-              />
-              {/* <File label="Memorandum of Association" /> */}
-              <File
-                label="Utility Bill"
-                onChange={(event) =>
-                  handleFileInputChange(event, "utilityBill")
-                }
-                doneImg={formData?.utilityBill?.length > 0 ? Success : false}
-              />
-              {
-                 formData?.companyCertificateURL.length > 1 && formData?.formCo7URL.length > 1 && formData?.formCo2URL.length > 1 && formData.articlesAndMemorandumOfAssociation.length  > 1 && formData.utilityBill.length  > 1 ? (
-                  <div className="next" onClick={handleContinueClick}>
-                    <button>continue</button>
-                  </div>
+               <>
+               <OInput
+                 type="text"
+                 label="Username"
+                 placeholder="Enter a unique username"
+                 onChange={handleInputChange}
+                 value={formData.username}
+                 name="username"
+                 forhtml="username"
+               />
+               <OInput
+                 type="password"
+                 label="Password"
+                 placeholder="••••••••••••••"
+                 onChange={handleInputChange}
+                 value={formData.password}
+                 name="password"
+                 forhtml="password"
+               />
+               <OInput
+                 type="password"
+                 label="Confirm Password"
+                 placeholder="••••••••••••••"
+                 onChange={handleCofirmpassword}
+                 name="password"
+                 forhtml="password"
+               />
+             </>
+            // <>
+            //   <File
+            //     label={formData?.companyCertificateURL?.length > 0 ? `${'Company Certificate uploaded'}`: "Company Certificate"}
+            //     onChange={(event) =>
+            //       handleFileInputChange(event, "companyCertificateURL")
+            //     }
+            //     doneImg={formData?.companyCertificateURL?.length > 0 ? Success : false}
+            //   />
+            //   <File
+            //     label="Form Co7"
+            //     onChange={(event) => handleFileInputChange(event, "formCo7URL")}
+            //     doneImg={formData?.formCo7URL?.length > 0 ? Success : false}
+            //   />
+            //   <File
+            //     label="Form Co2"
+            //     onChange={(event) => handleFileInputChange(event, "formCo2URL")}
+            //     doneImg={formData?.formCo2URL?.length > 0 ? Success : false}
+            //   />
+            //   <File
+            //     label="Article of Association"
+            //     onChange={(event) =>
+            //       handleFileInputChange(
+            //         event,
+            //         "articlesAndMemorandumOfAssociation"
+            //       )
+            //     }
+            //     doneImg={formData?.articlesAndMemorandumOfAssociation?.length > 0 ? Success : false}
+            //   />
+            //   {/* <File label="Memorandum of Association" /> */}
+            //   <File
+            //     label="Utility Bill"
+            //     onChange={(event) =>
+            //       handleFileInputChange(event, "utilityBill")
+            //     }
+            //     doneImg={formData?.utilityBill?.length > 0 ? Success : false}
+            //   />
+            //   {
+            //      formData?.companyCertificateURL.length > 1 && formData?.formCo7URL.length > 1 && formData?.formCo2URL.length > 1 && formData.articlesAndMemorandumOfAssociation.length  > 1 && formData.utilityBill.length  > 1 ? (
+            //       <div className="next" onClick={handleContinueClick}>
+            //         <button>continue</button>
+            //       </div>
 
-                ):""
-              }
-            </>
+            //     ):""
+            //   }
+            // </>
             
             )}
-            {activeTab === 4 && (
+            {/* {activeTab === 4 && (
             <>
               <OInput
                 type="text"
@@ -1446,23 +1474,18 @@ const Login = () => {
                 forhtml="password"
               />
             </>
-            )}
+            )} */}
           </InputWrapper>
           {/* <div className="next" onClick={() => setPage(page + 1)}> */}
           {/* <div className="next" onClick={handleGoNext}> */}
           {/* <div className="next" onClick={() => setActiveTab(activeTab + 1)}> */}
           {
-            activeTab >= 4 && (
+            activeTab >= 3 && (
           <div className="next" onClick={handleSignup}>
             <button>Submit</button>
           </div>
             )
-          //   ) : (
-          // <div className="next" onClick={handleContinueClick}>
-          //   <button>continue</button>
-          // </div>
-
-          //   )
+   
           }
         </RightContent>
       </RightLogin>
@@ -1534,8 +1557,8 @@ const RightLogin = styled.div`
 `;
 const RightContent = styled.div`
 // border: 2px solid red;
-height: 80%; 
-  width: 400px; 
+/* height: 80%;  */
+  width: 55%; 
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -1586,7 +1609,7 @@ height: 80%;
   .per_deta {
     display: flex;
     flex-direction: column;
-    margin: 10px 0;
+    /* margin: 10px 0; */
     h1 {
       color: #101828;
       font-size: 16px;
@@ -1604,7 +1627,7 @@ const InputWrapper = styled.div`
   /* height: 410px; */
   margin: 10px 0;
   // border: 2px solid red;
-  overflow-y: auto;
+  /* overflow-y: auto; */
   display: flex;
   flex-direction: column;
   gap: calc(10px 5px 20px);

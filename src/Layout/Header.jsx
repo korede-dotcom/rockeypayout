@@ -72,7 +72,7 @@ const handleLink = (key) => {
       break;
     case 3:
       localStorage.clear()
-      Navigate("/security/change-password")
+      Navigate("/")
       break;
   
     default:

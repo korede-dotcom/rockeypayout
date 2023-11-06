@@ -190,10 +190,10 @@ const Hopeps = () => {
   ];
 
   const figure2 = [
-    { number: formatter?.format(sorted?.totalAmount) },
-    { number: formatter?.format(sorted?.successfulAmount) },
-    { number:formatter?.format(sorted?.pendingAmount) },
-    { number: formatter?.format(sorted?.cancelledAmount) },
+    { number: formatter?.format(sorted?.totalAmount || 0) },
+    { number: formatter?.format(sorted?.successfulAmount || 0) },
+    { number:formatter?.format(sorted?.pendingAmount || 0) },
+    { number: formatter?.format(sorted?.cancelledAmount || 0) },
     // { number: 18 },
   ];
 

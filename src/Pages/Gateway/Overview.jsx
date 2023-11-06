@@ -409,7 +409,7 @@ const Overview = () => {
                     fill="#F04438"
                   />
                 </svg>
-                Decline
+                Cancel
               </div>
             </div>
           )}

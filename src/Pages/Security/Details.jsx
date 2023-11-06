@@ -50,7 +50,107 @@ const Details = () => {
   const [current, setCurrent] = useState(null);
   const [info, setInfo] = useState("");
 
-  const [WebhooksHHead, setWebhooksHead] = useState(null);
+  const [WebhooksHHead, setWebhooksHead] = useState(
+    {name: 'C', image: cc ,id:1,code:`
+    var client = new HttpClient()
+    var request = new HttpRequestMessage(HttpMethod.Get, "https://apidoc.transferrocket.co.uk/getcurrencytype");
+    var response = await client.SendAsync(request)
+    response.EnsureSuccessStatusCode()
+    Console.WriteLine(await response.Content.ReadAsStringAsync())
+    `,
+    code3res:`
+    {
+      "transactionRef": "SUCCESS",
+      "status": true,
+      "message": "1 Wallet Funding Request recieved",
+      "data": [
+        {
+          "id": 78053836,
+          "dateCreated": "2023-10-27 10:51:58.889777",
+          "userId": 0,
+          "amountRequested": 150000,
+          "status": "Pending",
+          "userWallet": {
+            "walletId": 19680003,
+            "balance": 0,
+            "name": "OhentPay by Providus",
+            "note": "OhentPay by Providus Wallet",
+            "country": {
+              "regionId": 1,
+              "subRegionId": 3,
+              "telephoneCode": "234",
+              "currencyCode": "NGN",
+              "emoji": "??",
+              "status": false,
+              "id": 161,
+              "name": "Nigeria",
+              "longitude": "8",
+              "latitude": "10"
+            }
+          },
+          "lastUpdatedBy": 0,
+          "lastUpdated": "2023-10-27 10:51:58.889777",
+          "amountApproved": 150000,
+          "comment": "Hello",
+          "balanceBeforeRequest": 0
+        }
+      ]
+    }
+    `,
+    code1res:`
+    {
+      "transactionRef": "Currency recieved",
+      "status": true,
+      "message": "SUCCESS",
+      "data": [
+        {
+          "id": 1,
+          "country": "Nigeria",
+          "name": "Naira",
+          "code": "NGN",
+          "number": "566",
+          "approved": false
+        },
+        {
+          "id": 2,
+          "country": "United Kindom",
+          "name": "Pound Sterling",
+          "code": "GBP",
+          "number": "826",
+          "approved": false
+        }
+      ]
+    }
+    `,
+     code2res:`
+    {
+      "transactionRef": "SUCCESS",
+      "status": true,
+      "message": "Wallet funding request succesfully created.",
+      "data": ""
+    }
+    `,
+    codetwo:`
+    var client = new HttpClient();
+    var request = new HttpRequestMessage(HttpMethod.Post, "https://apidoc.transferrocket.co.uk//walletfundingrequest");
+    var content = new StringContent("\n{\n    \"userId\": 45586980,\n    \"amountRequested\": 150000,\n    \"userWallet\": {\n        \"walletId\": 19680003\n    },\n    \"comment\": \"Hello\",\n    \"lastUpdatedBy\" : 0\n}", null, "text/plain");
+    request.Content = content;
+    var response = await client.SendAsync(request);
+    response.EnsureSuccessStatusCode();
+    Console.WriteLine(await response.Content.ReadAsStringAsync());
+    
+    `,
+    codethree:`
+    var client = new HttpClient();
+    var request = new HttpRequestMessage(HttpMethod.Get, "https://apidoc.transferrocket.co.uk//getuserwalletfundrequest?userId=45586980&requestId=0");
+    var response = await client.SendAsync(request);
+    response.EnsureSuccessStatusCode();
+    Console.WriteLine(await response.Content.ReadAsStringAsync());
+    
+    `
+  
+    }
+  );
   const [createApp, setcreateApp] = useState(
     {
       "clientId": "",
@@ -74,6 +174,78 @@ const Details = () => {
     response.EnsureSuccessStatusCode()
     Console.WriteLine(await response.Content.ReadAsStringAsync())
     `,
+    code3res:`
+    {
+      "transactionRef": "SUCCESS",
+      "status": true,
+      "message": "1 Wallet Funding Request recieved",
+      "data": [
+        {
+          "id": 78053836,
+          "dateCreated": "2023-10-27 10:51:58.889777",
+          "userId": 0,
+          "amountRequested": 150000,
+          "status": "Pending",
+          "userWallet": {
+            "walletId": 19680003,
+            "balance": 0,
+            "name": "OhentPay by Providus",
+            "note": "OhentPay by Providus Wallet",
+            "country": {
+              "regionId": 1,
+              "subRegionId": 3,
+              "telephoneCode": "234",
+              "currencyCode": "NGN",
+              "emoji": "??",
+              "status": false,
+              "id": 161,
+              "name": "Nigeria",
+              "longitude": "8",
+              "latitude": "10"
+            }
+          },
+          "lastUpdatedBy": 0,
+          "lastUpdated": "2023-10-27 10:51:58.889777",
+          "amountApproved": 150000,
+          "comment": "Hello",
+          "balanceBeforeRequest": 0
+        }
+      ]
+    }
+    `,
+    code1res:`
+    {
+      "transactionRef": "Currency recieved",
+      "status": true,
+      "message": "SUCCESS",
+      "data": [
+        {
+          "id": 1,
+          "country": "Nigeria",
+          "name": "Naira",
+          "code": "NGN",
+          "number": "566",
+          "approved": false
+        },
+        {
+          "id": 2,
+          "country": "United Kindom",
+          "name": "Pound Sterling",
+          "code": "GBP",
+          "number": "826",
+          "approved": false
+        }
+      ]
+    }
+    `,
+     code2res:`
+    {
+      "transactionRef": "SUCCESS",
+      "status": true,
+      "message": "Wallet funding request succesfully created.",
+      "data": ""
+    }
+    `,
     codetwo:`
     var client = new HttpClient();
     var request = new HttpRequestMessage(HttpMethod.Post, "https://apidoc.transferrocket.co.uk//walletfundingrequest");
@@ -90,7 +262,6 @@ const Details = () => {
     var response = await client.SendAsync(request);
     response.EnsureSuccessStatusCode();
     Console.WriteLine(await response.Content.ReadAsStringAsync());
-    
     
     `
   
@@ -124,6 +295,77 @@ const Details = () => {
     }
     fmt.Println(string(body))
     `,
+    code3res:`
+    {
+      "transactionRef": "SUCCESS",
+      "status": true,
+      "message": "1 Wallet Funding Request recieved",
+      "data": [
+        {
+          "id": 78053836,
+          "dateCreated": "2023-10-27 10:51:58.889777",
+          "userId": 0,
+          "amountRequested": 150000,
+          "status": "Pending",
+          "userWallet": {
+            "walletId": 19680003,
+            "balance": 0,
+            "name": "OhentPay by Providus",
+            "note": "OhentPay by Providus Wallet",
+            "country": {
+              "regionId": 1,
+              "subRegionId": 3,
+              "telephoneCode": "234",
+              "currencyCode": "NGN",
+              "emoji": "??",
+              "status": false,
+              "id": 161,
+              "name": "Nigeria",
+              "longitude": "8",
+              "latitude": "10"
+            }
+          },
+          "lastUpdatedBy": 0,
+          "lastUpdated": "2023-10-27 10:51:58.889777",
+          "amountApproved": 150000,
+          "comment": "Hello",
+          "balanceBeforeRequest": 0
+        }
+      ]
+    }
+    `,
+    code2res:`
+    {
+      "transactionRef": "SUCCESS",
+      "status": true,
+      "message": "Wallet funding request succesfully created.",
+      "data": ""
+    }
+    `,
+    code1res:`
+    {
+      "transactionRef": "Currency recieved",
+      "status": true,
+      "message": "SUCCESS",
+      "data": [
+        {
+          "id": 1,
+          "country": "Nigeria",
+          "name": "Naira",
+          "code": "NGN",
+          "number": "566",
+          "approved": false
+        },
+        {
+          "id": 2,
+          "country": "United Kindom",
+          "name": "Pound Sterling",
+          "code": "GBP",
+          "number": "826",
+          "approved": false
+        }
+      ]
+    }`,
     codetwo:`
     var client = new HttpClient();
     var request = new HttpRequestMessage(HttpMethod.Post, "https://apidoc.transferrocket.co.uk//walletfundingrequest");
@@ -192,6 +434,77 @@ const Details = () => {
           "astUpdatedBy" : 0
       }
       `,
+      code3res:`
+      {
+        "transactionRef": "SUCCESS",
+        "status": true,
+        "message": "1 Wallet Funding Request recieved",
+        "data": [
+          {
+            "id": 78053836,
+            "dateCreated": "2023-10-27 10:51:58.889777",
+            "userId": 0,
+            "amountRequested": 150000,
+            "status": "Pending",
+            "userWallet": {
+              "walletId": 19680003,
+              "balance": 0,
+              "name": "OhentPay by Providus",
+              "note": "OhentPay by Providus Wallet",
+              "country": {
+                "regionId": 1,
+                "subRegionId": 3,
+                "telephoneCode": "234",
+                "currencyCode": "NGN",
+                "emoji": "??",
+                "status": false,
+                "id": 161,
+                "name": "Nigeria",
+                "longitude": "8",
+                "latitude": "10"
+              }
+            },
+            "lastUpdatedBy": 0,
+            "lastUpdated": "2023-10-27 10:51:58.889777",
+            "amountApproved": 150000,
+            "comment": "Hello",
+            "balanceBeforeRequest": 0
+          }
+        ]
+      }
+      `,
+      code1res:`
+      {
+        "transactionRef": "Currency recieved",
+        "status": true,
+        "message": "SUCCESS",
+        "data": [
+          {
+            "id": 1,
+            "country": "Nigeria",
+            "name": "Naira",
+            "code": "NGN",
+            "number": "566",
+            "approved": false
+          },
+          {
+            "id": 2,
+            "country": "United Kindom",
+            "name": "Pound Sterling",
+            "code": "GBP",
+            "number": "826",
+            "approved": false
+          }
+        ]
+      }`,
+      code2res:`
+      {
+        "transactionRef": "SUCCESS",
+        "status": true,
+        "message": "Wallet funding request succesfully created.",
+        "data": ""
+      }
+      `,
       codethree:`
       GET //getuserlog/8230145 HTTP/1.1
       Host: apidoc.transferrocket.co.uk
@@ -208,6 +521,53 @@ const Details = () => {
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
     `,
+    code3res:`
+    {
+      "transactionRef": "SUCCESS",
+      "status": true,
+      "message": "1 Wallet Funding Request recieved",
+      "data": [
+        {
+          "id": 78053836,
+          "dateCreated": "2023-10-27 10:51:58.889777",
+          "userId": 0,
+          "amountRequested": 150000,
+          "status": "Pending",
+          "userWallet": {
+            "walletId": 19680003,
+            "balance": 0,
+            "name": "OhentPay by Providus",
+            "note": "OhentPay by Providus Wallet",
+            "country": {
+              "regionId": 1,
+              "subRegionId": 3,
+              "telephoneCode": "234",
+              "currencyCode": "NGN",
+              "emoji": "??",
+              "status": false,
+              "id": 161,
+              "name": "Nigeria",
+              "longitude": "8",
+              "latitude": "10"
+            }
+          },
+          "lastUpdatedBy": 0,
+          "lastUpdated": "2023-10-27 10:51:58.889777",
+          "amountApproved": 150000,
+          "comment": "Hello",
+          "balanceBeforeRequest": 0
+        }
+      ]
+    }
+    `,
+    code2res:`
+    {
+      "transactionRef": "SUCCESS",
+      "status": true,
+      "message": "Wallet funding request succesfully created.",
+      "data": ""
+    }
+    `,
     codetwo:`
     var raw = "{\n    \"userId\": 45586980,\n    \"amountRequested\": 150000,\n    \"userWallet\": {\n        \"walletId\": 19680003\n    },\n    \"comment\": \"Hello\",\n    \"astUpdatedBy\" : 0\n}";
 
@@ -222,6 +582,30 @@ const Details = () => {
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
     `,
+    code1res:`
+    {
+      "transactionRef": "Currency recieved",
+      "status": true,
+      "message": "SUCCESS",
+      "data": [
+        {
+          "id": 1,
+          "country": "Nigeria",
+          "name": "Naira",
+          "code": "NGN",
+          "number": "566",
+          "approved": false
+        },
+        {
+          "id": 2,
+          "country": "United Kindom",
+          "name": "Pound Sterling",
+          "code": "GBP",
+          "number": "826",
+          "approved": false
+        }
+      ]
+    }`,
     codethree:`
     var requestOptions = {
       method: 'GET',
@@ -250,6 +634,45 @@ const Details = () => {
     }
     
     `,
+    code3res:`
+    {
+      "transactionRef": "SUCCESS",
+      "status": true,
+      "message": "1 Wallet Funding Request recieved",
+      "data": [
+        {
+          "id": 78053836,
+          "dateCreated": "2023-10-27 10:51:58.889777",
+          "userId": 0,
+          "amountRequested": 150000,
+          "status": "Pending",
+          "userWallet": {
+            "walletId": 19680003,
+            "balance": 0,
+            "name": "OhentPay by Providus",
+            "note": "OhentPay by Providus Wallet",
+            "country": {
+              "regionId": 1,
+              "subRegionId": 3,
+              "telephoneCode": "234",
+              "currencyCode": "NGN",
+              "emoji": "??",
+              "status": false,
+              "id": 161,
+              "name": "Nigeria",
+              "longitude": "8",
+              "latitude": "10"
+            }
+          },
+          "lastUpdatedBy": 0,
+          "lastUpdated": "2023-10-27 10:51:58.889777",
+          "amountApproved": 150000,
+          "comment": "Hello",
+          "balanceBeforeRequest": 0
+        }
+      ]
+    }
+    `,
     codetwo:`
     var request = http.Request('POST', Uri.parse('https://apidoc.transferrocket.co.uk//walletfundingrequest'));
     request.body = '''{\n    "userId": 45586980,\n    "amountRequested": 150000,\n    "userWallet": {\n        "walletId": 19680003\n    },\n    "comment": "Hello",\n    "astUpdatedBy" : 0\n}''';
@@ -264,6 +687,30 @@ const Details = () => {
     }
     
     `,
+    code1res:`
+    {
+      "transactionRef": "Currency recieved",
+      "status": true,
+      "message": "SUCCESS",
+      "data": [
+        {
+          "id": 1,
+          "country": "Nigeria",
+          "name": "Naira",
+          "code": "NGN",
+          "number": "566",
+          "approved": false
+        },
+        {
+          "id": 2,
+          "country": "United Kindom",
+          "name": "Pound Sterling",
+          "code": "GBP",
+          "number": "826",
+          "approved": false
+        }
+      ]
+    }`,
     codethree:`
     var request = http.Request('GET', Uri.parse('https://apidoc.transferrocket.co.uk//getuserwalletfundrequest?userId=45586980&requestId=0'));
 
@@ -277,8 +724,17 @@ const Details = () => {
       print(response.reasonPhrase);
     }
     
-    `
+    `,
+    code2res:`
+    {
+      "transactionRef": "SUCCESS",
+      "status": true,
+      "message": "Wallet funding request succesfully created.",
+      "data": ""
+    }
+    `,
   },
+  
     {name: 'Objective-C', image: objectc,id:7,code:`
     #import <Foundation/Foundation.h>
 
@@ -307,6 +763,77 @@ const Details = () => {
     [dataTask resume];
     dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
     `,
+    code3res:`
+    {
+      "transactionRef": "SUCCESS",
+      "status": true,
+      "message": "1 Wallet Funding Request recieved",
+      "data": [
+        {
+          "id": 78053836,
+          "dateCreated": "2023-10-27 10:51:58.889777",
+          "userId": 0,
+          "amountRequested": 150000,
+          "status": "Pending",
+          "userWallet": {
+            "walletId": 19680003,
+            "balance": 0,
+            "name": "OhentPay by Providus",
+            "note": "OhentPay by Providus Wallet",
+            "country": {
+              "regionId": 1,
+              "subRegionId": 3,
+              "telephoneCode": "234",
+              "currencyCode": "NGN",
+              "emoji": "??",
+              "status": false,
+              "id": 161,
+              "name": "Nigeria",
+              "longitude": "8",
+              "latitude": "10"
+            }
+          },
+          "lastUpdatedBy": 0,
+          "lastUpdated": "2023-10-27 10:51:58.889777",
+          "amountApproved": 150000,
+          "comment": "Hello",
+          "balanceBeforeRequest": 0
+        }
+      ]
+    }
+    `,
+    code2res:`
+    {
+      "transactionRef": "SUCCESS",
+      "status": true,
+      "message": "Wallet funding request succesfully created.",
+      "data": ""
+    }
+    `,
+    code1res:`
+    {
+      "transactionRef": "Currency recieved",
+      "status": true,
+      "message": "SUCCESS",
+      "data": [
+        {
+          "id": 1,
+          "country": "Nigeria",
+          "name": "Naira",
+          "code": "NGN",
+          "number": "566",
+          "approved": false
+        },
+        {
+          "id": 2,
+          "country": "United Kindom",
+          "name": "Pound Sterling",
+          "code": "GBP",
+          "number": "826",
+          "approved": false
+        }
+      ]
+    }`,
     codetwo:`
     #import <Foundation/Foundation.h>
 
@@ -370,11 +897,82 @@ const Details = () => {
     $response = Invoke-RestMethod 'https://apidoc.transferrocket.co.uk/getcurrencytype' -Method 'GET' -Headers $headers
     $response | ConvertTo-Json
     `,
+    code3res:`
+    {
+      "transactionRef": "SUCCESS",
+      "status": true,
+      "message": "1 Wallet Funding Request recieved",
+      "data": [
+        {
+          "id": 78053836,
+          "dateCreated": "2023-10-27 10:51:58.889777",
+          "userId": 0,
+          "amountRequested": 150000,
+          "status": "Pending",
+          "userWallet": {
+            "walletId": 19680003,
+            "balance": 0,
+            "name": "OhentPay by Providus",
+            "note": "OhentPay by Providus Wallet",
+            "country": {
+              "regionId": 1,
+              "subRegionId": 3,
+              "telephoneCode": "234",
+              "currencyCode": "NGN",
+              "emoji": "??",
+              "status": false,
+              "id": 161,
+              "name": "Nigeria",
+              "longitude": "8",
+              "latitude": "10"
+            }
+          },
+          "lastUpdatedBy": 0,
+          "lastUpdated": "2023-10-27 10:51:58.889777",
+          "amountApproved": 150000,
+          "comment": "Hello",
+          "balanceBeforeRequest": 0
+        }
+      ]
+    }
+    `,
     codetwo:``,
+    code2res:`
+    {
+      "transactionRef": "SUCCESS",
+      "status": true,
+      "message": "Wallet funding request succesfully created.",
+      "data": ""
+    }
+    `,
     codethree:`
     $response = Invoke-RestMethod 'https://apidoc.transferrocket.co.uk//getuserwalletfundrequest?userId=45586980&requestId=0' -Method 'GET' -Headers $headers
     $response | ConvertTo-Json
-    `
+    `,
+    code1res:`
+    {
+      "transactionRef": "Currency recieved",
+      "status": true,
+      "message": "SUCCESS",
+      "data": [
+        {
+          "id": 1,
+          "country": "Nigeria",
+          "name": "Naira",
+          "code": "NGN",
+          "number": "566",
+          "approved": false
+        },
+        {
+          "id": 2,
+          "country": "United Kindom",
+          "name": "Pound Sterling",
+          "code": "GBP",
+          "number": "826",
+          "approved": false
+        }
+      ]
+    }`,
   
    },
 
@@ -391,6 +989,53 @@ const Details = () => {
     print(response.text)
     
     `,
+    code3res:`
+    {
+      "transactionRef": "SUCCESS",
+      "status": true,
+      "message": "1 Wallet Funding Request recieved",
+      "data": [
+        {
+          "id": 78053836,
+          "dateCreated": "2023-10-27 10:51:58.889777",
+          "userId": 0,
+          "amountRequested": 150000,
+          "status": "Pending",
+          "userWallet": {
+            "walletId": 19680003,
+            "balance": 0,
+            "name": "OhentPay by Providus",
+            "note": "OhentPay by Providus Wallet",
+            "country": {
+              "regionId": 1,
+              "subRegionId": 3,
+              "telephoneCode": "234",
+              "currencyCode": "NGN",
+              "emoji": "??",
+              "status": false,
+              "id": 161,
+              "name": "Nigeria",
+              "longitude": "8",
+              "latitude": "10"
+            }
+          },
+          "lastUpdatedBy": 0,
+          "lastUpdated": "2023-10-27 10:51:58.889777",
+          "amountApproved": 150000,
+          "comment": "Hello",
+          "balanceBeforeRequest": 0
+        }
+      ]
+    }
+    `,
+    code2res:`
+    {
+      "transactionRef": "SUCCESS",
+      "status": true,
+      "message": "Wallet funding request succesfully created.",
+      "data": ""
+    }
+    `,
     codetwo:`
     import requests
 
@@ -405,6 +1050,30 @@ const Details = () => {
     
     
     `,
+    code1res:`
+    {
+      "transactionRef": "Currency recieved",
+      "status": true,
+      "message": "SUCCESS",
+      "data": [
+        {
+          "id": 1,
+          "country": "Nigeria",
+          "name": "Naira",
+          "code": "NGN",
+          "number": "566",
+          "approved": false
+        },
+        {
+          "id": 2,
+          "country": "United Kindom",
+          "name": "Pound Sterling",
+          "code": "GBP",
+          "number": "826",
+          "approved": false
+        }
+      ]
+    }`,
     codethree:`
     import requests
 
@@ -435,6 +1104,78 @@ const Details = () => {
     task.resume()
     
     `,
+    code3res:`
+    {
+      "transactionRef": "SUCCESS",
+      "status": true,
+      "message": "1 Wallet Funding Request recieved",
+      "data": [
+        {
+          "id": 78053836,
+          "dateCreated": "2023-10-27 10:51:58.889777",
+          "userId": 0,
+          "amountRequested": 150000,
+          "status": "Pending",
+          "userWallet": {
+            "walletId": 19680003,
+            "balance": 0,
+            "name": "OhentPay by Providus",
+            "note": "OhentPay by Providus Wallet",
+            "country": {
+              "regionId": 1,
+              "subRegionId": 3,
+              "telephoneCode": "234",
+              "currencyCode": "NGN",
+              "emoji": "??",
+              "status": false,
+              "id": 161,
+              "name": "Nigeria",
+              "longitude": "8",
+              "latitude": "10"
+            }
+          },
+          "lastUpdatedBy": 0,
+          "lastUpdated": "2023-10-27 10:51:58.889777",
+          "amountApproved": 150000,
+          "comment": "Hello",
+          "balanceBeforeRequest": 0
+        }
+      ]
+    }
+    `,
+    code2res:`
+    {
+      "transactionRef": "SUCCESS",
+      "status": true,
+      "message": "Wallet funding request succesfully created.",
+      "data": ""
+    }
+    `,
+  
+    code1res:`
+    {
+      "transactionRef": "Currency recieved",
+      "status": true,
+      "message": "SUCCESS",
+      "data": [
+        {
+          "id": 1,
+          "country": "Nigeria",
+          "name": "Naira",
+          "code": "NGN",
+          "number": "566",
+          "approved": false
+        },
+        {
+          "id": 2,
+          "country": "United Kindom",
+          "name": "Pound Sterling",
+          "code": "GBP",
+          "number": "826",
+          "approved": false
+        }
+      ]
+    }`,
     codetwo:`
     let parameters = "\n{\n    \"userId\": 45586980,\n    \"amountRequested\": 150000,\n    \"userWallet\": {\n        \"walletId\": 19680003\n    },\n    \"comment\": \"Hello\",\n    \"lastUpdatedBy\" : 0\n}"
     let postData = parameters.data(using: .utf8)
@@ -844,7 +1585,7 @@ const newData =getUser?.data?.clientApps?.map((item, index) => {
               <div style={{display:"flex",justifyContent:"space-between",textAlign:"center"}}>
               <h3>Application Tokens</h3>
               <div className="btn" onClick={() => setMo2(!mod2)}>
-                <Button>Create App</Button>
+                  <p style={{fontSize:"15px",backgroundColor:"#00a85a",padding:"9px 30px",color:"#fff",borderRadius:"8px"}}>Create App</p>
 
               </div>
 
@@ -951,9 +1692,17 @@ const newData =getUser?.data?.clientApps?.map((item, index) => {
               {WebhooksHHead && (
                   <div  className="tdd">
                     {/* <img src={WebhooksHHead?.image} /> */}
+                    <div className="tddcontentParent">
+                    <div className="tddcontent tddcontent1" >
+                    <code>request</code>
+                    <hr/>
+                      <pre className="pre1">{WebhooksHHead?.code}</pre>
+                    </div>
                     <div className="tddcontent">
-                    <pre>{WebhooksHHead?.code}</pre>
-
+                      <code>response</code>
+                    <hr/>
+                    <pre>{WebhooksHHead?.code1res}</pre>
+                    </div>
                     </div>
                   </div>
                 )
@@ -974,13 +1723,30 @@ const newData =getUser?.data?.clientApps?.map((item, index) => {
               </div>
               <div className="tbod">
               {WebhooksHHead && (
-                  <div  className="tdd">
-                    {/* <img src={WebhooksHHead?.image} /> */}
-                    <div className="tddcontent">
-                    <pre>{WebhooksHHead?.codetwo}</pre>
+                  // <div  className="tdd">
+                  //   {/* <img src={WebhooksHHead?.image} /> */}
+                  //   <div className="tddcontent">
+                  //   <pre>{WebhooksHHead?.codetwo}</pre>
 
-                    </div>
+                  //   </div>
+                  // </div>
+                  <div  className="tdd">
+                  {/* <img src={WebhooksHHead?.image} /> */}
+                  <div className="tddcontentParent">
+                  <div className="tddcontent tddcontent1" >
+                  <code>request</code>
+                  <hr/>
+                    <pre className="pre1">{WebhooksHHead?.codetwo}</pre>
                   </div>
+                  <div className="tddcontent">
+                    <code>response</code>
+                  <hr/>
+                  <pre>{WebhooksHHead?.code2res}</pre>
+                  </div>
+                  </div>
+                </div>
+
+                  
                 )
               }
               </div>
@@ -999,13 +1765,28 @@ const newData =getUser?.data?.clientApps?.map((item, index) => {
               </div>
               <div className="tbod">
               {WebhooksHHead && (
-                  <div  className="tdd">
-                    {/* <img src={WebhooksHHead?.image} /> */}
-                    <div className="tddcontent">
-                    <pre>{WebhooksHHead?.codethree}</pre>
+                  // <div  className="tdd">
+                  //   {/* <img src={WebhooksHHead?.image} /> */}
+                  //   <div className="tddcontent">
+                  //   <pre>{WebhooksHHead?.codethree}</pre>
 
-                    </div>
+                  //   </div>
+                  // </div>
+                  <div  className="tdd">
+                  {/* <img src={WebhooksHHead?.image} /> */}
+                  <div className="tddcontentParent">
+                  <div className="tddcontent tddcontent1" >
+                  <code>request</code>
+                  <hr/>
+                    <pre className="pre1">{WebhooksHHead?.codethree}</pre>
                   </div>
+                  <div className="tddcontent">
+                    <code>response</code>
+                  <hr/>
+                  <pre>{WebhooksHHead?.code3res}</pre>
+                  </div>
+                  </div>
+                </div>
                 )
               }
               </div>
@@ -1508,11 +2289,29 @@ const Retabletwo = styled.div`
 
     /* gap: 10px; */
   }
+  code{
+    text-align: center;
+  }
+  .tddcontentParent{
+    display: flex;
+    gap: 10px;
+    /* width: max-content; */
+  }
+  .tddcontent1{
+    width: 60%;
+  }
+  .pre1{
+    word-wrap: break-word;
+  }
   .tddcontent{
     box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.08), 0px 15px 35px -5px rgba(17, 24, 38, 0.15), 0px 0px 0px 1px rgba(152, 161, 178, 0.10);
     padding: 10px;
     border-radius: 20px;
+    /* width: 30%; */
     color: #5a6376;
+    pre:nth-last-of-type(0){
+      border: 1px solid red;
+    }
     &:hover{
       cursor: pointer;
     }

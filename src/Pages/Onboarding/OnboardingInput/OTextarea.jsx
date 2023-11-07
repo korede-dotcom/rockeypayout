@@ -35,7 +35,7 @@ textarea{
     box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
     outline: none;
     color: black;
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
     resize: none;
     border-bottom: 1px solid #000;
     /* border: none; */

@@ -16,8 +16,9 @@ import File from "./OnboardingInput/File.jsx";
 import { useNavigate } from 'react-router-dom';
 import DatePicker from "react-datepicker";
 import Success from '../../images/Success.svg'
-
+import toast from "react-hot-toast";
 import "react-datepicker/dist/react-datepicker.css";
+import { Spin } from "@arco-design/web-react";
 // import Select from "../../Reuseable/Inputs/Select.jsx";
 
 const Login = () => {
@@ -39,6 +40,7 @@ const Login = () => {
   //  State
   const [statee, setState] = useState([]);
   const [stateId, setStateId] = useState("");
+  const [loading, setLoading] = useState(false);
   const [stateValue, setStateValue] = useState("Default State");
 
 
@@ -129,34 +131,12 @@ const Login = () => {
 
 
 
-  // const [formData, setFormData] = useState({
-  //   email: "",
-  //   phone: "",
-  //   bvn: "",
-  //   address: null,
-  //   country: countryId,
-  //   state: "",
-  //   city: "",
-  //   companyName: "",
-  //   companyRegistrationNumber: "",
-  //   dateRegistered: "",
-  //   sector: "",
-  //   companyCertificateURL: null,
-  //   formCo7URL: "",
-  //   formCo2URL: "",
-  //   articlesAndMemorandumOfAssociation: "",
-  //   utilityBill: "",
-  //   username: "",
-  //   password: "",
-  //   // city: "",
-  // });
-  console.log("🚀 ~ file: Login.jsx:78 ~ Login ~ formData:", formData)
-
   useEffect(() => {
     console.log("companyName " + formData.companyName);
   }, [formData]);
 
   const handleSignup = async () =>{
+    setLoading(true)
     var requestOptions = {
       method: 'POST',
       body: JSON.stringify(formData),
@@ -165,7 +145,14 @@ const Login = () => {
     
    const response = await  fetch("https://apidoc.transferrocket.co.uk/payoutclientsignup", requestOptions)
   const reponseDate  = await response.json()
-  console.log("🚀 ~ file: Login.jsx:126 ~ handleSignup ~ reponseDate:", reponseDate)
+  setLoading(false)
+  if (reponseDate?.status) {
+   await toast.success(reponseDate?.message);
+    navigate("/")
+
+  }else{
+    toast.error(reponseDate?.message);
+  }
   }
 
   // Files Start
@@ -183,7 +170,6 @@ const Login = () => {
     
    const response = await fetch("https://apidoc.transferrocket.co.uk//FileUploadAPI", requestOptions)
     const responseData = await response.json()
-    console.log("🚀 ~ file: Login.jsx:98 ~ handleFileInputChange ~ responseData:", responseData)
 
 
 
@@ -798,7 +784,7 @@ const Login = () => {
           {
             activeTab >= 3 && (
           <div className="next" onClick={handleSignup}>
-            <button>Submit</button>
+            <button> {loading ? <Spin dot/> : "Submit"}</button>
           </div>
             )
    

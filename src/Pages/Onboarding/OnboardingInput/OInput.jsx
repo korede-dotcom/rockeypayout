@@ -5,7 +5,7 @@ const OInput = ({label, type, placeholder, onChange,name, value, forhtml}) => {
   return (
     <OnInput>   
             <label >{label}</label>
-            <input type={type} placeholder={placeholder} onChange={onChange} name={name} value={value} />
+            <input type={type} placeholder={placeholder} onChange={onChange} name={name} value={value}  />
     </OnInput>
   )
 }
@@ -37,7 +37,7 @@ const OnInput = styled.div`
             
             outline: none;
             color: black;
-            text-transform: capitalize;
+            /* text-transform: capitalize; */
             &::placeholder{
                 color: #A1A9B8;
                 font-size: 12px;

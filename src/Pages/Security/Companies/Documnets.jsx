@@ -3,6 +3,8 @@ import styled from "styled-components";
 import File from "../../../Reuseable/Inputs/File";
 import ReusableModal from "../../../reuseables/ReusableModal";
 import Btn from "../../../reuseables/Btn";
+import { Spin } from "@arco-design/web-react";
+import toast from "react-hot-toast";
 
 const Documnets = () => {
   const [getUser,setUser] = useState()
@@ -31,6 +33,9 @@ useEffect(() => {
     {img: getUser?.data?.utilityBill,id:6,name:"utilitybill"},
   ])
   
+  console.log("🚀 ~ file: Documnets.jsx:34 ~ useEffect ~ getUser i have reloaded:", getUser)
+  
+  
 }, [getUser])
 
 useEffect(() => {
@@ -47,10 +52,20 @@ useEffect(() => {
 
       const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userId?.data?.userId}`, requestOptions);
       const result = await response.json();
+
+      setUserFiles([
+        {img: result?.data?.formCo7URL,id:1,name:"formco7"},
+        { img: result?.data?.formCo2URL,id:2,name:"formco2"},
+        {img: result?.data?.idURL,id:3,name:"idurl"},
+        {img: result?.data?.companyCertificateURL,id:4,name:"registationcertificateurl"},
+        {img: result?.data?.articlesAndMemorandumOfAssociation,id:5,name:"articleandmemorandumofassociation"},
+        {img: result?.data?.utilityBill,id:6,name:"utilitybill"},
+      ])
       
       // Set the fetched data to state
-    
+    setUser(result)
       localStorage.setItem("userDetails",JSON.stringify(result))
+
       if(result?.data?.status){
         setShow(false)
         setShow2(false)
@@ -109,6 +124,7 @@ const [selectedFile, setSelectedFile] = useState(null);
   }
 
   const handleFileInputChange = async (name) => {
+    setLoading(true)
     var formdata = new FormData();
     formdata.append("file", selectedFile);
     console.log("🚀 ~ file: Documnets.jsx:72 ~ handleFileInputChange ~ selectedFile:", selectedFile)
@@ -152,16 +168,31 @@ const [selectedFile, setSelectedFile] = useState(null);
     
    const response = await fetch("https://apidoc.transferrocket.co.uk//updatepayoutclientfile", requestOptions)
     const responseData = await response.json();
-    console.log("🚀 ~ file: Documnets.jsx:92 ~ editAndDelete ~ responseData:", responseData)
     if (responseData?.status) {
+      const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${data.userId}`, requestOptions);
+      const result = await response.json();
+      console.log("🚀 ~ file: Documnets.jsx:174 ~ editAndDelete ~ result:", result)
+
+      setUserFiles([
+        {img: result?.data?.formCo7URL,id:1,name:"formco7"},
+        { img: result?.data?.formCo2URL,id:2,name:"formco2"},
+        {img: result?.data?.idURL,id:3,name:"idurl"},
+        {img: result?.data?.companyCertificateURL,id:4,name:"registationcertificateurl"},
+        {img: result?.data?.articlesAndMemorandumOfAssociation,id:5,name:"articleandmemorandumofassociation"},
+        {img: result?.data?.utilityBill,id:6,name:"utilitybill"},
+      ])
+      
       setRefetch(true)
+      toast.success(responseData?.message)
+      setLoading(false)
       setPreviewImage(null)
       setEditable(true)
       setShow2(!show2)
       // window.location.reload()
     }else{
       setLoading(false)
-      setInfo(responseData.message)
+      // setInfo(responseData.message)
+      toast.error(responseData?.message)
       setTimeout(() => {
         setInfo("")
       },2000)
@@ -240,8 +271,9 @@ const handleEdit = (id) => {
       {/* } */}
       <br/>
       {
+      
      
-       ( previewImage && selectedFile) && <Btn width={"100%"} clicking={handleFileInputChange}>{loading ? "loading ...." : "set your new File"}</Btn>
+       ( previewImage && selectedFile) && <Btn width={"100%"} clicking={handleFileInputChange}>{loading ? <Spin dot /> : "set your new File"}</Btn>
       }
       </ReusableModal>
 

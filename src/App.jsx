@@ -32,7 +32,7 @@ import InActivityTimeOut from "./hooks/InActivityTimeOut";
 import { ProtectedRoute } from "./hooks";
 import "@arco-design/web-react/dist/css/arco.css";
 import Beneficiary from "./Pages/Beneficiary/Beneficairy";
-
+import { Toaster } from "react-hot-toast";
 function App() {
   const [count, setCount] = useState(0);
 
@@ -41,6 +41,29 @@ function App() {
 
   return (
     <Router>
+         <Toaster
+        position="top-center"
+        toastOptions={{
+          success: {
+            style: {
+              fontSize: "16px",
+              marginTop: "14px",
+              color: "white",
+              background: "#3fb172",
+              padding: "10px",
+            },
+          },
+          error: {
+            style: {
+              fontSize: "16px",
+              marginTop: "14px",
+              color: "white",
+              background: "#ff0000",
+              padding: "10px",
+            },
+          },
+        }}
+      />
       <Routes>
         <Route element={<InActivityTimeOut />}>
           <Route path="/" element={<LoginR />} />

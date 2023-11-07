@@ -162,6 +162,7 @@ function LoginR() {
               
                 return
             }else{
+                toast.error(data?.message)
                 localStorage.setItem("userDetails",JSON.stringify(data))
                 navigate("/overview")
                 // if (!data.data.user.isKYCCompleted) {

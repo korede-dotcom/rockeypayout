@@ -11,7 +11,9 @@ font-family: 'Raleway', sans-serif;
   
   /* color: rgb(24, 24, 255); */
 }
-
+.arco-spin-dot{
+  background-color: #fff !important;
+}
 /* .container{
   display:flex;
 }

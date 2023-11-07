@@ -37,8 +37,27 @@ import alb from "../../assets/alb.png";
 import ngn from '../../assets/ngn.svg'
 import { toast } from "react-hot-toast";
 import CustomTable from "../../reuseables/CustomTable";
+import Btn from "../../reuseables/Btn";
+import Iframe from "../../reuseables/Iframe";
 
 
+
+// const demos = {
+//   soundcloud:
+//     '<iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://hopesuperagent.tm30.net/"></iframe>',
+
+//   plotly:
+//     '<iframe src="https://codesandbox.io/embed/q7jmjyplvq?fontsize=14" title="Plotly All Graph Types" allow="geolocation; microphone; camera; midi; vr; accelerometer; gyroscope; payment; ambient-light-sensor; encrypted-media" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>'
+// };
+
+// //codesandbox.io/s/react-iframe-demo-g3vst codePen =
+// function Iframe(props) {
+//   return (
+//     <div
+//       dangerouslySetInnerHTML={{ __html: props.iframe ? props.iframe : "" }}
+//     />
+//   );
+// }
 
 
 const Details = () => {
@@ -49,6 +68,10 @@ const Details = () => {
   const [loading, setLoading] = useState(false);
   const [current, setCurrent] = useState(null);
   const [info, setInfo] = useState("");
+  const [frame, showFrame] = useState(false);
+  
+
+
 
   const [WebhooksHHead, setWebhooksHead] = useState(
     {name: 'C', image: cc ,id:1,code:`
@@ -1484,6 +1507,10 @@ const newData =getUser?.data?.clientApps?.map((item, index) => {
   };
 });
 
+const handleIframe = () => {
+  showFrame(!frame)
+}
+
 
   return (
     <Layout>
@@ -1637,25 +1664,55 @@ const newData =getUser?.data?.clientApps?.map((item, index) => {
               <p>A description about sample codes goes here</p>
             </div>
             <div className="other">
-              <p className="sh" onClick={() => setOther(!others)}>
-               {
+            <Btn clicking={handleIframe}>
+              <p>Load Documentations</p>
+            </Btn>
+            {frame && (
+               <div
+               style={{
+                   position: "fixed",
+                   top: "0",
+                   left: "0",
+                   width: "100%",
+                   height: "100%",
+                   backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent backdrop
+                   display: "flex",
+                   justifyContent: "center",
+                   alignItems: "center",
+                   zIndex:"9999",
+                   
+               }}
+               >
+  <div style={{ minWidth: "80vw",}}>
+    <p>Close</p>
+    {/* <iframe width="100%" height="" src="https://hopesuperagent.tm30.net/"></iframe> */}
+    <Iframe  src="https://documenter.getpostman.com/view/7053312/2s9YXh42MG#6d9383a0-b791-4292-a844-13bd03ca48e8" width={"100%"} height={"600px"} />
+    {/* <Iframe iframe={demos["soundcloud"]} allow="autoplay" />, */}
+  </div>
+  </div>
+)}
+
+
+
+              {/* <p className="sh" onClick={() => setOther(!others)}> */}
+               {/* {
                 WebhooksHHead ? (
                   <span style={{display:"flex",gap:"10px"}} >
                      <img src={WebhooksHHead?.image} />
                     <span>{WebhooksHHead?.name}</span>
                   </span>
                 ) : "Other Languages"
-               } 
-              </p>
+               }  */}
+              {/* </p> */}
 
-              {others && <div className="showothers"  >
+              {/* {others && <div className="showothers"  >
                       {othermap.map((m,i) => (
                         <div className="oth" onClick={() => handleSelect(m.name)}>
                           <img  src={m.image} alt="" />
                           <span>{m.name}</span>
                         </div>
                       ))}
-                </div>}
+                </div>} */}
             </div>
           </div>
 
@@ -1670,7 +1727,9 @@ const newData =getUser?.data?.clientApps?.map((item, index) => {
           />
           <Retabletwo>
 
-          <Tabs>
+           
+
+{/* <Tabs>
     <TabList>
       <Tab>Get currency</Tab>
       <Tab>Make payout request</Tab>
@@ -1691,7 +1750,6 @@ const newData =getUser?.data?.clientApps?.map((item, index) => {
               <div className="tbod">
               {WebhooksHHead && (
                   <div  className="tdd">
-                    {/* <img src={WebhooksHHead?.image} /> */}
                     <div className="tddcontentParent">
                     <div className="tddcontent tddcontent1" >
                     <code>request</code>
@@ -1723,15 +1781,8 @@ const newData =getUser?.data?.clientApps?.map((item, index) => {
               </div>
               <div className="tbod">
               {WebhooksHHead && (
-                  // <div  className="tdd">
-                  //   {/* <img src={WebhooksHHead?.image} /> */}
-                  //   <div className="tddcontent">
-                  //   <pre>{WebhooksHHead?.codetwo}</pre>
-
-                  //   </div>
-                  // </div>
+         
                   <div  className="tdd">
-                  {/* <img src={WebhooksHHead?.image} /> */}
                   <div className="tddcontentParent">
                   <div className="tddcontent tddcontent1" >
                   <code>request</code>
@@ -1765,15 +1816,8 @@ const newData =getUser?.data?.clientApps?.map((item, index) => {
               </div>
               <div className="tbod">
               {WebhooksHHead && (
-                  // <div  className="tdd">
-                  //   {/* <img src={WebhooksHHead?.image} /> */}
-                  //   <div className="tddcontent">
-                  //   <pre>{WebhooksHHead?.codethree}</pre>
-
-                  //   </div>
-                  // </div>
+           
                   <div  className="tdd">
-                  {/* <img src={WebhooksHHead?.image} /> */}
                   <div className="tddcontentParent">
                   <div className="tddcontent tddcontent1" >
                   <code>request</code>
@@ -1792,7 +1836,7 @@ const newData =getUser?.data?.clientApps?.map((item, index) => {
               </div>
             </div>
     </TabPanel>
-  </Tabs>
+  </Tabs> */}
             
           </Retabletwo>
         </Box>

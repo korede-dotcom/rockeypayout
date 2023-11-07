@@ -36,6 +36,30 @@ const UserManagement = () => {
 
     setUser(JSON.parse(localStorage.getItem("userDetails")))
     },[sho])
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+          };
+  
+          const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userId?.data?.userId}`, requestOptions);
+          const result = await response.json();
+          
+
+          localStorage.setItem("userDetails",JSON.stringify(result))
+          console.log("Fetched data:", result);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+          // Handle errors here
+        }
+      };
+  
+      // Call the fetch function
+      fetchData();
+    }, []);
     
 
 
@@ -64,14 +88,23 @@ var requestOptions = {
 
 const response = await fetch(`https://apidoc.transferrocket.co.uk//addpayoutclientdeveloper/${getUser?.data?.userId}`, requestOptions)
 const data = await response?.json();
+console.log("🚀 ~ file: UserManagement.jsx:91 ~ submitUser ~ data:", data)
 setLoading(false)
 
 if (data?.status) {
   setInfo(data?.message)
-  // setShow(!sho)
+  setTimeout(() => {
+    setInfo(null)
+    setShow(!sho)
+  },1000)
+  window.location.reload()
 }else{
   // setShow(!sho)
   setInfo2(data?.message)
+  setTimeout(() => {
+    setInfo2(null)
+    setShow(!sho)
+  },1500)
 
 }
 console.log("🚀 ~ file: UserManagement.jsx:57 ~ submitUser ~ data:", data)
@@ -537,7 +570,7 @@ const Email = styled.div`
       border: none;
       color: black;
       font-weight: 300;
-      text-transform: capitalize;
+      /* text-transform: capitalize; */
       &::placeholder {
         color: #a1a9b8;
         font-size: 12px;
@@ -577,7 +610,7 @@ label {
     border: none;
     color: black;
     font-weight: 300;
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
     &::placeholder {
       color: #a1a9b8;
       font-size: 12px;

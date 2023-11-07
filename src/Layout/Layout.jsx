@@ -97,6 +97,6 @@ const Path = styled.div`
   .bold{
     color: #333;
     font-weight: 400;
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
   }
 `;

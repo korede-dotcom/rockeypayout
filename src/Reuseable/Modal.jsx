@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import cancel from '../assets/cancel.svg'
 
-const Modal = ({ width, height, children, setPayout, setShow, modalName, btn,handleSubmit ,cancleModal}) => {
+const Modal = ({ width, height, children, setPayout, setShow, modalName, btn,handleSubmit ,cancleModal,loading}) => {
 
   return (
     <ModalBox>
@@ -26,7 +26,7 @@ const Modal = ({ width, height, children, setPayout, setShow, modalName, btn,han
         <div className="buttons">
           <div className="btnbx">
             <div className="cancel" onClick={cancleModal} >Cancel</div>
-            <div className="proceed" onClick={handleSubmit}>{btn}</div>
+            <div className="proceed" onClick={handleSubmit}>{loading ? "loading ..." :btn}</div>
           </div>
         </div>
         }

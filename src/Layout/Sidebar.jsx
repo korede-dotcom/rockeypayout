@@ -85,7 +85,7 @@ const Sidebar = ({ selectedCategory }) => {
           // image: <Overview />
         },
         {
-          title: "User Details",
+          title: "Developers",
           path: "/security/user-management",
           image: <img src={market} alt="" />,
         },

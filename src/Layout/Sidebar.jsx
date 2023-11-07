@@ -16,9 +16,15 @@ import logo from "../assets/SidebarImg/logo.svg";
 
 const Sidebar = ({ selectedCategory }) => {
   const [isOpen, setIsOpen] = useState(true);
+  const [getUser, setuserDetails] = useState(true);
 
   const Navigate = useNavigate();
   const [market, setMarket] = useState([]);
+
+
+  useEffect(() => {
+    setuserDetails(JSON.parse(localStorage.getItem("userDetails")))
+  },[])
 
   const SidebarData = [
     {
@@ -116,6 +122,8 @@ const Sidebar = ({ selectedCategory }) => {
     }));
   }
 
+
+
   function useMarketData() {
     useEffect(() => {
       const fetchMarketData = async () => {
@@ -126,9 +134,10 @@ const Sidebar = ({ selectedCategory }) => {
           };
 
           const response = await fetch(
-            "https://apidoc.transferrocket.co.uk//getpayoutprovider",
+            `https://apidoc.transferrocket.co.uk//getpayoutprovider/${getUser?.data?.userId}`,
             requestOptions
           );
+
           const data = await response.json();
           setMarket(data?.data);
           console.log(

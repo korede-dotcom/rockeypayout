@@ -58,7 +58,7 @@ const Overview = () => {
       Image: successful,
       name: `Successful`,
       downImg: down,
-      count:sorted?.failed,
+      count:sorted?.successful,
       day: "count",
       border: "border",
       padding: "padding",

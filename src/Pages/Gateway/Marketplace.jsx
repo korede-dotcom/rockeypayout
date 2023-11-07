@@ -8,9 +8,11 @@ import FlexItems from '../../Reuseable/FlexItems';
 import Marketbox from '../../Reuseable/Marketbox';
 import {marketplaces} from '../../Mapables'
 import hope from "../../assets/SidebarImg/hope.svg";
+import { useNavigate } from 'react-router-dom';
+
 
 const Marketplace = () => {
-
+    const navigate =useNavigate()
     const [market,setMarket] = useState([])
     const [getUser,setUser] = useState()
 
@@ -47,6 +49,9 @@ const Marketplace = () => {
 
          const response = await fetch(`https://apidoc.transferrocket.co.uk//createpayoutclientwalletgatewayprovider/${getUser?.data?.userId}`, requestOptions)
          const data = await response.json()
+         if (data?.status) {
+            navigate("/")
+         }
          console.log("🚀 ~ file: Marketplace.jsx:49 ~ handleSubcribe ~ data:", data)
     }
 

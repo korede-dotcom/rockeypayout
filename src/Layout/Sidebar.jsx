@@ -16,15 +16,30 @@ import logo from "../assets/SidebarImg/logo.svg";
 
 const Sidebar = ({ selectedCategory }) => {
   const [isOpen, setIsOpen] = useState(true);
-  const [getUser, setuserDetails] = useState(true);
+  const [getUser, setuserDetails] = useState(null);
 
   const Navigate = useNavigate();
   const [market, setMarket] = useState([]);
+  const [dynamicGatewayItems, setDynamicGatewayItems] = useState([]);
 
 
   useEffect(() => {
-    setuserDetails(JSON.parse(localStorage.getItem("userDetails")))
-  },[])
+    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+    setuserDetails(userDetails);
+    const payOutClientWalletPayOutProviders = userDetails?.data?.payOutClientWalletPayOutProviders;
+    if (payOutClientWalletPayOutProviders) {
+      const formattedGatewayItems = payOutClientWalletPayOutProviders.map((d) => ({
+        title: `${d?.providerName} [${d?.wallet?.country?.currencyCode}]`,
+        path: d?.providerName?.includes("HopePSB") ? `/hopebank/?${d?.wallet?.country?.currencyCode}` : `/ohentpay/${d?.wallet?.country?.currencyCode}`,
+        image: d?.providerName?.includes("HopePSB") ? (
+          <img src={hope} alt="" />
+        ) : (
+          <img src={Ohentpay} alt="" />
+        ),
+      }));
+      setDynamicGatewayItems(formattedGatewayItems);
+    }
+  }, []);
 
   const SidebarData = [
     {
@@ -37,7 +52,8 @@ const Sidebar = ({ selectedCategory }) => {
           path: "/overview",
           image: <Overview />,
         },
-        ...generateGatewayItems(),
+        ...dynamicGatewayItems,
+        // ...generateGatewayItems(),
       ],
     },
     {
@@ -93,7 +109,7 @@ const Sidebar = ({ selectedCategory }) => {
         {
           title: "Developers",
           path: "/security/user-management",
-          image: <img src={market} alt="" />,
+          image: <img src={code} alt="" />,
         },
       ],
     },
@@ -109,12 +125,12 @@ const Sidebar = ({ selectedCategory }) => {
     },
   ];
 
-  function generateGatewayItems() {
-    const market = useMarketData(); // Fetch market data
+  async function generateGatewayItems() {
+    const market = MarketData(); // Fetch market data
     return market?.map((d) => ({
-      title: d?.name,
-      path: d?.name?.includes("HopePSB") ? "/hopebank" : "/ohentpay",
-      image: d?.name?.includes("HopePSB") ? (
+      title: d?.providerName,
+      path: d?.providerName?.includes("HopePSB") ? "/hopebank" : "/ohentpay",
+      image: d?.providerName?.includes("HopePSB") ? (
         <img src={hope} alt="" />
       ) : (
         <img src={Ohentpay} alt="" />
@@ -124,7 +140,7 @@ const Sidebar = ({ selectedCategory }) => {
 
 
 
-  function useMarketData() {
+  function MarketData() {
     useEffect(() => {
       const fetchMarketData = async () => {
         try {
@@ -134,12 +150,14 @@ const Sidebar = ({ selectedCategory }) => {
           };
 
           const response = await fetch(
-            `https://apidoc.transferrocket.co.uk//getpayoutprovider/${getUser?.data?.userId}`,
+            `https://apidoc.transferrocket.co.uk//getpayoutprovider`,
+            // `https://apidoc.transferrocket.co.uk//getpayoutprovider/${getUser?.data?.userId}`,
+         
             requestOptions
           );
 
           const data = await response.json();
-          setMarket(data?.data);
+          setMarket(getUser?.data?.payOutClientWalletPayOutProviders);
           console.log(
             "🚀 ~ file: Marketplace.jsx:22 ~ makeRequest ~ data:",
             data
@@ -218,7 +236,7 @@ const Sidebar = ({ selectedCategory }) => {
                 return (
                   <div
                     key={i}
-                    className={` navbx ${locate === m.path && "active"}`}
+                    className={` navbx ${locate === m?.path && "active"}`}
                   >
                     <div className="navImg">{m.image}</div>
                     <span

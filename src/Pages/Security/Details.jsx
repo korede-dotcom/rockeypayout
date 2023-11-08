@@ -1664,55 +1664,32 @@ const handleIframe = () => {
               <p>A description about sample codes goes here</p>
             </div>
             <div className="other">
-            <Btn clicking={handleIframe}>
+            {/* <Btn clicking={handleIframe}>
               <p>Load Documentations</p>
-            </Btn>
-            {frame && (
-               <div
-               style={{
-                   position: "fixed",
-                   top: "0",
-                   left: "0",
-                   width: "100%",
-                   height: "100%",
-                   backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent backdrop
-                   display: "flex",
-                   justifyContent: "center",
-                   alignItems: "center",
-                   zIndex:"9999",
-                   
-               }}
-               >
-  <div style={{ minWidth: "80vw",}}>
-    <p>Close</p>
-    {/* <iframe width="100%" height="" src="https://hopesuperagent.tm30.net/"></iframe> */}
-    <Iframe  src="https://documenter.getpostman.com/view/7053312/2s9YXh42MG#6d9383a0-b791-4292-a844-13bd03ca48e8" width={"100%"} height={"600px"} />
-    {/* <Iframe iframe={demos["soundcloud"]} allow="autoplay" />, */}
-  </div>
-  </div>
-)}
+            </Btn> */}
+        
 
 
 
-              {/* <p className="sh" onClick={() => setOther(!others)}> */}
-               {/* {
+              <p className="sh" onClick={() => setOther(!others)}> 
+          {
                 WebhooksHHead ? (
                   <span style={{display:"flex",gap:"10px"}} >
                      <img src={WebhooksHHead?.image} />
                     <span>{WebhooksHHead?.name}</span>
                   </span>
                 ) : "Other Languages"
-               }  */}
-              {/* </p> */}
+               }  
+              </p> 
 
-              {/* {others && <div className="showothers"  >
+               {others && <div className="showothers"  >
                       {othermap.map((m,i) => (
                         <div className="oth" onClick={() => handleSelect(m.name)}>
                           <img  src={m.image} alt="" />
                           <span>{m.name}</span>
                         </div>
                       ))}
-                </div>} */}
+                </div>}
             </div>
           </div>
 
@@ -1729,11 +1706,14 @@ const handleIframe = () => {
 
            
 
-{/* <Tabs>
+<Tabs>
     <TabList>
       <Tab>Get currency</Tab>
-      <Tab>Make payout request</Tab>
       <Tab>Get transactions status</Tab>
+      <Tab>Make payout request</Tab>
+      <Tab>Create PayOut Beneficiary</Tab>
+      <Tab>Get PayOut Beneficiary</Tab>
+      <Tab>Get Banks</Tab>
     </TabList>
 
     <TabPanel>
@@ -1836,7 +1816,7 @@ const handleIframe = () => {
               </div>
             </div>
     </TabPanel>
-  </Tabs> */}
+  </Tabs> 
             
           </Retabletwo>
         </Box>

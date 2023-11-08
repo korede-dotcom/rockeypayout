@@ -18,6 +18,7 @@ import OInput from "../Onboarding/OnboardingInput/OInput";
 import mail from "../../assets/mail.svg";
 import choose from "../../assets/choose.svg";
 import CustomTable from "../../reuseables/CustomTable";
+import toast from "react-hot-toast";
 
 const UserManagement = () => {
   const [sho, setShow] = useState(false);
@@ -36,6 +37,10 @@ const UserManagement = () => {
 
     setUser(JSON.parse(localStorage.getItem("userDetails")))
     },[sho])
+
+  useEffect(() => {
+    setUser(JSON.parse(localStorage.getItem("userDetails")))
+    },[getUser])
 
     useEffect(() => {
       const fetchData = async () => {
@@ -86,13 +91,20 @@ var requestOptions = {
   redirect: 'follow'
 };
 
+
 const response = await fetch(`https://apidoc.transferrocket.co.uk//addpayoutclientdeveloper/${getUser?.data?.userId}`, requestOptions)
 const data = await response?.json();
-console.log("🚀 ~ file: UserManagement.jsx:91 ~ submitUser ~ data:", data)
-setLoading(false)
 
 if (data?.status) {
-  setInfo(data?.message)
+setUser(data)
+const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${getUser?.data?.userId}`);
+const result = await response.json();
+console.log("🚀 ~ file: UserManagement.jsx:100 ~ submitUser ~ result:", result)
+
+setUser(result)
+localStorage.setItem("userDetails",JSON.stringify(result))
+  toast.success(data?.message)
+  setLoading(false)
   setTimeout(() => {
     setInfo(null)
     setShow(!sho)
@@ -100,17 +112,24 @@ if (data?.status) {
   window.location.reload()
 }else{
   // setShow(!sho)
-  setInfo2(data?.message)
+  // setInfo2(data?.message)
+  const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${getUser?.data?.userId}`);
+const result = await response.json();
+console.log("🚀 ~ file: UserManagement.jsx:100 ~ submitUser ~ result:", result)
+
+setUser(result)
+  setLoading(false)
+  toast.error(data?.message)
   setTimeout(() => {
     setInfo2(null)
     setShow(!sho)
   },1500)
 
 }
-console.log("🚀 ~ file: UserManagement.jsx:57 ~ submitUser ~ data:", data)
 }
 
 const handleCancel =() => {
+  setLoading(false)
   setInfo(null)
   setInfo2(null)
   setShow(!sho)
@@ -179,7 +198,7 @@ const columns = [
   },
 ];
 
-const newData = getUser?.data?.payOutClientDevelopers?.map((item, index) => {
+const newData = getUser?.data?.payOutClientDevelopers?.reverse()?.map((item, index) => {
   return {
     ...item,
     action: (

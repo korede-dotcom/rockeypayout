@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import cancel from '../assets/cancel.svg'
+import { Spin } from "@arco-design/web-react";
 
 const Modal = ({ width, height, children, setPayout, setShow, modalName, btn,handleSubmit ,cancleModal,loading}) => {
 
@@ -26,7 +27,7 @@ const Modal = ({ width, height, children, setPayout, setShow, modalName, btn,han
         <div className="buttons">
           <div className="btnbx">
             <div className="cancel" onClick={cancleModal} >Cancel</div>
-            <div className="proceed" onClick={handleSubmit}>{loading ? "loading ..." :btn}</div>
+            <div className="proceed" onClick={handleSubmit}>{loading ? <Spin dot/> : btn}</div>
           </div>
         </div>
         }
@@ -90,6 +91,7 @@ const ModalBox = styled.div`
     justify-content: end;
     width: 100%;
     padding: 20px 10px;
+    cursor: pointer;
     .btnbx {
       display: flex;
       align-items: center;

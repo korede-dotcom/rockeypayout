@@ -9,6 +9,8 @@ import cancel from "../assets/cancel.svg";
 import Select from "./Inputs/Select";
 import Textarea from "./Inputs/Textarea";
 import TextInput from "./Inputs/TextInput";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const FlexWrapper = ({
   name,
@@ -22,19 +24,12 @@ const FlexWrapper = ({
   // payout,
   // setPayout,
 }) => {
-  // const [show, setShow] = useState(false);
-  // const [user,setuser] = useState()
-  // const showModal = () => {
-    //   setShow(!show);
-    //   if (payout) {
-      //     setShow(false);
-      //   }
-  // };
+  const navigate = useNavigate()
   const [user, setUser] = useState(null);
   const [payout, setPayout] = useState(false);
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [info, setInfo] = useState("");
+  // const [info, setInfo] = useState("");
   const [payouttwo, setPayouttwo] = useState(false);
   const [fundingRequest, setFundingRequest] = useState({
     userId: null,
@@ -42,7 +37,7 @@ const FlexWrapper = ({
     userWallet: {
       walletId: null
     },
-    comment: '',
+    comment: "",
     lastUpdatedBy: 0
   });
   console.log("🚀 ~ file: FlexWrapper.jsx:45 ~ fundingRequest:", fundingRequest)
@@ -71,24 +66,35 @@ const FlexWrapper = ({
     const { name, value } = e.target;
   
     // Force the amountRequested value to be a number
-    const amountRequestedAsNumber = Number(value);
-    if (!isNaN(amountRequestedAsNumber)) {
+    // if (name === "amountRequested") {
+    //   const amountRequestedAsNumber = Number(value);
+    //   if (!isNaN(amountRequestedAsNumber)) {
+    //     setFundingRequest(prevState => ({
+    //       ...prevState,
+    //       [name]: amountRequestedAsNumber,
+    //     }));
+    //   } else {
+    //     // amountRequested is not a number, so reset it to ""
+    //     setFundingRequest(prevState => ({
+    //       ...prevState,
+    //       [name]: "",
+    //     }));
+    //   }
+    // } else {
+      // For other properties, keep them as strings
       setFundingRequest(prevState => ({
+
         ...prevState,
-        [name]: amountRequestedAsNumber,
+      amountRequested: parseInt(prevState.amountRequested),
+        [name]: value,
       }));
-    } else {
-      // amountRequested is not a number, so reset it to 0
-      setFundingRequest(prevState => ({
-        ...prevState,
-        [name]: null,
-      }));
-    }
+    // }
   };
+  
 
 
   const CreateWalletFundingRequest = async () => {
-    setLoading(true)
+    // setLoading(true)
     var requestOptions = {
       method: 'POST',
       body: JSON.stringify(fundingRequest),
@@ -97,14 +103,19 @@ const FlexWrapper = ({
     
    const response = await fetch("https://apidoc.transferrocket.co.uk//walletfundingrequest", requestOptions);
    const data = await response.json()
+   console.log("🚀 ~ file: FlexWrapper.jsx:101 ~ CreateWalletFundingRequest ~ data:", data)
    if(data?.status){
-     setLoading(false)
-       setInfo(data?.message)
-       setTimeout(() => {
-      setInfo("")
-      setShow(!show)
 
-    }, 1000);
+     navigate("/overview")
+    toast.success(data?.message)
+    // console.log("🚀 ~ file: Documnets.jsx:174 ~ editAndDelete ~ result:", result)
+    setLoading(false)
+    setShow(!show)
+
+   }else{
+    toast.error(data?.message)
+    setShow(!show)
+    // setShow(!show)
    }
    console.log("🚀 ~ file: FlexWrapper.jsx:96 ~ CreateWalletFundingRequest ~ data:", data)
   }
@@ -186,17 +197,17 @@ const FlexWrapper = ({
               </div>
               {payouttwo && (
                 <Modal
-                  // height="350px"
-                  // width="350px"
+                 
 
                   setShow={setShow}
                   setPayout={setPayout}
                   modalName="Fund Gateway"
                   btn="Fund"
                   cancleModal={() => setShow(!show)}
+                  loading={loading}
                   handleSubmit={CreateWalletFundingRequest}
                 >
-                  {info && (<p style={{color:"green"}}>{info}</p>)}
+                  {/* {info && (<p style={{color:"green"}}>{info}</p>)} */}
                   <ModalInner>
                     <TextInput label="Amount" name="amountRequested" placeholder="input amount" change={handlechange}/>
                     <Textarea
@@ -205,7 +216,8 @@ const FlexWrapper = ({
                       background="#FFF"
                       margin="20px 0"
                       name="comment"
-                      value={fundingRequest?.comment}
+                      loading={loading}
+                      value={ fundingRequest?.comment}
                       change={handlechange}
                     />
                   </ModalInner>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import { useNavigate } from "react-router-dom";
-import { SidebarData } from "../Mapables";
+// import { SidebarData } from "../Mapables";
 import Overview from "../assets/SidebarImg/overview";
 import Ohentpay from "../assets/SidebarImg/ohentpay.svg";
 import user from "../assets/SidebarImg/user.png";
@@ -21,14 +21,14 @@ const Sidebar = ({ selectedCategory }) => {
   const Navigate = useNavigate();
   const [market, setMarket] = useState([]);
   const [dynamicGatewayItems, setDynamicGatewayItems] = useState([]);
+  const [SidebarData, setSidebarData] = useState([]);
 
-
-  useEffect(() => {
+useEffect(() => {
     const userDetails = JSON.parse(localStorage.getItem("userDetails"));
     setuserDetails(userDetails);
     const payOutClientWalletPayOutProviders = userDetails?.data?.payOutClientWalletPayOutProviders;
     if (payOutClientWalletPayOutProviders) {
-      const formattedGatewayItems = payOutClientWalletPayOutProviders.map((d) => ({
+      const formattedGatewayItems = payOutClientWalletPayOutProviders?.map((d) => ({
         title: `${d?.providerName} [${d?.wallet?.country?.currencyCode}]`,
         path: d?.providerName?.includes("HopePSB") ? `/hopebank/?${d?.wallet?.country?.currencyCode}` : `/ohentpay/${d?.wallet?.country?.currencyCode}`,
         image: d?.providerName?.includes("HopePSB") ? (
@@ -38,92 +38,195 @@ const Sidebar = ({ selectedCategory }) => {
         ),
       }));
       setDynamicGatewayItems(formattedGatewayItems);
-    }
-  }, []);
-
-  const SidebarData = [
-    {
-      pageName: "Gateway",
-      Name: "My GATEWAYS",
-      path: "/overview",
-      Gateway: [
+      setSidebarData([
         {
-          title: "Overview",
+          pageName: "Gateway",
+          Name: "My GATEWAYS",
           path: "/overview",
-          image: <Overview />,
+          Gateway: [
+            {
+              title: "Overview",
+              path: "/overview",
+              image: <Overview />,
+            },
+            ...formattedGatewayItems,
+            // ...generateGatewayItems(),
+          ],
         },
-        ...dynamicGatewayItems,
-        // ...generateGatewayItems(),
-      ],
-    },
-    {
-      pageName: "Gateway",
-      Name: "ALL GATEWAYS",
-      path: "/marketplace",
-      Gateway: [
         {
-          title: "Marketplace",
+          pageName: "Gateway",
+          Name: "ALL GATEWAYS",
           path: "/marketplace",
-          image: <img src={market} alt="" />,
+          Gateway: [
+            {
+              title: "Marketplace",
+              path: "/marketplace",
+              image: <img src={market} alt="" />,
+            },
+          ],
         },
-      ],
-    },
-    {
-      pageName: "Transactions",
-      Name: "Transactions",
-      path: "/transaction",
-      Gateway: [
         {
-          title: "Transaction",
+          pageName: "Transactions",
+          Name: "Transactions",
           path: "/transaction",
-          image: <Overview />,
-        },
-      ],
-    },
-    {
-      pageName: "Security",
-      Name: "Security",
-      path: "/security/profile",
-      Gateway: [
-        {
-          title: "User Profile",
-          path: "/security",
-          image: <img src={user} alt="" />,
+          Gateway: [
+            {
+              title: "Transaction",
+              path: "/transaction",
+              image: <Overview />,
+            },
+          ],
         },
         {
-          title: "Company Profile",
-          path: "/security/company",
-          image: <img src={cprofile} alt="" />,
+          pageName: "Security",
+          Name: "Security",
+          path: "/security/profile",
+          Gateway: [
+            {
+              title: "User Profile",
+              path: "/security",
+              image: <img src={user} alt="" />,
+            },
+            {
+              title: "Company Profile",
+              path: "/security/company",
+              image: <img src={cprofile} alt="" />,
+            },
+            {
+              title: "API",
+              path: "/security/API",
+              image: <img src={code} alt="" />,
+            },
+            {
+              title: "Change Password",
+              path: "/security/change-password",
+              image: <img src={lock} alt="" />,
+              // image: <Overview />
+            },
+            {
+              title: "Developers",
+              path: "/security/user-management",
+              image: <img src={code} alt="" />,
+            },
+          ],
         },
         {
-          title: "API",
-          path: "/security/API",
-          image: <img src={code} alt="" />,
+          pageName: "Beneficiary",
+          Name: "Beneficiary",
+          path: "/beneficairy",
         },
         {
-          title: "Change Password",
-          path: "/security/change-password",
-          image: <img src={lock} alt="" />,
-          // image: <Overview />
+          pageName: "Logout",
+          Name: "Logout",
+          path: "/",
         },
-        {
-          title: "Developers",
-          path: "/security/user-management",
-          image: <img src={code} alt="" />,
-        },
-      ],
-    },
-    {
-      pageName: "Beneficiary",
-      Name: "Beneficiary",
-      path: "/beneficairy",
-    },
-    {
-      pageName: "Logout",
-      Name: "Logout",
-      path: "/",
-    },
-  ];
+        // ... other sections
+      ]);
+    }
+  }, [dynamicGatewayItems]);
+
+
+  // useEffect(() => {
+  //   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+  //   setuserDetails(userDetails);
+  //   const payOutClientWalletPayOutProviders = userDetails?.data?.payOutClientWalletPayOutProviders;
+  //   if (payOutClientWalletPayOutProviders) {
+  //     const formattedGatewayItems = payOutClientWalletPayOutProviders.map((d) => ({
+  //       title: `${d?.providerName} [${d?.wallet?.country?.currencyCode}]`,
+  //       path: d?.providerName?.includes("HopePSB") ? `/hopebank/?${d?.wallet?.country?.currencyCode}` : `/ohentpay/${d?.wallet?.country?.currencyCode}`,
+  //       image: d?.providerName?.includes("HopePSB") ? (
+  //         <img src={hope} alt="" />
+  //       ) : (
+  //         <img src={Ohentpay} alt="" />
+  //       ),
+  //     }));
+  //     setDynamicGatewayItems(formattedGatewayItems);
+  //   }
+  // }, []);
+
+  // const SidebarData = [
+  //   {
+  //     pageName: "Gateway",
+  //     Name: "My GATEWAYS",
+  //     path: "/overview",
+  //     Gateway: [
+  //       {
+  //         title: "Overview",
+  //         path: "/overview",
+  //         image: <Overview />,
+  //       },
+  //       ...dynamicGatewayItems,
+  //       // ...generateGatewayItems(),
+  //     ],
+  //   },
+  //   {
+  //     pageName: "Gateway",
+  //     Name: "ALL GATEWAYS",
+  //     path: "/marketplace",
+  //     Gateway: [
+  //       {
+  //         title: "Marketplace",
+  //         path: "/marketplace",
+  //         image: <img src={market} alt="" />,
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     pageName: "Transactions",
+  //     Name: "Transactions",
+  //     path: "/transaction",
+  //     Gateway: [
+  //       {
+  //         title: "Transaction",
+  //         path: "/transaction",
+  //         image: <Overview />,
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     pageName: "Security",
+  //     Name: "Security",
+  //     path: "/security/profile",
+  //     Gateway: [
+  //       {
+  //         title: "User Profile",
+  //         path: "/security",
+  //         image: <img src={user} alt="" />,
+  //       },
+  //       {
+  //         title: "Company Profile",
+  //         path: "/security/company",
+  //         image: <img src={cprofile} alt="" />,
+  //       },
+  //       {
+  //         title: "API",
+  //         path: "/security/API",
+  //         image: <img src={code} alt="" />,
+  //       },
+  //       {
+  //         title: "Change Password",
+  //         path: "/security/change-password",
+  //         image: <img src={lock} alt="" />,
+  //         // image: <Overview />
+  //       },
+  //       {
+  //         title: "Developers",
+  //         path: "/security/user-management",
+  //         image: <img src={code} alt="" />,
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     pageName: "Beneficiary",
+  //     Name: "Beneficiary",
+  //     path: "/beneficairy",
+  //   },
+  //   {
+  //     pageName: "Logout",
+  //     Name: "Logout",
+  //     path: "/",
+  //   },
+  // ];
 
   async function generateGatewayItems() {
     const market = MarketData(); // Fetch market data
@@ -227,21 +330,20 @@ const Sidebar = ({ selectedCategory }) => {
                 margin: isOpen ? "0 0 5px 0" : "0 0 10px 0",
               }}
             >
-              {selectedCategoryData.Name}
+              {selectedCategoryData?.Name}
             </p>
             <div className="navcContainer">
-              {selectedCategoryData.Gateway.map((m, i) => {
-                console.log(m.path);
+              {selectedCategoryData?.Gateway?.map((m, i) => {
                 // setNav(m.path);
                 return (
                   <div
                     key={i}
                     className={` navbx ${locate === m?.path && "active"}`}
                   >
-                    <div className="navImg">{m.image}</div>
+                    <div className="navImg">{m?.image}</div>
                     <span
                       onClick={() => {
-                        Navigate(m.path);
+                        Navigate(m?.path);
                       }}
                       style={{ display: isOpen ? "" : "none" }}
                     >

@@ -12,14 +12,19 @@ import Checkbox from "../assets/checkbox";
 const Header = ({ setPropsPassed, SelectedCategory }) => {
   const [live, setLive] = useState(false);
   const [user, setUser] = useState(null);
+  const [userRole, setUserRole] = useState(null);
   console.log("🚀 ~ file: Header.jsx:15 ~ Header ~ user:", user)
   const { pathname } = useLocation();
   const Navigate = useNavigate();
   useEffect(() => {
     setUser(JSON.parse(localStorage?.getItem("userDetails")))
   }, [])
+
+  useEffect(() => {
+    setUserRole(user?.roleId);
+  }, [user]);
   
-  const headerTab = [
+  let headerTab = [
     {
       id: 0,
       name: "Gateway",
@@ -37,10 +42,15 @@ const Header = ({ setPropsPassed, SelectedCategory }) => {
     },
     {
       id: 3,
-      name: "Beneficairy",
+      name: "Beneficiary",
       path: "/beneficiary",
     },
   ];
+
+  // Filter the headerTab based on userRole
+  if (userRole === 8) {
+    headerTab = headerTab.filter((item) => item.name === "Security");
+  }
   const [headtab, setHeadTab] = useState(0);
   const [showProfile, setShowProfile] = useState(false);
 
@@ -116,17 +126,25 @@ const handleLink = (key) => {
               <hr
                 style={{ border: ".5px solid #F2F4F7", margin: "10px 0 0 0" }}
               />
-              <div className="bx" onClick={() => handleLink(1)}>
-                <img src={pro} alt="" />
-                <span>View Profile</span>
-              </div>
-              <div className="bx" onClick={() => handleLink(2)}>
-                <img src={pas} alt="" />
-                <span>Change Password</span>
-              </div>
-              <hr
-                style={{ border: ".5px solid #F2F4F7", margin: " 0 0 0 0" }}
-              />
+              {
+                userRole === 8 ? (<></>) : (
+                  <>
+                  
+                  <div className="bx" onClick={() => handleLink(1)}>
+                    <img src={pro} alt="" />
+                    <span>View Profile</span>
+                  </div>
+                  <div className="bx" onClick={() => handleLink(2)}>
+                    <img src={pas} alt="" />
+                    <span>Change Password</span>
+                  </div>
+                  <hr
+                    style={{ border: ".5px solid #F2F4F7", margin: " 0 0 0 0" }}
+                  />
+                  </>
+
+                )
+              }
               <div className="bx" onClick={() => handleLink(3)}>
                 <img src={logout} alt="" />
                 <span style={{color:"red"}}>Log Out</span>

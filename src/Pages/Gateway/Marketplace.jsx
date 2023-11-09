@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect,useCallback} from 'react'
 import styled from 'styled-components';
 // 
 import Layout from '../../Layout/Layout';
@@ -15,7 +15,8 @@ const Marketplace = () => {
     const navigate =useNavigate()
     const [market,setMarket] = useState([])
     const [getUser,setUser] = useState()
-
+    const [num,setNum] = useState(0)
+    const [isClicked, setIsClicked] = useState(false);
     useEffect(() => {
         const makeRequest = async () => {
             var requestOptions = {
@@ -35,7 +36,12 @@ const Marketplace = () => {
     },[])
 
     const handleSubcribe = async (id) => {
-    console.log("🚀 ~ file: Marketplace.jsx:36 ~ handleSubcribe ~ id:", id)
+        if (isClicked) {
+        console.log("🚀 ~ file: Marketplace.jsx:36 ~ handleSubcribe ~ id:", id)
+        return; // Prevent double click
+      }
+  
+      setIsClicked(true); 
 
             var requestOptions = {
             method: 'POST',
@@ -54,6 +60,7 @@ const Marketplace = () => {
          }
          console.log("🚀 ~ file: Marketplace.jsx:49 ~ handleSubcribe ~ data:", data)
     }
+
 
   return (
     <Layout>

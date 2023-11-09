@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 const Layout = ({children}) => {
   const [activeTab, setActiveTab] = useState('Gateway');
+  const [getUser, setUser] = useState(null);
   // const locate = window.location.pathname.split("/", );
   // const locate = window.location.pathname.split('/').reduce((acc, pathPart) => {
   //   if (pathPart === 'security') {
@@ -25,9 +26,11 @@ const Layout = ({children}) => {
 
   }, [activeTab])
   // const [selectedCategory, setSelectedCategory] = useState('Gateway');
-  // useEffect(() => {
-  //   console.log("activeTab:", activeTab)
-  // },[activeTab])
+  useEffect(() => {
+    setUser(JSON.parse(localStorage.getItem("userDetails")))
+  },[])
+
+
 
   return (
     // <LayoutContainer>
@@ -41,6 +44,15 @@ const Layout = ({children}) => {
     <Main>
       <Header setPropsPassed={setActiveTab} />
       <Content>
+        {
+          window.location.pathname === "/security/API" ? (
+            <Path>
+             <span>ClientId</span>
+             <span>/</span>
+             <span style={{fontWeight:"400"}}>{getUser?.data?.clientKeys?.clientId}</span>
+            </Path>
+          ) : (
+
         <Path>
           <span>pages</span>
           <span>/</span>
@@ -48,6 +60,8 @@ const Layout = ({children}) => {
           <span>/</span>
           <span className='bold'>{locate}</span>
         </Path>
+          )
+        }
         {children}
       </Content>
     </Main>

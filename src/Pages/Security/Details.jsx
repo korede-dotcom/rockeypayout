@@ -69,6 +69,8 @@ const Details = () => {
   const [current, setCurrent] = useState(null);
   const [info, setInfo] = useState("");
   const [frame, showFrame] = useState(false);
+  const [act1, setAct1] = useState(true);
+  const [act2, setAct2] = useState(false);
   
 
 
@@ -1511,6 +1513,15 @@ const handleIframe = () => {
   showFrame(!frame)
 }
 
+const handleset1 = () => {
+  setAct1(!act1)
+  setAct2(false)
+}
+const handleset2 = () => {
+  setAct2(!act2)
+  setAct1(false)
+}
+
 
   return (
     <Layout>
@@ -1522,12 +1533,23 @@ const handleIframe = () => {
               This overview provides a comprehensive snapshot of wallet
               transactions on your system
             </p>
+            <br/>
+            <div style={{display:"flex",gap:"20px",cursor:"pointer"}}>
+            <div className={act1 ? "btn" : 'btnactive'} onClick={handleset1}>
+                  <p style={{fontSize:"15px",backgroundColor:"#00a85a",padding:"9px 30px",color:"#fff",borderRadius:"8px"}}>Gateways</p>
+            </div>
+            <div className={act2 ? "btn" : 'btnactive'} onClick={handleset2}>
+                  <p className="" style={{fontSize:"15px",backgroundColor:"#00a85a",padding:"9px 30px",color:"#fff",borderRadius:"8px"}}>Applications</p>
+            </div>
+           
+            </div>
           </div>
           <div className="rightside">
             <p onClick={() => setMo(true)}>
               <img src={key} alt="" />
               <span>View API Keys</span>
             </p>
+          
             {mod && (
               <Modal
                 width="430px"
@@ -1598,6 +1620,9 @@ const handleIframe = () => {
             )}
           </div>
         </div>
+       
+
+
         <Box
           border="none"
           width="100%"
@@ -1607,6 +1632,32 @@ const handleIframe = () => {
           alignItems="flex-start"
           padding="20px 0"
         >
+           {
+              act1 && (
+               <>
+                   {/* <hr
+            style={{
+              width: "calc(100% - 40px)",
+              margin: "10px 20px",
+              border: ".5px solid #EAECF0",
+            }}
+          /> */}
+          <p style={{padding:"10px"}}>Gateways</p>
+          {/* <Reusetable /> */}
+          <Content>
+          <CustomTable
+          noData={getUser?.data?.clientApps.length}
+          // loading={isLoading || isFetching}
+          Apidata={newData}
+          tableColumns={columns}
+        />
+          </Content>
+               </>
+              )
+            }
+           {
+              act2 && (
+             <>
           <Apiwrap>
             <div className="top">
               <div style={{display:"flex",justifyContent:"space-between",textAlign:"center"}}>
@@ -1652,11 +1703,10 @@ const handleIframe = () => {
           Apidata={newData}
           tableColumns={columns}
         />
-
           </Content>
-
-
-      
+        </>
+              )
+            }
 
           <div className="webhook">
             <div className="con">
@@ -1834,7 +1884,7 @@ width: 100%;
   .top {
     padding: 10px 30px 30px 20px;
   }
-
+ 
   .tablecontent {
     background-color: white;
     margin-bottom: 30px;
@@ -1951,6 +2001,20 @@ const ApiBox = styled.div`
       flex-direction: column;
       align-items: flex-start;
       row-gap: 5px;
+      .btn{
+        &hover{
+          
+        }
+      }
+      .btnactive{
+      border: #00a85a 1px solid ;
+      background-color: #fff;
+      border-radius: 7px;
+     p{
+        background-color: #fff !important;
+        color: #00a85a !important;
+      }
+    }
       h1 {
         color: #090814;
         font-size: 22px;
@@ -2063,6 +2127,7 @@ const Apiwrap = styled.div`
 
       }
     }
+   
     h3 {
       color: #090814;
       font-size: 14px;

@@ -290,27 +290,32 @@ const handleEdit = (id) => {
           border: ".7px solid #EAECF0",
         }}
       />
+        <div className="grid">
+        <div className="gridc">
       {
         getUserFiles && getUserFiles?.map(d => {
           return (
-            <>
-            <InputWrapBox>
-              <p>{d?.name}</p>
-              <File value={d?.img} name={d?.name} handleView={() => handleView(d?.id)} handleEdit={() =>handleEdit(d?.id)} />
-            </InputWrapBox>
-            <hr
-              style={{
-                width: "100%",
-                margin: "15px 0",
-                border: ".7px solid #EAECF0",
-              }}
-            />
-            
-            </>
+            <div >
+              <InputWrapBox>
+                <p>{d?.name}</p>
+                <File value={d?.img} name={d?.name} handleView={() => handleView(d?.id)} handleEdit={() =>handleEdit(d?.id)} />
+              </InputWrapBox>
+              <hr
+                style={{
+                  width: "100%",
+                  margin: "15px 0",
+                  border: ".7px solid #EAECF0",
+                }}
+              />
 
-          )
-        })
+            </div>
+            
+            
+            )
+          })
       }
+          </div>
+          </div>
    
             <EndBtn>
         <div className="btns">
@@ -325,8 +330,17 @@ const handleEdit = (id) => {
 export default Documnets;
 
 const DocumentsBox = styled.div`
-  margin: 20px 0;
+  /* margin: 20px 0; */
   width: 100%;
+  overflow-x: scroll;
+  .grid{
+    width: 100%;
+    overflow-x: scroll;
+    .gridc{
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(50%, 1fr));
+    }
+  }
   
   .head {
     h1 {

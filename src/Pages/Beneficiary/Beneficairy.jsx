@@ -78,20 +78,20 @@ const Beneficiary = () => {
         // }
       })
       .catch((error) => console.log("error", error));
-    fetch(
-      "https://apidoc.transferrocket.co.uk//getbanks",
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("🚀 ~ file: Beneficairy.jsx:64 ~ .then ~ data:", data)
-        // setIdTypes(data.data);
-        // if (data.data.length > 0) {
-        //   setCountryId(data.data[0].id);
-        //   setCountryValue(data.data[0].name);
-        // }
-      })
-      .catch((error) => console.log("error", error));
+    // fetch(
+    //   "https://apidoc.transferrocket.co.uk//getbanks",
+    //   requestOptions
+    // )
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     console.log("🚀 ~ file: Beneficairy.jsx:64 ~ .then ~ data:", data)
+    //     // setIdTypes(data.data);
+    //     // if (data.data.length > 0) {
+    //     //   setCountryId(data.data[0].id);
+    //     //   setCountryValue(data.data[0].name);
+    //     // }
+    //   })
+    //   .catch((error) => console.log("error", error));
   }, []);
 
   useEffect(() => {
@@ -116,29 +116,29 @@ const Beneficiary = () => {
     return s?.name;
   });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const requestOptions = {
-          method: "GET",
-          redirect: "follow",
-        };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const requestOptions = {
+  //         method: "GET",
+  //         redirect: "follow",
+  //       };
 
-        const response = await fetch(
-          "https://apidoc.transferrocket.co.uk/getbanks",
-          requestOptions
-        );
-        const result = await response.json();
+  //       const response = await fetch(
+  //         "https://apidoc.transferrocket.co.uk/getbanks",
+  //         requestOptions
+  //       );
+  //       const result = await response.json();
 
-        console.log("banks", JSON.stringify(result));
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        // Handle errors here
-      }
-    };
+  //       console.log("banks", JSON.stringify(result));
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //       // Handle errors here
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
 
 

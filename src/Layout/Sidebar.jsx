@@ -23,10 +23,113 @@ const Sidebar = ({ selectedCategory }) => {
   const [dynamicGatewayItems, setDynamicGatewayItems] = useState([]);
   const [SidebarData, setSidebarData] = useState([]);
 
-useEffect(() => {
+// useEffect(() => {
+//     const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+//     setuserDetails(userDetails);
+//     const payOutClientWalletPayOutProviders = userDetails?.data?.payOutClientWalletPayOutProviders;
+//     if (payOutClientWalletPayOutProviders) {
+//       const formattedGatewayItems = payOutClientWalletPayOutProviders?.map((d) => ({
+//         title: `${d?.providerName} [${d?.wallet?.country?.currencyCode}]`,
+//         path: d?.providerName?.includes("HopePSB") ? `/hopebank/?${d?.wallet?.country?.currencyCode}` : `/ohentpay/${d?.wallet?.country?.currencyCode}`,
+//         image: d?.providerName?.includes("HopePSB") ? (
+//           <img src={hope} alt="" />
+//         ) : (
+//           <img src={Ohentpay} alt="" />
+//         ),
+//       }));
+//       setDynamicGatewayItems(formattedGatewayItems);
+//       setSidebarData([
+//         {
+//           pageName: "Gateway",
+//           Name: "My GATEWAYS",
+//           path: "/overview",
+//           Gateway: [
+//             {
+//               title: "Overview",
+//               path: "/overview",
+//               image: <Overview />,
+//             },
+//             ...formattedGatewayItems,
+//             // ...generateGatewayItems(),
+//           ],
+//         },
+//         {
+//           pageName: "Gateway",
+//           Name: "ALL GATEWAYS",
+//           path: "/marketplace",
+//           Gateway: [
+//             {
+//               title: "Marketplace",
+//               path: "/marketplace",
+//               image: <img src={market} alt="" />,
+//             },
+//           ],
+//         },
+//         {
+//           pageName: "Transactions",
+//           Name: "Transactions",
+//           path: "/transaction",
+//           Gateway: [
+//             {
+//               title: "Transaction",
+//               path: "/transaction",
+//               image: <Overview />,
+//             },
+//           ],
+//         },
+//         {
+//           pageName: "Security",
+//           Name: "Security",
+//           path: "/security/profile",
+//           Gateway: [
+//             {
+//               title: "User Profile",
+//               path: "/security",
+//               image: <img src={user} alt="" />,
+//             },
+//             {
+//               title: "Company Profile",
+//               path: "/security/company",
+//               image: <img src={cprofile} alt="" />,
+//             },
+//             {
+//               title: "API",
+//               path: "/security/API",
+//               image: <img src={code} alt="" />,
+//             },
+//             {
+//               title: "Change Password",
+//               path: "/security/change-password",
+//               image: <img src={lock} alt="" />,
+//               // image: <Overview />
+//             },
+//             {
+//               title: "Developers",
+//               path: "/security/user-management",
+//               image: <img src={code} alt="" />,
+//             },
+//           ],
+//         },
+//         {
+//           pageName: "Beneficiary",
+//           Name: "Beneficiary",
+//           path: "/beneficairy",
+//         },
+//         {
+//           pageName: "Logout",
+//           Name: "Logout",
+//           path: "/",
+//         },
+//         // ... other sections
+//       ]);
+//     }
+//   }, [dynamicGatewayItems]);
+
+  useEffect(() => {
     const userDetails = JSON.parse(localStorage.getItem("userDetails"));
     setuserDetails(userDetails);
     const payOutClientWalletPayOutProviders = userDetails?.data?.payOutClientWalletPayOutProviders;
+  let sidebarData;
     if (payOutClientWalletPayOutProviders) {
       const formattedGatewayItems = payOutClientWalletPayOutProviders?.map((d) => ({
         title: `${d?.providerName} [${d?.wallet?.country?.currencyCode}]`,
@@ -38,7 +141,8 @@ useEffect(() => {
         ),
       }));
       setDynamicGatewayItems(formattedGatewayItems);
-      setSidebarData([
+  
+       sidebarData = [
         {
           pageName: "Gateway",
           Name: "My GATEWAYS",
@@ -101,7 +205,6 @@ useEffect(() => {
               title: "Change Password",
               path: "/security/change-password",
               image: <img src={lock} alt="" />,
-              // image: <Overview />
             },
             {
               title: "Developers",
@@ -121,9 +224,46 @@ useEffect(() => {
           path: "/",
         },
         // ... other sections
-      ]);
+      ];
+  
+      // Filter the sidebarData based on roleId
+      // if (userDetails?.data?.role?.id === 7) {
+      //   sidebarData = sidebarData.filter((item) => item?.pageName === "Security");
+      // }
+  
+      setSidebarData(sidebarData);
+    }else{
+      if (userDetails?.data?.role?.id === 8) {
+        sidebarData = [
+          {
+            pageName: "Security",
+            Name: "Security",
+            path: "/security/profile",
+            Gateway: [
+            
+              {
+                title: "API",
+                path: "/security/API",
+                image: <img src={code} alt="" />,
+              },
+             
+            ],
+          },
+          {
+            pageName: "Logout",
+            Name: "Logout",
+            path: "/",
+          },
+          // ... other sections
+        ];
+        setSidebarData(sidebarData);
+      }
+    
+  
+
     }
   }, [dynamicGatewayItems]);
+  
 
 
   // useEffect(() => {

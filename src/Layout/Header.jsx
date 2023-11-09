@@ -13,7 +13,7 @@ const Header = ({ setPropsPassed, SelectedCategory }) => {
   const [live, setLive] = useState(false);
   const [user, setUser] = useState(null);
   const [userRole, setUserRole] = useState(null);
-  console.log("🚀 ~ file: Header.jsx:15 ~ Header ~ user:", user)
+  console.log("🚀 ~ file: Header.jsx:15 ~ Header ~ user:", user?.data?.role?.id)
   const { pathname } = useLocation();
   const Navigate = useNavigate();
   useEffect(() => {
@@ -21,7 +21,7 @@ const Header = ({ setPropsPassed, SelectedCategory }) => {
   }, [])
 
   useEffect(() => {
-    setUserRole(user?.roleId);
+    setUserRole(user?.data?.role?.id);
   }, [user]);
   
   let headerTab = [
@@ -55,6 +55,9 @@ const Header = ({ setPropsPassed, SelectedCategory }) => {
   const [showProfile, setShowProfile] = useState(false);
 
   const handleTabClick = (name, path) => {
+    if (userRole === 8) {
+      return
+    }
     setHeadTab(headerTab.find((tab) => tab.name === name).id);
     setPropsPassed(name);
     Navigate(path);
@@ -127,7 +130,12 @@ const handleLink = (key) => {
                 style={{ border: ".5px solid #F2F4F7", margin: "10px 0 0 0" }}
               />
               {
-                userRole === 8 ? (<></>) : (
+                userRole === 8 ? (<>
+                   <div className="bx" onClick={() => handleLink(3)}>
+                <img src={logout} alt="" />
+                <span style={{color:"red"}}>Log Out</span>
+              </div>
+                </>) : (
                   <>
                   
                   <div className="bx" onClick={() => handleLink(1)}>
@@ -141,14 +149,14 @@ const handleLink = (key) => {
                   <hr
                     style={{ border: ".5px solid #F2F4F7", margin: " 0 0 0 0" }}
                   />
-                  </>
-
-                )
-              }
               <div className="bx" onClick={() => handleLink(3)}>
                 <img src={logout} alt="" />
                 <span style={{color:"red"}}>Log Out</span>
               </div>
+                  </>
+
+                )
+              }
             </Bomodal>
           )}
         </div>

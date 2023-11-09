@@ -162,9 +162,15 @@ function LoginR() {
               
                 return
             }else{
-                toast.error(data?.message)
+                toast.success(data?.message)
                 localStorage.setItem("userDetails",JSON.stringify(data))
-                navigate("/overview")
+                if(data?.data?.role?.id === 8){
+                    navigate("/security/API")
+
+                }else{
+
+                    navigate("/overview")
+                }
                 // if (!data.data.user.isKYCCompleted) {
                 //     navigate("/upload")
                     

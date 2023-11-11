@@ -49,12 +49,12 @@ const Card = ({cardbody, figure, padding, width}) => {
   //   { number: 18 },
   // ];
   const figures = {
-    numbers: figure.map((m, i) => <p key={i}>{m.number}</p>),
+    numbers: figure?.map((m, i) => <p key={i}>{m?.number}</p>),
   };
 
   return (
     <Cardbx>
-      {cardbody.map((m, i) => (
+      {cardbody?.map((m, i) => (
         // <div className="bx" style={{borderLeft: ${border} && "2px solid red"}>
         <div
           key={i}
@@ -65,10 +65,10 @@ const Card = ({cardbody, figure, padding, width}) => {
           }}
         >
           <div className="top">
-            <img src={m.Image} alt="" />
-            <span style={{width: width ? width : "100px"}}>{m.name}</span>
+            <img src={m?.Image} alt="" />
+            <span style={{width: width ? width : "100px"}}>{m?.name}</span>
           </div>
-          <div className="center">{figures.numbers[i]}</div>
+          <div className="center">{figures?.numbers[i]}</div>
           {/* {figure.map((item, i) => (
               <FigureList key={i} figures={item} index={i} />
             )} */}
@@ -79,11 +79,11 @@ const Card = ({cardbody, figure, padding, width}) => {
             <span>
               {/* <img src={m.downImg} alt="" />
               12%{" "} */}
-            <span className="same">{m.count}</span>
+            <span className="same">{m?.count}</span>
 
             </span>
             {/* <span className="same">vs</span> */}
-            <span className="same">{m.day}</span>
+            <span className="same">{m?.day}</span>
           </div>
         </div>
       ))}

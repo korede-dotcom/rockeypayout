@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 //
 import ngn from "../assets/ngn.svg";
+import gb from "../assets/gb.png";
 import drop from "../assets/drop.svg";
 import Modal from "./Modal";
 import add from "../assets/add2.svg";
@@ -11,6 +12,7 @@ import Textarea from "./Inputs/Textarea";
 import TextInput from "./Inputs/TextInput";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { QueryParams } from "../reuseables/QueryParams";
 
 const FlexWrapper = ({
   name,
@@ -18,6 +20,7 @@ const FlexWrapper = ({
   amount,
   word,
   balance,
+  currency
   // onClick,
   // show,
   // setShow,
@@ -129,9 +132,10 @@ const FlexWrapper = ({
             <h1>{name}</h1>
           </div>
           <div className="details">
-            <img src={ngn} alt="" />
+            <img src={currency === "NGN" ? ngn : gb} alt="" />
             {/* <span>5,250,532.89 NGN</span> */}
-            <span>{amount} NGN</span>
+            <span>{amount}  <QueryParams/></span>
+           
           </div>
         </div>
         <div className="right">

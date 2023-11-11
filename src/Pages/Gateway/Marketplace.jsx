@@ -56,7 +56,7 @@ const Marketplace = () => {
          const response = await fetch(`https://apidoc.transferrocket.co.uk//createpayoutclientwalletgatewayprovider/${getUser?.data?.userId}`, requestOptions)
          const data = await response.json()
          if (data?.status) {
-            navigate("/")
+            navigate("/overview")
          }
          console.log("🚀 ~ file: Marketplace.jsx:49 ~ handleSubcribe ~ data:", data)
     }

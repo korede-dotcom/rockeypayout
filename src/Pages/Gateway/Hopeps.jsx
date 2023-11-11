@@ -25,49 +25,74 @@ import { Dropdown } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 import opt from "../../assets/opt.svg";
 import TransactionList from '../../reuseables/Tranx';
-
+import { QueryParams } from '../../reuseables/QueryParams';
+import { useLocation } from "react-router-dom";
 
 const Hopeps = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(null);
   const [getUser, setUser] = useState(null);
   const [trx, settrx] = useState(null);
-  const sorted = getUser?.data?.payOutClientWalletPayOutProviders[0]?.walletTransactionVolume;
-  const balance = getUser?.data?.payOutClientWalletPayOutProviders[0]?.wallet;
-  console.log("🚀 ~ file: Hopeps.jsx:30 ~ Hopeps ~ getUser:", balance)
-
-  const formatter = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency:"NGN",
-    // currency: balance?.country?.currencyCode,
-  });
+  const [sorted,setSorted] = useState()
+  const [balance,setBalance] = useState()
+  const [currency,setCurrency] = useState(null)
+  const [figure2,setfigure2] = useState(null)
+  // const sorted = ;
+  // const balance = ;
 
 
-//   useEffect(() => {
-//     const userId = JSON?.parse(localStorage.getItem("userDetails"))
-//   const fetchData = async () => {
-//     try {
-//       const requestOptions = {
-//         method: 'GET',
-//         redirect: 'follow'
-//       };
+  
+  const location = useLocation();
 
-//       const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userId?.data?.userId}`, requestOptions);
-//       const result = await response.json();
-      
-//       // Set the fetched data to state
-    
-//       localStorage.setItem("userDetails",JSON.stringify(result))
-//       console.log("Fetched data:", result);
-//     } catch (error) {
-//       console.error("Error fetching data:", error);
-//       // Handle errors here
-//     }
-//   };
+  // Access the query parameters from the location object
+  const queryParams = new URLSearchParams(location.search);
+  
+  useEffect(() => {
+    setLoading(true);
+  
+    // Extract the currency from the query parameters
+    const currencyFromQuery = queryParams.get('currency');
+  
+    // Set a default currency code if it's not present
+    const currency = currencyFromQuery || 'NGN';
+    setCurrency(currency);
+  
+    // Rest of your logic
+    const findCurrency = getUser?.data?.payOutClientWalletPayOutProviders?.find(
+      (d) => d?.wallet?.country?.currencyCode === currency
+    );
+    setBalance(findCurrency?.wallet)
+      setSorted(findCurrency?.walletTransactionVolume)
+    // ... (rest of your logic)
+  
+    const formatter = (amount) => {
+      const formattedAmount = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: currency,
+      }).format(amount || 0);
+  
+      return formattedAmount;
+    };
+  
+    setfigure2([
+      { number: formatter(sorted?.totalAmount) },
+      { number: formatter(sorted?.successfulAmount) },
+      { number: formatter(sorted?.pendingAmount) },
+      { number: formatter(sorted?.cancelledAmount) },
+      // { number: 18 },
+    ]);
+  
+    setLoading(false);
+  }, [queryParams]);
+  
 
-//   // Call the fetch function
-//   fetchData();
-// }, []);
+
+
+  useEffect(() => {
+    setSorted(getUser?.data?.payOutClientWalletPayOutProviders[0]?.walletTransactionVolume)
+    setBalance(getUser?.data?.payOutClientWalletPayOutProviders[0]?.wallet)
+
+  },[getUser])
 
 
   const OhentpayHead = [
@@ -189,13 +214,7 @@ const Hopeps = () => {
     },
   ];
 
-  const figure2 = [
-    { number: formatter?.format(sorted?.totalAmount || 0) },
-    { number: formatter?.format(sorted?.successfulAmount || 0) },
-    { number:formatter?.format(sorted?.pendingAmount || 0) },
-    { number: formatter?.format(sorted?.cancelledAmount || 0) },
-    // { number: 18 },
-  ];
+  // const figure2 = 
 
 
   useEffect(() => {
@@ -204,6 +223,8 @@ const Hopeps = () => {
     const userId = JSON.parse(localStorage.getItem("userDetails"))
     setUser(userId);
 
+    setSorted(getUser?.data?.payOutClientWalletPayOutProviders[0]?.walletTransactionVolume)
+    setBalance(getUser?.data?.payOutClientWalletPayOutProviders[0]?.wallet)
     const fetchData = async () => {
       try {
         const requestOptions = {
@@ -235,9 +256,12 @@ const Hopeps = () => {
     <Layout>
       {loading && <Loader/>}
         <HopepsBox>
-            <FlexWrapper name="Hope PS Bank" subname="[Payarena]" amount={balance?.balance} word="This overview provides a comprehensive snapshot of wallet transactions on your system" />
+            <FlexWrapper name="Hope PS Bank" subname="[Payarena]" amount={balance?.balance} word="This overview provides a comprehensive snapshot of wallet transactions on your system" currency={currency} />
             <CardContainer>
-                <Card cardbody={cardbody2} figure={figure2} padding="0 0 0 10px" width="max-content" />
+              {
+                figure2 && <Card cardbody={cardbody2} figure={figure2} padding="0 0 0 10px" width="max-content" />
+              }
+                
             </CardContainer>
            
                   <TransactionList/>

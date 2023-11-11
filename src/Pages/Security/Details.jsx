@@ -1759,11 +1759,11 @@ const handleset2 = () => {
 <Tabs>
     <TabList>
       <Tab>Get currency</Tab>
-      <Tab>Get transactions status</Tab>
-      <Tab>Make payout request</Tab>
-      <Tab>Create PayOut Beneficiary</Tab>
-      <Tab>Get PayOut Beneficiary</Tab>
       <Tab>Get Banks</Tab>
+      <Tab>Create PayOut Beneficiary</Tab>
+      <Tab>Make payout request</Tab>
+      <Tab>Get transactions status</Tab>
+      <Tab>Get PayOut Beneficiary</Tab>
     </TabList>
 
     <TabPanel>

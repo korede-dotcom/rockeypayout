@@ -39,7 +39,8 @@ const Hopeps = () => {
   const [figure2,setfigure2] = useState(null)
   // const sorted = ;
   // const balance = ;
-
+  
+  console.log("🚀 ~ file: Hopeps.jsx:38 ~ Hopeps ~ balance:", balance)
 
   
   const location = useLocation();
@@ -256,7 +257,7 @@ const Hopeps = () => {
     <Layout>
       {loading && <Loader/>}
         <HopepsBox>
-            <FlexWrapper name="Hope PS Bank" subname="[Payarena]" amount={balance?.balance} word="This overview provides a comprehensive snapshot of wallet transactions on your system" currency={currency} />
+            <FlexWrapper name={`${balance?.name} `} subname="[Payarena]" amount={balance?.balance} word="This overview provides a comprehensive snapshot of wallet transactions on your system" currency={currency} />
             <CardContainer>
               {
                 figure2 && <Card cardbody={cardbody2} figure={figure2} padding="0 0 0 10px" width="max-content" />

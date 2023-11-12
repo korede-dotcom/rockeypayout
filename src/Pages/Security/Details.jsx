@@ -1345,6 +1345,35 @@ const columns = [
     //render: () => "Other",
   },
 ];
+const columns2 = [
+  // {
+  //   title: "ACTIONS",
+  //   dataIndex: "action",
+  //   fixed: "left",
+  //   /*   sorter: {
+  //     compare: (a, b) => a.name - b.name,
+  //     multiple: 1,
+  //   }, */
+  //   width: 130,
+  // },
+  {
+    title: "PROVIDER ID",
+    dataIndex: "providerId",
+    width: 1,
+  },
+  {
+      title: "PROVIDER NAME",
+      dataIndex: "providerName",
+      width: 1,
+  },
+  {
+    title: "STATUS",
+    dataIndex: "statusNew",
+    width: 1,
+
+    //render: () => "Other",
+  },
+];
 
 const newData =getUser?.data?.clientApps?.map((item, index) => {
   return {
@@ -1509,6 +1538,169 @@ const newData =getUser?.data?.clientApps?.map((item, index) => {
   };
 });
 
+const newData2 = getUser?.data?.payOutClientWalletPayOutProviders?.map((item, index) => {
+  return {
+    ...item,
+    action: (
+      <div
+        style={{
+          position: "relative",
+        }}
+        onClick={(e) => {
+          e.stopPropagation();
+          if (item?.status === "true") {
+            if (active === item?.id) {
+              setActive("");
+            } else {
+              setActive(item?.id);
+            }
+          }
+        }}
+      >
+        <svg
+          width="20"
+          height="16"
+          viewBox="0 0 5 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style={{
+            cursor: item?.status === "Pending" ? "pointer" : "not-allowed",
+          }}
+        >
+          <path
+            d="M2.5 4C3.6 4 4.5 3.1 4.5 2C4.5 0.9 3.6 0 2.5 0C1.4 0 0.5 0.9 0.5 2C0.5 3.1 1.4 4 2.5 4ZM2.5 6C1.4 6 0.5 6.9 0.5 8C0.5 9.1 1.4 10 2.5 10C3.6 10 4.5 9.1 4.5 8C4.5 6.9 3.6 6 2.5 6ZM2.5 12C1.4 12 0.5 12.9 0.5 14C0.5 15.1 1.4 16 2.5 16C3.6 16 4.5 15.1 4.5 14C4.5 12.9 3.6 12 2.5 12Z"
+            fill="#667085"
+          />
+        </svg>
+
+        {/* {active === item?.id && (
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+            style={{
+              position: "absolute",
+              border: "1px solid #d1d1d1",
+              borderRadius: "10px",
+              textAlign: "left",
+              left: "20px",
+              bottom: index !== 0 && "0",
+              top: index === 0 && "0",
+              background: "#fff",
+              zIndex: "10000",
+              width: "160px",
+            }}
+            className="absolute border border-gray-200 rounded-lg text-left left-0 top-[160%] bg-white z-10"
+          >
+            <div
+              onClick={() => {
+                // mutate({
+                //   updatedBy: userDetails?.userId,
+                //   objectId: item?.id,
+                //   action: 1,
+                // });
+              }}
+              style={{
+                padding: "10px",
+                display: "flex",
+                alignItems: "center",
+                cursor: "pointer",
+              }}
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                style={{
+                  marginRight: "10px",
+                }}
+              >
+                <g clip-path="url(#clip0_2568_14904)">
+                  <path
+                    d="M14.6667 7.38674V8.00007C14.6658 9.43769 14.2003 10.8365 13.3395 11.988C12.4788 13.1394 11.2688 13.9817 9.89022 14.3893C8.5116 14.797 7.03815 14.748 5.68963 14.2498C4.3411 13.7516 3.18975 12.8308 2.40729 11.6248C1.62482 10.4188 1.25317 8.99211 1.34776 7.55761C1.44235 6.12312 1.99812 4.75762 2.93217 3.66479C3.86621 2.57195 5.1285 1.81033 6.53077 1.4935C7.93304 1.17668 9.40016 1.32163 10.7133 1.90674M14.6667 2.66674L7.99998 9.34007L5.99998 7.34007"
+                    stroke="#101828"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </g>
+                <defs>
+                  <clipPath id="clip0_2568_14904">
+                    <rect width="16" height="16" fill="white" />
+                  </clipPath>
+                </defs>
+              </svg>
+              Approve
+            </div>
+            <div
+              style={{
+                padding: "10px",
+                display: "flex",
+                alignItems: "center",
+                cursor: "pointer",
+                color: "#F04438",
+              }}
+              onClick={() => {
+                // mutate({
+                //   updatedBy: userDetails?.userId,
+                //   objectId: item?.id,
+                //   action: 0,
+                // });
+              }}
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                style={{
+                  marginRight: "10px",
+                }}
+              >
+                <path
+                  d="M7.99998 1.3335C11.6666 1.3335 14.6666 4.3335 14.6666 8.00016C14.6666 11.6668 11.6666 14.6668 7.99998 14.6668C4.33331 14.6668 1.33331 11.6668 1.33331 8.00016C1.33331 4.3335 4.33331 1.3335 7.99998 1.3335ZM7.99998 2.66683C6.73331 2.66683 5.59998 3.06683 4.73331 3.80016L12.2 11.2668C12.8666 10.3335 13.3333 9.20016 13.3333 8.00016C13.3333 5.06683 10.9333 2.66683 7.99998 2.66683ZM11.2666 12.2002L3.79998 4.7335C3.06665 5.60016 2.66665 6.7335 2.66665 8.00016C2.66665 10.9335 5.06665 13.3335 7.99998 13.3335C9.26665 13.3335 10.4 12.9335 11.2666 12.2002Z"
+                  fill="#F04438"
+                />
+              </svg>
+              Decline
+            </div>
+          </div>
+        )} */}
+      </div>
+    ),
+    statusNew: (
+      <>
+        {" "}
+        <div
+          style={{
+            padding: "8px 16px",
+            borderRadius: "10000px",
+            background:
+              item?.status === "true"
+                ? "#63ff706c"
+                : item?.status === "Pending"
+                ? "#FEF0C7"
+                : "#ff63634b",
+            color:
+              item?.status === "true"
+                ? "green"
+                : item?.status === "Pending"
+                ? "#DC6803"
+                : "red",
+            width: "fit-content",
+            fontWeight: "700",
+          }}
+        >
+          {item?.status === "true" ? "Active" : "Not-Active"}
+        </div>
+      </>
+    ),
+  };
+});
+
 const handleIframe = () => {
   showFrame(!frame)
 }
@@ -1517,7 +1709,21 @@ const handleset1 = () => {
   setAct1(!act1)
   setAct2(false)
 }
+
+useEffect(() => {
+  if(getUser?.data?.role?.id === 8 ){
+    setAct2(true)
+    setAct1(false)
+  
+  }
+
+},[])
+
 const handleset2 = () => {
+  if(getUser?.data?.role?.id === 8 ){
+    return
+  
+  }
   setAct2(!act2)
   setAct1(false)
 }
@@ -1535,9 +1741,14 @@ const handleset2 = () => {
             </p>
             <br/>
             <div style={{display:"flex",gap:"20px",cursor:"pointer"}}>
+              {
+                getUser?.data?.role?.id !== 8 && (
+
             <div className={act1 ? "btn" : 'btnactive'} onClick={handleset1}>
                   <p style={{fontSize:"15px",backgroundColor:"#00a85a",padding:"9px 30px",color:"#fff",borderRadius:"8px"}}>Gateways</p>
             </div>
+                )
+              }
             <div className={act2 ? "btn" : 'btnactive'} onClick={handleset2}>
                   <p className="" style={{fontSize:"15px",backgroundColor:"#00a85a",padding:"9px 30px",color:"#fff",borderRadius:"8px"}}>Applications</p>
             </div>
@@ -1595,6 +1806,7 @@ const handleset2 = () => {
                 </APiModalWrapper>
               </Modal>
             )}
+            
             {mod2 && (
               <Modal
                 width="430px"
@@ -1633,7 +1845,7 @@ const handleset2 = () => {
           padding="20px 0"
         >
            {
-              act1 && (
+              act1 && getUser?.data?.role?.id !== 8 && (
                <>
                    {/* <hr
             style={{
@@ -1648,8 +1860,8 @@ const handleset2 = () => {
           <CustomTable
           noData={getUser?.data?.clientApps.length}
           // loading={isLoading || isFetching}
-          Apidata={newData}
-          tableColumns={columns}
+          Apidata={newData2}
+          tableColumns={columns2}
         />
           </Content>
                </>

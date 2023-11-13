@@ -15,6 +15,7 @@ const Marketplace = () => {
     const navigate =useNavigate()
     const [market,setMarket] = useState([])
     const [getUser,setUser] = useState()
+    const [getSub,setSub] = useState()
     const [num,setNum] = useState(0)
     const [isClicked, setIsClicked] = useState(false);
     useEffect(() => {
@@ -32,8 +33,27 @@ const Marketplace = () => {
         }
         makeRequest()
         setUser(JSON.parse(localStorage?.getItem("userDetails")))
+        setSub(getUser?.data?.payOutClientWalletPayOutProviders)
 
     },[])
+    useEffect(() => {
+        const makeRequest = async () => {
+            var requestOptions = {
+                method: 'GET',
+                redirect: 'follow'
+              };
+              
+            const response = await fetch("https://apidoc.transferrocket.co.uk//getpayoutprovider", requestOptions)
+            const data = await response.json()
+            setMarket(data?.data)
+            console.log("🚀 ~ file: Marketplace.jsx:22 ~ makeRequest ~ data:", data)
+
+        }
+        makeRequest()
+        setUser(JSON.parse(localStorage?.getItem("userDetails")))
+        setSub(getUser?.data?.payOutClientWalletPayOutProviders)
+
+    },[getUser])
 
     const handleSubcribe = async (id) => {
         if (isClicked) {
@@ -73,9 +93,13 @@ const Marketplace = () => {
                 <FlexItems text="All Gateways" />
                 <hr style={{width: '100%', border: '.5px solid #EAECF0'}} />
                 <BoxWrapper>
-                    {market.map(({logo, name, company, word, subscribe, subscribeStatus,status,id},i) => {
+                    {market?.map(({logo, name, company, word, subscribe, subscribeStatus,status,id},i) => {
+                 const matchingProvider = getSub?.find(provider => provider?.providerName === name);
+
+                 // Determine the subscription status
+                 const subscriptionStatus = matchingProvider ? matchingProvider?.status === "true" : false;
                             return(
-                                <Marketbox handleSubcribe={() => handleSubcribe(id)}  key={i}  logo={name?.includes("HopePSB") && hope} name={name} subname={name?.toString().split("-")[1]} word={word} subStatus={status} subscribe={status}  />                        
+                                <Marketbox handleSubcribe={() => handleSubcribe(id)}  key={i}  logo={name?.includes("HopePSB") && hope} name={name} subname={name?.toString().split("-")[1]} word={word} subStatus={subscriptionStatus}     />                        
                             )
                     }
 // 

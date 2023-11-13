@@ -521,8 +521,23 @@ const [WebhooksHHead, setWebhooksHead] = useState(
   const [getUser,setUser] = useState()
   console.log("🚀 ~ file: Details.jsx:32 ~ Details ~ getUser:", getUser)
   useEffect(() => {
+    
    setUser(JSON.parse(localStorage.getItem("userDetails")))
-  },[])
+   if(getUser?.data?.role?.id === 8 ){
+    setAct1(false)
+    setAct2(true)
+  
+  }
+  },[getUser])
+
+  // useEffect(() => {
+  //   if(getUser?.data?.role?.id === 8 ){
+  //     setAct1(false)
+  //     setAct2(true)
+    
+  //   }
+  
+  // },[])
 
   const [othermap,setOthermap] = useState([
     {name: 'C', image: cc ,id:1,code:`
@@ -1708,6 +1723,7 @@ const columns2 = [
   },
 ];
 
+
 const newData =getUser?.data?.clientApps?.map((item, index) => {
   return {
     ...item,
@@ -2043,14 +2059,7 @@ const handleset1 = () => {
   setAct2(false)
 }
 
-useEffect(() => {
-  if(getUser?.data?.role?.id === 8 ){
-    setAct2(true)
-    setAct1(false)
-  
-  }
 
-},[])
 
 const handleset2 = () => {
   if(getUser?.data?.role?.id === 8 ){
@@ -2201,7 +2210,7 @@ const handleset2 = () => {
               )
             }
            {
-              act2 && (
+              act2 &&  (
              <>
           <Apiwrap>
             <div className="top">

@@ -1616,7 +1616,7 @@ const [WebhooksHHead, setWebhooksHead] = useState(
 }
 
 const submitCreateApp = async ()  => {
-
+  setLoading(true)
   var requestOptions = {
     method: 'POST',
     body: JSON.stringify(createApp),
@@ -1626,14 +1626,32 @@ const submitCreateApp = async ()  => {
   const response = await fetch("https://apidoc.transferrocket.co.uk//createpayoutclientapp", requestOptions)
   const data = await response.json();
 
+  if (data) {
+    const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${getUser?.data?.userId}`);
+    const result = await response.json();
+    localStorage.setItem("userDetails",JSON.stringify(result))
+    setUser(result)
+  }
+
+
+
+  
+
   if(data?.status){
     setLoading(false)
-      setInfo(data?.message)
-      setTimeout(() => {
-     setInfo("")
-     setMo2(!mod2)
-
-   }, 1000);
+    toast.success(data?.message)
+    // setInfo(data?.message)
+    //     setTimeout(() => {
+      //    setInfo("")
+      window.location.reload()
+      setMo2(!mod2)
+      
+     //  }, 1000);
+    }else{
+      
+      setLoading(false)
+      toast.error(data?.message)
+      setMo2(!mod2)
   }
 
 
@@ -2160,8 +2178,9 @@ const handleset2 = () => {
                 btn="create"
                 handleSubmit={submitCreateApp}
                 cancleModal={() => setMo2(!mod2)}
+                loading={loading}
               >
-                {info && <p style={{color:"green"}}>{info}</p>}
+                {/* {info && <p style={{color:"green"}}>{info}</p>} */}
                 <div style={{paddingInline:"20px"}}>
                 <OInput label="appName" name="appName" onChange={handlecreateuser}/>
                 <OInput label="appDescription" name="appDescription" onChange={handlecreateuser} />

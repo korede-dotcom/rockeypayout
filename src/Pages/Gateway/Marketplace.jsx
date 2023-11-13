@@ -108,9 +108,10 @@ const MarketplaceBox = styled.div`
 
 const BoxWrapper = styled.div`
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 20px 10px;
     margin-top: 20px;
+    width: 100%;
 `;

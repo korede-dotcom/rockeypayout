@@ -75,7 +75,7 @@ const Details = () => {
 
 
 
-  const [WebhooksHHead, setWebhooksHead] = useState(
+const [WebhooksHHead, setWebhooksHead] = useState(
     {name: 'C', image: cc ,id:1,code:`
     var client = new HttpClient()
     var request = new HttpRequestMessage(HttpMethod.Get, "https://apidoc.transferrocket.co.uk/getcurrencytype");
@@ -155,6 +155,338 @@ const Details = () => {
       "data": ""
     }
     `,
+     codefive:`
+     var client = new HttpClient();
+     var request = new HttpRequestMessage(HttpMethod.Post, "https://apidoc.transferrocket.co.uk/creatpayoutbeneficiary");
+     var content = new StringContent("{\n    \"userId\": 45586980,\n    \"userBeneficiary\": {\n        \"country\": {\n            \"id\": 161\n        },\n        \"beneficiaryName\": \"Albert\",\n        \"beneficiaryPhoneNumber\": \"Saheed\",\n        \"beneficiaryBank\": {\n            \"accountNumber\": \"0012176233\",\n            \"bankId\": 8\n        }\n    }\n}", null, "text/plain");
+     request.Content = content;
+     var response = await client.SendAsync(request);
+     response.EnsureSuccessStatusCode();
+     Console.WriteLine(await response.Content.ReadAsStringAsync());     
+    `,
+     code5res:`
+     {
+      "transactionRef": "SUCCESS",
+      "status": true,
+      "message": "Beneficiary succesfully added",
+      "data": 12346578
+    }    
+    `,
+     codesix:`
+     var client = new HttpClient();
+     var request = new HttpRequestMessage(HttpMethod.Post, "https://apidoc.transferrocket.co.uk/processpayout.io");
+     request.Headers.Add("clientId", "45586980");
+     var content = new StringContent("{\n    \"refrenceId\": \"AT1237923712\",\n    \"appId\": 582664,\n    \"sourceId\": 1,\n    \"currencyId\": 161,\n    \"amount\": 50,\n    \"naration\": \"Demo pay out.\",\n    \"senderName\": \"Korede\",\n    \"beneficiaryId\" : 12346578\n}", null, "text/plain");
+     request.Content = content;
+     var response = await client.SendAsync(request);
+     response.EnsureSuccessStatusCode();
+     Console.WriteLine(await response.Content.ReadAsStringAsync());
+       
+    `,
+     code6res:`
+     {
+      "transactionRef": "SUCCESS",
+      "status": true,
+      "message": "Transaction Succesful",
+      "data": "00"
+    }
+       
+    `,
+     codeeight:`
+      var client = new HttpClient();
+      var request = new HttpRequestMessage(HttpMethod.Post, "https://apidoc.transferrocket.co.uk/validatebeneficiarybankdetails");
+      var content = new StringContent("{\n    \"beneficiaryBank\": {\n        \"accountNumber\": \"0714161345\",\n        \"bankId\": 1\n    }\n}", null, "text/plain");
+      request.Content = content;
+      var response = await client.SendAsync(request);
+      response.EnsureSuccessStatusCode();
+      Console.WriteLine(await response.Content.ReadAsStringAsync());
+    `,
+     codenine:`
+     var client = new HttpClient();
+     var request = new HttpRequestMessage(HttpMethod.Post, "https://apidoc.transferrocket.co.uk/validatebeneficiarybankdetails");
+     var content = new StringContent("{\n    \"beneficiaryBank\": {\n        \"accountNumber\": \"0714161345\",\n        \"bankId\": 1\n    }\n}", null, "text/plain");
+     request.Content = content;
+     var response = await client.SendAsync(request);
+     response.EnsureSuccessStatusCode();
+     Console.WriteLine(await response.Content.ReadAsStringAsync());     
+    `,
+     code9res:`
+          
+    `,
+     code8res:`
+     {
+      "transactionRef": "SUCCESS",
+      "status": true,
+      "message": "Account validated successfully",
+      "data": {
+        "id": 0,
+        "beneficiaryBank": {
+          "id": 0,
+          "accountNumber": "0714161345",
+          "accountName": "TOFUNMI SAMUEL BABATUNDE",
+          "primaryBank": false,
+          "bankId": 1,
+          "bankName": "Access Bank Nigeria Plc\n"
+        }
+      }
+    }
+    `,
+     codeseven:`
+     var client = new HttpClient();
+     var request = new HttpRequestMessage(HttpMethod.Get, "https://apidoc.transferrocket.co.uk/getpayouttransaction.io?trxId=0");
+     request.Headers.Add("clientId", "45586980");
+     var response = await client.SendAsync(request);
+     response.EnsureSuccessStatusCode();
+     Console.WriteLine(await response.Content.ReadAsStringAsync());     
+       
+    `,
+     code7res:`
+     {
+      "transactionRef": "SUCCESS",
+      "status": true,
+      "message": "Log Pulled Succesfully",
+      "data": [
+        {
+          "id": 35586981,
+          "dateCreated": "2023-10-22 19:27:47.708275",
+          "payoutClientId": 45586980,
+          "payOutProvider": {
+            "id": 1,
+            "name": "HopePSB - PayArena",
+            "description": "PayArena by HopePSB",
+            "dateCreated": "2023-10-14 19:33:12.497614",
+            "status": true,
+            "logo": "https://hopepsbank.com/img/hope_bank_logo1.3b817185.svg",
+            "payOutProviderSupportedCurrency": [
+              {
+                "regionId": 1,
+                "subRegionId": 3,
+                "telephoneCode": "234",
+                "currencyCode": "NGN",
+                "emoji": "??",
+                "status": false,
+                "id": 161,
+                "name": "Nigeria",
+                "longitude": "8",
+                "latitude": "10"
+              },
+              {
+                "regionId": 4,
+                "subRegionId": 18,
+                "telephoneCode": "44",
+                "currencyCode": "GBP",
+                "emoji": "??",
+                "status": false,
+                "id": 232,
+                "name": "United Kingdom",
+                "longitude": "-2",
+                "latitude": "54"
+              },
+              {
+                "regionId": 4,
+                "subRegionId": 18,
+                "telephoneCode": "44",
+                "currencyCode": "GBP",
+                "emoji": "??",
+                "status": false,
+                "id": 232,
+                "name": "United Kingdom",
+                "longitude": "-2",
+                "latitude": "54"
+              }
+            ]
+          },
+          "beneficiary": {
+            "id": 12346578,
+            "beneficiaryName": "Albert Abiodun",
+            "beneficiaryPhoneNumber": "08034678549",
+            "dateCreated": "2023-10-22 19:21:06.756744",
+            "lastUpdated": "2023-10-22 19:21:06.756744",
+            "beneficiaryBank": {
+              "id": 0,
+              "accountNumber": "0012176233",
+              "accountName": "ALBERTSAHEED ABIODUN",
+              "primaryBank": false,
+              "bankId": 8,
+              "bankName": "Guaranty Trust Bank",
+              "bankCode": "058"
+            },
+            "beneficiaryCountry": {
+              "regionId": 1,
+              "subRegionId": 3,
+              "telephoneCode": "234",
+              "currencyCode": "NGN",
+              "emoji": "??",
+              "status": false,
+              "id": 161,
+              "name": "Nigeria",
+              "longitude": "8",
+              "latitude": "10"
+            }
+          },
+          "country": {
+            "regionId": 1,
+            "subRegionId": 3,
+            "telephoneCode": "234",
+            "currencyCode": "NGN",
+            "emoji": "??",
+            "status": false,
+            "id": 161,
+            "name": "Nigeria",
+            "longitude": "8",
+            "latitude": "10"
+          },
+          "Amount": 23500,
+          "transferFee": 20,
+          "status": "Cancelled",
+          "lastUpdated": "2023-10-22 19:27:47.708275",
+          "payoutClientApp": {
+            "id": 582664,
+            "clientId": 0,
+            "appName": "ATP PayOut App",
+            "dateCreated": "2023-10-12 13:04:56.021301",
+            "lastUpdated": "2023-10-12 13:04:56.021301",
+            "appDescription": "ATP PayOut App Description",
+            "appWebHook": "ssamplelwebkoo.com",
+            "approved": true
+          }
+        },
+      ]
+    }   
+       
+    `,
+    
+    codefour:`
+    var client = new HttpClient();
+    var request = new HttpRequestMessage(HttpMethod.Get, "https://apidoc.transferrocket.co.uk/getbanks");
+    var response = await client.SendAsync(request);
+    response.EnsureSuccessStatusCode();
+    Console.WriteLine(await response.Content.ReadAsStringAsync());    
+    `,
+    code4res:`
+    {
+      "transactionRef": "SUCCESS",
+      "status": true,
+      "message": "Banks recieved",
+      "data": [
+        {
+          "bankId": 1,
+          "bankName": "Access Bank Nigeria Plc\n",
+          "bankCode": "044"
+        },
+        {
+          "bankId": 2,
+          "bankName": "Diamond Bank Plc",
+          "bankCode": "063"
+        },
+        {
+          "bankId": 3,
+          "bankName": "Ecobank Nigeria",
+          "bankCode": "050"
+        },
+        {
+          "bankId": 4,
+          "bankName": "Enterprise Bank Plc",
+          "bankCode": "084"
+        },
+        {
+          "bankId": 5,
+          "bankName": "Fidelity Bank Plc",
+          "bankCode": "070"
+        },
+        {
+          "bankId": 6,
+          "bankName": "First Bank of Nigeria Plc",
+          "bankCode": "011"
+        },
+        {
+          "bankId": 8,
+          "bankName": "Guaranty Trust Bank Plc",
+          "bankCode": "058"
+        },
+        {
+          "bankId": 9,
+          "bankName": "Heritaage Banking Company Ltd",
+          "bankCode": "030"
+        },
+        {
+          "bankId": 11,
+          "bankName": "Keystone Bank Ltd",
+          "bankCode": "082"
+        },
+        {
+          "bankId": 12,
+          "bankName": "Mainstreet Bank Plc",
+          "bankCode": "014"
+        },
+        {
+          "bankId": 13,
+          "bankName": "Skye Bank Plc",
+          "bankCode": "076"
+        },
+        {
+          "bankId": 14,
+          "bankName": "Stanbic IBTC Plc",
+          "bankCode": "039"
+        },
+        {
+          "bankId": 16,
+          "bankName": "Union Bank Nigeria Plc",
+          "bankCode": "032"
+        },
+        {
+          "bankId": 17,
+          "bankName": "United Bank for Africa Plc",
+          "bankCode": "033"
+        },
+        {
+          "bankId": 19,
+          "bankName": "WEMA Bank Plc",
+          "bankCode": "035"
+        },
+        {
+          "bankId": 20,
+          "bankName": "Zenith Bank International",
+          "bankCode": "057"
+        },
+        {
+          "bankId": 7,
+          "bankName": "First City Monument Bank",
+          "bankCode": "214"
+        },
+        {
+          "bankId": 10,
+          "bankName": "Jaiz Bank",
+          "bankCode": "301"
+        },
+        {
+          "bankId": 15,
+          "bankName": "Sterling Bank Plc",
+          "bankCode": "232"
+        },
+        {
+          "bankId": 18,
+          "bankName": "Unity Bank Plc",
+          "bankCode": "215"
+        },
+        {
+          "bankId": 21,
+          "bankName": "Providus Bank",
+          "bankCode": "101"
+        },
+        {
+          "bankId": 67,
+          "bankName": "Kuda Bank",
+          "bankCode": "50211"
+        },
+        {
+          "bankId": 301,
+          "bankName": "HopePSB",
+          "bankCode": "120002"
+        }
+      ]
+    }   
+    `,
     codetwo:`
     var client = new HttpClient();
     var request = new HttpRequestMessage(HttpMethod.Post, "https://apidoc.transferrocket.co.uk//walletfundingrequest");
@@ -176,6 +508,7 @@ const Details = () => {
   
     }
   );
+
   const [createApp, setcreateApp] = useState(
     {
       "clientId": "",
@@ -1973,9 +2306,10 @@ const handleset2 = () => {
       <Tab>Get currency</Tab>
       <Tab>Get Banks</Tab>
       <Tab>Create PayOut Beneficiary</Tab>
+      <Tab>Validate Beneficiary Bank Details</Tab>
       <Tab>Make payout request</Tab>
       <Tab>Get transactions status</Tab>
-      <Tab>Get PayOut Beneficiary</Tab>
+      <Tab>Get Gateway</Tab>
     </TabList>
 
     <TabPanel>
@@ -2029,12 +2363,12 @@ const handleset2 = () => {
                   <div className="tddcontent tddcontent1" >
                   <code>request</code>
                   <hr/>
-                    <pre className="pre1">{WebhooksHHead?.codetwo}</pre>
+                    <pre className="pre1">{WebhooksHHead?.codefour}</pre>
                   </div>
                   <div className="tddcontent">
                     <code>response</code>
                   <hr/>
-                  <pre>{WebhooksHHead?.code2res}</pre>
+                  <pre>{WebhooksHHead?.code4res}</pre>
                   </div>
                   </div>
                 </div>
@@ -2046,6 +2380,181 @@ const handleset2 = () => {
             </div>
     </TabPanel>
     <TabPanel>
+    <div className="table">
+              <div className="thead">
+                {WebhooksHHead && (
+                  <div  className="tdd">
+                    <img src={WebhooksHHead?.image} />
+                    <span>{WebhooksHHead?.name}</span>
+                  </div>
+                )
+                }
+              </div>
+              <div className="tbod">
+              {WebhooksHHead && (
+         
+                  <div  className="tdd">
+                  <div className="tddcontentParent">
+                  <div className="tddcontent tddcontent1" >
+                  <code>request</code>
+                  <hr/>
+                    <pre className="pre1">{WebhooksHHead?.codefive}</pre>
+                  </div>
+                  <div className="tddcontent">
+                    <code>response</code>
+                  <hr/>
+                  <pre>{WebhooksHHead?.code5res}</pre>
+                  </div>
+                  </div>
+                </div>
+
+                  
+                )
+              }
+              </div>
+            </div>
+    </TabPanel>
+    <TabPanel>
+    <div className="table">
+              <div className="thead">
+                {WebhooksHHead && (
+                  <div  className="tdd">
+                    <img src={WebhooksHHead?.image} />
+                    <span>{WebhooksHHead?.name}</span>
+                  </div>
+                )
+                }
+              </div>
+              <div className="tbod">
+              {WebhooksHHead && (
+         
+                  <div  className="tdd">
+                  <div className="tddcontentParent">
+                  <div className="tddcontent tddcontent1" >
+                  <code>request</code>
+                  <hr/>
+                    <pre className="pre1">{WebhooksHHead?.codeeight}</pre>
+                  </div>
+                  <div className="tddcontent">
+                    <code>response</code>
+                  <hr/>
+                  <pre>{WebhooksHHead?.code8res}</pre>
+                  </div>
+                  </div>
+                </div>
+
+                  
+                )
+              }
+              </div>
+            </div>
+    </TabPanel>
+    <TabPanel>
+    <div className="table">
+              <div className="thead">
+                {WebhooksHHead && (
+                  <div  className="tdd">
+                    <img src={WebhooksHHead?.image} />
+                    <span>{WebhooksHHead?.name}</span>
+                  </div>
+                )
+                }
+              </div>
+              <div className="tbod">
+              {WebhooksHHead && (
+         
+                  <div  className="tdd">
+                  <div className="tddcontentParent">
+                  <div className="tddcontent tddcontent1" >
+                  <code>request</code>
+                  <hr/>
+                    <pre className="pre1">{WebhooksHHead?.codesix}</pre>
+                  </div>
+                  <div className="tddcontent">
+                    <code>response</code>
+                  <hr/>
+                  <pre>{WebhooksHHead?.code6res}</pre>
+                  </div>
+                  </div>
+                </div>
+
+                  
+                )
+              }
+              </div>
+            </div>
+    </TabPanel>
+    <TabPanel>
+    <div className="table">
+              <div className="thead">
+                {WebhooksHHead && (
+                  <div  className="tdd">
+                    <img src={WebhooksHHead?.image} />
+                    <span>{WebhooksHHead?.name}</span>
+                  </div>
+                )
+                }
+              </div>
+              <div className="tbod">
+              {WebhooksHHead && (
+         
+                  <div  className="tdd">
+                  <div className="tddcontentParent">
+                  <div className="tddcontent tddcontent1" >
+                  <code>request</code>
+                  <hr/>
+                    <pre className="pre1">{WebhooksHHead?.codeseven}</pre>
+                  </div>
+                  <div className="tddcontent">
+                    <code>response</code>
+                  <hr/>
+                  <pre>{WebhooksHHead?.code7res}</pre>
+                  </div>
+                  </div>
+                </div>
+
+                  
+                )
+              }
+              </div>
+            </div>
+    </TabPanel>
+    <TabPanel>
+    <div className="table">
+              <div className="thead">
+                {WebhooksHHead && (
+                  <div  className="tdd">
+                    <img src={WebhooksHHead?.image} />
+                    <span>{WebhooksHHead?.name}</span>
+                  </div>
+                )
+                }
+              </div>
+              <div className="tbod">
+              {WebhooksHHead && (
+         
+                  <div  className="tdd">
+                  <div className="tddcontentParent">
+                  <div className="tddcontent tddcontent1" >
+                  <code>request</code>
+                  <hr/>
+                    <pre className="pre1">{WebhooksHHead?.codenine}</pre>
+                  </div>
+                  <div className="tddcontent">
+                    <code>response</code>
+                  <hr/>
+                  <pre>{WebhooksHHead?.code9res}</pre>
+                  </div>
+                  </div>
+                </div>
+
+                  
+                )
+              }
+              </div>
+            </div>
+    </TabPanel>
+    {/* <TabPanel>
     <div className="table">
               <div className="thead">
                 {WebhooksHHead && (
@@ -2077,7 +2586,7 @@ const handleset2 = () => {
               }
               </div>
             </div>
-    </TabPanel>
+    </TabPanel> */}
   </Tabs> 
             
           </Retabletwo>

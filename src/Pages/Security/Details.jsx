@@ -1622,37 +1622,41 @@ const submitCreateApp = async ()  => {
     body: JSON.stringify(createApp),
     redirect: 'follow'
   };
+  try {
+    
+    const response = await fetch("https://apidoc.transferrocket.co.uk//createpayoutclientapp", requestOptions)
+    const data = await response.json();
   
-  const response = await fetch("https://apidoc.transferrocket.co.uk//createpayoutclientapp", requestOptions)
-  const data = await response.json();
-
-  if (data) {
-    const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${getUser?.data?.userId}`);
-    const result = await response.json();
-    localStorage.setItem("userDetails",JSON.stringify(result))
-    setUser(result)
-  }
-
-
-
+    if (data) {
+      const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${getUser?.data?.userId}`);
+      const result = await response.json();
+      localStorage.setItem("userDetails",JSON.stringify(result))
+      setUser(result)
+    }
   
-
-  if(data?.status){
-    setLoading(false)
-    toast.success(data?.message)
-    // setInfo(data?.message)
-    //     setTimeout(() => {
-      //    setInfo("")
-      window.location.reload()
-      setMo2(!mod2)
-      
-     //  }, 1000);
-    }else{
-      
+  
+    if(data?.status){
       setLoading(false)
-      toast.error(data?.message)
-      setMo2(!mod2)
+      toast.success(data?.message)
+      // setInfo(data?.message)
+      //     setTimeout(() => {
+        //    setInfo("")
+        window.location.reload()
+        setMo2(!mod2)
+        
+       //  }, 1000);
+      }else{
+        
+        setLoading(false)
+        toast.error(data?.message)
+        setMo2(!mod2)
+    }
+  } catch (error) {
+    setLoading(false)
+    toast.error(error?.message)
+    setMo2(!mod2)
   }
+  
 
 
   console.log("🚀 ~ file: Details.jsx:97 ~ submitCreateApp ~ data:", data)
@@ -2176,9 +2180,11 @@ const handleset2 = () => {
                 setShow=""
                 style={{ padding: "0 10px" }}
                 btn="create"
-                handleSubmit={submitCreateApp}
+                handleSubmit={ submitCreateApp}
                 cancleModal={() => setMo2(!mod2)}
                 loading={loading}
+                disabled={Object.values(createApp).some(value => value === "")}
+
               >
                 {/* {info && <p style={{color:"green"}}>{info}</p>} */}
                 <div style={{paddingInline:"20px"}}>

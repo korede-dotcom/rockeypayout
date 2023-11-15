@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 
-const TextInput = ({ label, placeholder,change,name }) => {
+const TextInput = ({ label, placeholder,change,name,type }) => {
   return (
     <TextInputWrapper>
       <label htmlFor="">{label}</label>
-      <input type="tel" placeholder={placeholder} onChange={change} name={name} />
+      <input type={type ? type : "tel"} placeholder={placeholder} onChange={change} name={name} />
     </TextInputWrapper>
   );
 };

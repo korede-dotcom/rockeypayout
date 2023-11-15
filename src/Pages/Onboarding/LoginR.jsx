@@ -178,7 +178,7 @@ function LoginR() {
                     navigate("/security/API")
 
                 }else{
-
+                    localStorage.setItem("details",JSON.stringify(loginDetails))
                     navigate("/overview")
                 }
                 // if (!data.data.user.isKYCCompleted) {

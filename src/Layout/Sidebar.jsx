@@ -133,7 +133,7 @@ const Sidebar = ({ selectedCategory }) => {
     if (payOutClientWalletPayOutProviders) {
       const formattedGatewayItems = payOutClientWalletPayOutProviders?.map((d) => ({
         title: `${d?.providerName} [${d?.wallet?.country?.currencyCode}]`,
-        path: d?.providerName?.includes("HopePSB") ? `/hopebank/?currency=${d?.wallet?.country?.currencyCode}&id=${d?.providerId}` : `/ohentpay/?currency${d?.wallet?.country?.currencyCode}&id=${d?.providerId}`,
+        path: d?.providerName?.includes("HopePSB") ? `/hopebank/?currency=${d?.wallet?.country?.currencyCode}&id=${d?.providerId}&cid=${d?.wallet?.country?.id}` : `/ohentpay/?currency${d?.wallet?.country?.currencyCode}&id=${d?.providerId}&cid=${d?.wallet?.country?.id}`,
         image: d?.providerName?.includes("HopePSB") ? (
           <img src={hope} alt="" />
         ) : (

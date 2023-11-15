@@ -13,6 +13,8 @@ import TextInput from "./Inputs/TextInput";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { QueryParams } from "../reuseables/QueryParams";
+import Selects from 'react-select';
+import { useLocation } from "react-router-dom";
 
 const FlexWrapper = ({
   name,
@@ -32,6 +34,64 @@ const FlexWrapper = ({
   const [payout, setPayout] = useState(false);
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption2, setSelectedOption2] = useState(null);
+  const [payoutParam, setpayoutParam] = useState(
+    {
+      "refrenceId": "",
+      "appId": undefined,
+      "sourceId": undefined,
+      "currencyId": undefined,
+      "amount": undefined,
+      "naration": "",
+      "senderName": "",
+      "beneficiaryId" : undefined
+  }
+  );
+  console.log("🚀 ~ file: FlexWrapper.jsx:50 ~ payoutParam:", payoutParam)
+
+  const location = useLocation();
+
+  // Access the query parameters from the location object
+  const queryParams = new URLSearchParams(location.search);
+
+ 
+
+  const handleSelectChange = selectedOption => {
+    setSelectedOption(selectedOption);
+    function generateRandomEightDigitNumber() {
+      const min = 10000000; // Minimum eight-digit number
+      const max = 99999999; // Maximum eight-digit number
+    
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+    
+    const randomEightDigitNumber = generateRandomEightDigitNumber();
+    setpayoutParam(prevState => ({
+      ...prevState,
+      appId: selectedOption?.value,
+      refrenceId:`${selectedOption?.label?.trim()?.substring(0,2).toUpperCase()}${randomEightDigitNumber}`
+    }));
+    // Do something with selected option if needed
+  };
+  const handleSelectChangebene = selectedOption2 => {
+    setSelectedOption2(selectedOption2);
+
+    setpayoutParam(prevState => ({
+      ...prevState,
+      beneficiaryId:selectedOption2.value
+
+    }));
+    // Do something with selected option if needed
+  };
+  const options = user?.data?.clientApps.map(option => ({
+    label: option.appName,
+    value: option.id
+  }));
+  const beneoptions = user?.data?.beneficiaries.map(option => ({
+    label: option.beneficiaryName,
+    value: option.id
+  }));
   // const [info, setInfo] = useState("");
   const [payouttwo, setPayouttwo] = useState(false);
   const [fundingRequest, setFundingRequest] = useState({
@@ -43,7 +103,6 @@ const FlexWrapper = ({
     comment: "",
     lastUpdatedBy: 0
   });
-  console.log("🚀 ~ file: FlexWrapper.jsx:45 ~ fundingRequest:", fundingRequest)
 
   useEffect(() => {
     const userId = JSON.parse(localStorage.getItem("userDetails"));
@@ -67,28 +126,27 @@ const FlexWrapper = ({
 
   const handlechange = (e) => {
     const { name, value } = e.target;
-  
-    // Force the amountRequested value to be a number
-    // if (name === "amountRequested") {
-    //   const amountRequestedAsNumber = Number(value);
-    //   if (!isNaN(amountRequestedAsNumber)) {
-    //     setFundingRequest(prevState => ({
-    //       ...prevState,
-    //       [name]: amountRequestedAsNumber,
-    //     }));
-    //   } else {
-    //     // amountRequested is not a number, so reset it to ""
-    //     setFundingRequest(prevState => ({
-    //       ...prevState,
-    //       [name]: "",
-    //     }));
-    //   }
-    // } else {
-      // For other properties, keep them as strings
       setFundingRequest(prevState => ({
 
         ...prevState,
       amountRequested: parseInt(prevState.amountRequested),
+        [name]: value,
+      }));
+    // }
+  };
+  const handlechange2 = (e) => {
+    const { name, value } = e.target;
+    const currencyFromQuery = queryParams.get('currency');
+    const id = queryParams.get('id');
+    const cid = queryParams.get('cid');
+
+
+    setpayoutParam(prevState => ({
+    
+
+        ...prevState,
+        currencyId: parseInt(cid),
+    sourceId: parseInt(id),
         [name]: value,
       }));
     // }
@@ -122,6 +180,65 @@ const FlexWrapper = ({
    }
    console.log("🚀 ~ file: FlexWrapper.jsx:96 ~ CreateWalletFundingRequest ~ data:", data)
   }
+  const createPayoutReq = async () => {
+  
+    setLoading(true);
+    const getDetails = JSON.parse(localStorage.getItem("details"));
+
+  
+    const username = getDetails?.username;
+    const password = getDetails?.password;
+    const encodedCredentials = btoa(`${username}:${password}`);
+  
+    const myHeaders = new Headers();
+    myHeaders.set('Authorization', `Basic ${encodedCredentials}`);
+    myHeaders.set('clientId', user?.data?.clientKeys?.clientId);
+    myHeaders.set('Content-Type', 'application/json');
+  
+    const raw = JSON.stringify(payoutParam);
+  
+    const requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow',
+    };
+  
+    try {
+      const response = await fetch(
+        'https://apidoc.transferrocket.co.uk//processpayout.io',
+        requestOptions
+      );
+      console.log("🚀 ~ file: FlexWrapper.jsx:211 ~ createPayoutReq ~ response:", response)
+      const data = await response.json();
+  
+      setLoading(false);
+  
+      if (data?.status) {
+        toast.success(data?.message);
+        setLoading(false);
+        setShow(!show);
+        // Reset the payoutParam state
+        setpayoutParam({
+          // set your initial state here or leave it as an empty object
+        });
+      } else {
+        setpayoutParam({
+          // set your initial state here or leave it as an empty object
+        });
+        toast.error(data?.message);
+        setShow(!show);
+      }
+    } catch (error) {
+      setpayoutParam({
+        // set your initial state here or leave it as an empty object
+      });
+      setShow(!show);
+      console.error('Error in createPayoutReq:', error);
+      setLoading(false);
+      toast.error('An error occurred while processing the payout.');
+    }
+  };
   
 
   return (
@@ -150,7 +267,7 @@ const FlexWrapper = ({
           </div>
           {show && (
             <div className="smallModal">
-              {/* <div
+              <div
                 className="bx"
                 onClick={() => {
                   setPayout(true);
@@ -158,35 +275,124 @@ const FlexWrapper = ({
               >
                 <img src={add} alt="" />
                 <span>Payout to client</span>
-              </div> */}
+              </div>
 
               {/*  */}
 
               {payout && (
                 <Modal
-                  height="350px"
-                  width="350px"
+                  // height="350px"
+                  padding="1em"
+                  width="30%"
                   setShow={setShow}
                   setPayout={setPayout}
                   modalName="Payout"
                   btn="Proceed"
+                  cancleModal={() => {
+                    setpayoutParam(
+                      {
+                        "refrenceId": "",
+                        "appId": undefined,
+                        "sourceId": undefined,
+                        "currencyId": undefined,
+                        "amount": undefined,
+                        "naration": "",
+                        "senderName": "",
+                        "beneficiaryId" : undefined
+                    }
+                    )
+                    setShow(!show)
+                  }}
+                  loading={loading}
+                  handleSubmit={createPayoutReq}
+                
                 >
                   <ModalInner>
-                    {/* <p className="quick">Quickly send money to your clients</p> */}
+                    <p className="quick">Quickly send money to your clients</p>
+                    <TextInput label="senderName" placeholder="John Deo" name="senderName" change={handlechange2} />
                  
-                    <Select label="Bank" />
-                   
-                    <TextInput label="Amount" placeholder="200" name="amountRequested" change={handlechange} />
+                    {/* <Select label="Bank" /> */}
+                    <p>Select Your App</p>
+                    <Selects
+                        placeholder="Select App"
+                        styles={{
+                          control: styles => ({
+                            ...styles,
+                            backgroundColor: 'white',
+                            padding:"5px",
+                            // width: 554,
+                            borderRadius:"8px",
+                            border: "1px solid #d0d5dd",
+                            boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)",
+                            // border: 'none', // Remove the border
+                            // boxShadow: 'none', // Remove the box shadow
+                          }),
+                          singleValue: styles => ({
+                            ...styles,
+                            color: '#000'
+                          }),
+                          option: (styles, { isFocused }) => ({
+                            ...styles,
+                            backgroundColor: isFocused ? 'rgb(0, 168, 90)' : '#ededed',
+                            color: isFocused ? 'white' : 'black'
+                          })
+                      
+                          // Custom styles if needed
+                        }}
+                        value={selectedOption}
+                        onChange={handleSelectChange}
+                        options={options}
 
+                    />
+                    <br/>
+                    <p>Select Your Beneficairy</p>
+                    <Selects
+                        placeholder="Select Beneficiary"
+                        styles={{
+                          control: styles => ({
+                            ...styles,
+                            backgroundColor: 'white',
+                            padding:"5px",
+                            // width: 554,
+                            borderRadius:"8px",
+                            border: "1px solid #d0d5dd",
+                            boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)",
+                            // border: 'none', // Remove the border
+                            // boxShadow: 'none', // Remove the box shadow
+                          }),
+                          singleValue: styles => ({
+                            ...styles,
+                            color: '#000'
+                          }),
+                          option: (styles, { isFocused }) => ({
+                            ...styles,
+                            backgroundColor: isFocused ? 'rgb(0, 168, 90)' : '#ededed',
+                            color: isFocused ? 'white' : 'black'
+                          })
+                      
+                          // Custom styles if needed
+                        }}
+                        value={selectedOption2}
+                        onChange={handleSelectChangebene}
+                        options={beneoptions}
+
+                    />
+                   <TextInput label="Amount" placeholder="200" name="amount" change={(e) => setpayoutParam(prevState => ({
+                                      ...prevState,
+                                      amount:parseInt(e.target.value)
+                                    }))
+                  } />
+                   
                     <Textarea
                       width="100%"
                       placeholder="Type a narration..."
                       background="#FFF"
                       margin="20px 0"
-                      name="comment"
-                      value={fundingRequest?.comment}
-                      change={handlechange}
+                      name="naration"
+                      value={payoutParam?.naration}
+                      change={handlechange2}
                     />
+
                   </ModalInner>
                 </Modal>
               )}

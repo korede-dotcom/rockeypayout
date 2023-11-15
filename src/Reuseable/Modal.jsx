@@ -3,7 +3,7 @@ import styled from "styled-components";
 import cancel from '../assets/cancel.svg'
 import { Spin } from "@arco-design/web-react";
 
-const Modal = ({ width, height, children, setPayout, setShow, modalName, btn,handleSubmit ,cancleModal,loading,disabled}) => {
+const Modal = ({ width, height, children, setPayout, setShow, modalName, btn,handleSubmit ,cancleModal,loading,disabled,padding}) => {
 
   return (
     <ModalBox>
@@ -12,6 +12,7 @@ const Modal = ({ width, height, children, setPayout, setShow, modalName, btn,han
         style={{
           width: width ? width : "300px",
           height: height ? height : "max-content",
+          padding: padding ? padding : "",
         }}
       >
         <div className="top">

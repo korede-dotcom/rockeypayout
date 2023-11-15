@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 const Marketplace = () => {
     const navigate =useNavigate()
     const [market,setMarket] = useState([])
-    const [getUser,setUser] = useState()
+    const [getUser,setUser] = useState(null)
     const [getSub,setSub] = useState()
     const [num,setNum] = useState(0)
     const [isClicked, setIsClicked] = useState(false);
@@ -35,25 +35,25 @@ const Marketplace = () => {
         setUser(JSON.parse(localStorage?.getItem("userDetails")))
         setSub(getUser?.data?.payOutClientWalletPayOutProviders)
 
-    },[])
-    useEffect(() => {
-        const makeRequest = async () => {
-            var requestOptions = {
-                method: 'GET',
-                redirect: 'follow'
-              };
+    },[getSub])
+    // useEffect(() => {
+    //     const makeRequest = async () => {
+    //         var requestOptions = {
+    //             method: 'GET',
+    //             redirect: 'follow'
+    //           };
               
-            const response = await fetch("https://apidoc.transferrocket.co.uk//getpayoutprovider", requestOptions)
-            const data = await response.json()
-            setMarket(data?.data)
-            console.log("🚀 ~ file: Marketplace.jsx:22 ~ makeRequest ~ data:", data)
+    //         const response = await fetch("https://apidoc.transferrocket.co.uk//getpayoutprovider", requestOptions)
+    //         const data = await response.json()
+    //         setMarket(data?.data)
+    //         console.log("🚀 ~ file: Marketplace.jsx:22 ~ makeRequest ~ data:", data)
 
-        }
-        makeRequest()
-        setUser(JSON.parse(localStorage?.getItem("userDetails")))
-        setSub(getUser?.data?.payOutClientWalletPayOutProviders)
+    //     }
+    //     makeRequest()
+    //     setUser(JSON.parse(localStorage?.getItem("userDetails")))
+    //     setSub(getUser?.data?.payOutClientWalletPayOutProviders)
 
-    },[getUser])
+    // },[])
 
     const handleSubcribe = async (id) => {
         if (isClicked) {
@@ -99,7 +99,7 @@ const Marketplace = () => {
                  // Determine the subscription status
                  const subscriptionStatus = matchingProvider ? matchingProvider?.status === "true" : false;
                             return(
-                                <Marketbox handleSubcribe={() => handleSubcribe(id)}  key={i}  logo={logo} name={name} subname={description} word={word} subStatus={subscriptionStatus}     />                        
+                                <Marketbox handleSubcribe={() => handleSubcribe(id)}  key={i}  logo={logo} name={name} subname={name?.toString().split("-")[1]} word={word} subStatus={subscriptionStatus}     />                        
                             )
                     }
 // 

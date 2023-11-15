@@ -15,6 +15,8 @@ import { useNavigate } from "react-router-dom";
 import { QueryParams } from "../reuseables/QueryParams";
 import Selects from 'react-select';
 import { useLocation } from "react-router-dom";
+import { encode } from 'base64-js';
+
 
 const FlexWrapper = ({
   name,
@@ -105,6 +107,8 @@ const FlexWrapper = ({
   });
 
   useEffect(() => {
+   
+
     const userId = JSON.parse(localStorage.getItem("userDetails"));
     const userWalletId = userId?.data?.walletFundindRequests[0]?.userWallet?.walletId;
     console.log("🚀 ~ file: FlexWrapper.jsx:35 ~ useEffect ~ userId:", userWalletId);
@@ -185,59 +189,60 @@ const FlexWrapper = ({
     setLoading(true);
     const getDetails = JSON.parse(localStorage.getItem("details"));
 
-  
-    const username = getDetails?.username;
-    const password = getDetails?.password;
-    const encodedCredentials = btoa(`${username}:${password}`);
-  
-    const myHeaders = new Headers();
-    myHeaders.set('Authorization', `Basic ${encodedCredentials}`);
-    myHeaders.set('clientId', user?.data?.clientKeys?.clientId);
-    myHeaders.set('Content-Type', 'application/json');
-  
-    const raw = JSON.stringify(payoutParam);
-  
-    const requestOptions = {
-      method: 'POST',
-      headers: myHeaders,
-      body: raw,
-      redirect: 'follow',
-    };
-  
-    try {
-      const response = await fetch(
-        'https://apidoc.transferrocket.co.uk//processpayout.io',
-        requestOptions
-      );
-      console.log("🚀 ~ file: FlexWrapper.jsx:211 ~ createPayoutReq ~ response:", response)
-      const data = await response.json();
-  
-      setLoading(false);
-  
-      if (data?.status) {
-        toast.success(data?.message);
-        setLoading(false);
-        setShow(!show);
-        // Reset the payoutParam state
-        setpayoutParam({
-          // set your initial state here or leave it as an empty object
-        });
-      } else {
-        setpayoutParam({
-          // set your initial state here or leave it as an empty object
-        });
-        toast.error(data?.message);
-        setShow(!show);
-      }
-    } catch (error) {
-      setpayoutParam({
-        // set your initial state here or leave it as an empty object
-      });
-      setShow(!show);
-      console.error('Error in createPayoutReq:', error);
-      setLoading(false);
-      toast.error('An error occurred while processing the payout.');
-    }
+const username = getDetails?.username;
+const password = getDetails?.password;
+
+// Concatenate clientId and liveKey with a colon
+const credentials = `${user?.data?.clientKeys?.clientId}:${user?.data?.clientKeys?.liveKey}`;
+
+// Use btoa for Base64 encoding
+const encodedCredentials = btoa(credentials);
+console.log("🚀 ~ file: FlexWrapper.jsx:229 ~ createPayoutReq ~ encodedCredentials:", encodedCredentials)
+
+const myHeaders = new Headers();
+myHeaders.set('Authorization', `Basic ${encodedCredentials}`);
+myHeaders.append("clientId", user?.data?.clientKeys?.clientId);
+myHeaders.set('Content-Type', 'application/json');
+
+const raw = JSON.stringify(payoutParam);
+
+const requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow',
+};
+
+try {
+  const response = await fetch(
+    'https://apidoc.transferrocket.co.uk//processpayout.io',
+    requestOptions
+  );
+  console.log("🚀 ~ file: FlexWrapper.jsx:211 ~ createPayoutReq ~ response:", response)
+  const data = await response.json();
+
+  setLoading(false);
+
+  if (data?.status) {
+    toast.success(data?.message);
+    setLoading(false);
+    setShow(!show);
+    // Reset the payoutParam state
+    setpayoutParam({});
+  } else {
+    setpayoutParam({});
+    toast.error(data?.message);
+    setShow(!show);
+  }
+} catch (error) {
+  setpayoutParam({});
+  setShow(!show);
+  console.error('Error in createPayoutReq:', error);
+  setLoading(false);
+  toast.error('An error occurred while processing the payout.');
+}
+
+
   };
   
 

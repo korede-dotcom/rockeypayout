@@ -526,9 +526,16 @@ const [WebhooksHHead, setWebhooksHead] = useState(
    if(getUser?.data?.role?.id === 8 ){
     setAct1(false)
     setAct2(true)
+  }
+  },[])
+  useEffect(() => {
+    
+   if(getUser?.data?.role?.id === 8 ){
+    setAct1(false)
+    setAct2(true)
   
   }
-  },[getUser])
+  },[getUser?.data?.role?.id])
 
   // useEffect(() => {
   //   if(getUser?.data?.role?.id === 8 ){

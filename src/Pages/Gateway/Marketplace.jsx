@@ -93,13 +93,13 @@ const Marketplace = () => {
                 <FlexItems text="All Gateways" />
                 <hr style={{width: '100%', border: '.5px solid #EAECF0'}} />
                 <BoxWrapper>
-                    {market?.map(({logo, name, company, word, subscribe, subscribeStatus,status,id},i) => {
+                    {market?.map(({logo, name, company, word, subscribe, subscribeStatus,status,id,description},i) => {
                  const matchingProvider = getSub?.find(provider => provider?.providerName === name);
 
                  // Determine the subscription status
                  const subscriptionStatus = matchingProvider ? matchingProvider?.status === "true" : false;
                             return(
-                                <Marketbox handleSubcribe={() => handleSubcribe(id)}  key={i}  logo={name?.includes("HopePSB") && hope} name={name} subname={name?.toString().split("-")[1]} word={word} subStatus={subscriptionStatus}     />                        
+                                <Marketbox handleSubcribe={() => handleSubcribe(id)}  key={i}  logo={logo} name={name} subname={description} word={word} subStatus={subscriptionStatus}     />                        
                             )
                     }
 // 

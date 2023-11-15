@@ -15,7 +15,7 @@ import { useMutation,useQuery} from "@tanstack/react-query";
 import { useNavigate } from 'react-router-dom';
 import { Spin, Modal } from '@arco-design/web-react';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import { Axios } from '../../utils/Axios';
 import ReusableModal from '../../reuseables/ReusableModal';
 import Msg from '../../reuseables/Msg';
@@ -162,6 +162,16 @@ function LoginR() {
               
                 return
             }else{
+                const allowedUser = [7,8];
+                if (!data?.data?.role?.id) {
+                    console.log("🚀 ~ file: LoginR.jsx:169 ~ LoginR ~ !data?.data?.role?.id:", !data?.data?.role?.id)
+                    toast.error("Invalid Credentials")
+                    return
+                }
+                if (!allowedUser.includes(data?.data?.role?.id)) {
+                    return  toast.error("Invalid Credentials")
+                }
+                
                 toast.success(data?.message)
                 localStorage.setItem("userDetails",JSON.stringify(data))
                 if(data?.data?.role?.id === 8){

@@ -6,11 +6,12 @@ const Marketbox = ({ logo, name, subname, word, subscribe, subStatus,handleSubcr
     <MarketBox>
       <div className="top">
         <div className={`logo ${logo ? "" : "add"}`}>
-            {logo && <img src={logo} alt="" /> }
+            {logo && <img className="imglogo"  src={logo} alt="" /> }
         </div>
         <div className="name">
           <h3>{name}</h3>
-          <p>{subname}</p>
+          <p >{subname}</p>
+          {/* <p>kkkk</p> */}
         </div>
       </div>
       <div className="word">
@@ -52,6 +53,9 @@ const MarketBox = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   row-gap: 15px;
+  .imglogo{
+    border-radius: 50%;
+  }
   .top{
     display: flex;
     align-items: center;
@@ -78,13 +82,14 @@ const MarketBox = styled.div`
         flex-direction: column;
         align-items: flex-start;
         row-gap: 3px;
+        color :#000;
         h3{
-            color: #464F60;
+            color: #000;
             font-size: 14px;
             font-weight: 400;
         }
         p{
-            color: #98A2B3;
+            color: #000;
             font-size: 11px;
             font-weight: 300;
         }

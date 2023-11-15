@@ -10,6 +10,8 @@ import {
 } from "react-icons/ai";
 import CustomTable from "../reuseables/CustomTable";
 import { useQuery } from "@tanstack/react-query";
+import { QueryParams } from '../reuseables/QueryParams';
+import { useLocation } from "react-router-dom";
 // import { getPayoutClientDashboard } from "../services/PayoutDashboard";
 import { kFormatter4 } from "../utils/format";
 
@@ -22,38 +24,81 @@ function TransactionList({ data }) {
 
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   console.log("🚀 ~ file: Tranx.jsx:20 ~ TransactionList ~ userDetails:", userDetails)
+  const location = useLocation();
 
+  // Access the query parameters from the location object
+  const queryParams = new URLSearchParams(location.search);
 
   useEffect(() => {
 
-    // setLoading(true)
-    const userId = JSON.parse(localStorage.getItem("userDetails"))
-
-    const fetchData = async () => {
-      try {
-        const requestOptions = {
-          method: 'GET',
-          redirect: 'follow'
+    if (window.location.pathname === "/transaction") {
+        const userId = JSON.parse(localStorage.getItem("userDetails"))
+    
+        const fetchData = async () => {
+          try {
+            const requestOptions = {
+              method: 'GET',
+              redirect: 'follow'
+            };
+    
+            const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userId?.data?.userId}`, requestOptions);
+            const result = await response.json();
+            
+            // Set the fetched data to state
+            setData(result);
+            setLoading(false)
+            settrx(result?.data?.payOutTransactions);
+            localStorage.getItem("userDetails",JSON.stringify(result))
+            console.log("Fetched data:", result);
+          } catch (error) {
+            console.error("Error fetching data:", error);
+            // Handle errors here
+          }
         };
-
-        const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userId?.data?.userId}`, requestOptions);
-        const result = await response.json();
+    
+        // Call the fetch function
+        fetchData();
         
-        // Set the fetched data to state
-        setData(result);
-        setLoading(false)
-        settrx(result?.data?.payOutTransactions);
-        localStorage.getItem("userDetails",JSON.stringify(result))
-        console.log("Fetched data:", result);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        // Handle errors here
-      }
-    };
+    }else{
 
-    // Call the fetch function
-    fetchData();
-  }, []);
+        const userId = JSON.parse(localStorage.getItem("userDetails"))
+        const currencyFromQuery = queryParams.get('currency');
+        const id = parseInt(queryParams.get('id'));
+        console.log("🚀 ~ file: Tranx.jsx:69 ~ useEffect ~ id:", id)
+    
+        const fetchData = async () => {
+          try {
+            const requestOptions = {
+              method: 'GET',
+              redirect: 'follow'
+            };
+    
+            const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userId?.data?.userId}`, requestOptions);
+            const result = await response.json();
+            console.log("🚀 ~ file: Tranx.jsx:79 ~ fetchData ~ result:", result)
+            
+            // Set the fetched data to state
+            setData(result);
+            setLoading(false)
+            const filterTrnx = result?.data?.payOutTransactions?.filter(d => d?.payOutProvider?.id === id && d?.country?.currencyCode === currencyFromQuery)
+            console.log("🚀 ~ file: Tranx.jsx:84 ~ fetchData ~ filterTrnx:", filterTrnx)
+            settrx(filterTrnx);
+            localStorage.getItem("userDetails",JSON.stringify(result))
+            console.log("Fetched data:", result);
+          } catch (error) {
+            console.error("Error fetching data:", error);
+            // Handle errors here
+          }
+        };
+    
+        // Call the fetch function
+        fetchData();
+
+    }
+    // setLoading(true)
+  }, [queryParams.get('currency')]);
+
+
 
 
 //   const {

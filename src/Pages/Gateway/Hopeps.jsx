@@ -35,8 +35,11 @@ const Hopeps = () => {
   const [trx, settrx] = useState(null);
   const [sorted,setSorted] = useState()
   const [balance,setBalance] = useState()
+  const [wBalance,setWBalance] = useState()
   const [currency,setCurrency] = useState(null)
   const [figure2,setfigure2] = useState(null)
+  const [trk,settrk] = useState()
+  
   // const sorted = ;
   // const balance = ;
   
@@ -47,13 +50,15 @@ const Hopeps = () => {
 
   // Access the query parameters from the location object
   const queryParams = new URLSearchParams(location.search);
+
   
   useEffect(() => {
     setLoading(true);
   
     // Extract the currency from the query parameters
     const currencyFromQuery = queryParams.get('currency');
-  
+    console.log("🚀 ~ file: Hopeps.jsx:57 ~ useEffect ~ currencyFromQuery:", currencyFromQuery)
+    settrk(currencyFromQuery)
     // Set a default currency code if it's not present
     const currency = currencyFromQuery || 'NGN';
     setCurrency(currency);
@@ -82,9 +87,13 @@ const Hopeps = () => {
       { number: formatter(sorted?.cancelledAmount) },
       // { number: 18 },
     ]);
+    setWBalance(formatter(findCurrency?.wallet?.balance))
+
   
     setLoading(false);
-  }, [queryParams]);
+  }, [queryParams.get('currency'),balance]);
+
+
   
 
 
@@ -257,7 +266,7 @@ const Hopeps = () => {
     <Layout>
       {loading && <Loader/>}
         <HopepsBox>
-            <FlexWrapper name={`${balance?.name} `} subname="[Payarena]" amount={balance?.balance} word="This overview provides a comprehensive snapshot of wallet transactions on your system" currency={currency} />
+            <FlexWrapper name={`${balance?.name} `} subname="[Payarena]" amount={wBalance} word="This overview provides a comprehensive snapshot of wallet transactions on your system" currency={currency} />
             <CardContainer>
               {
                 figure2 && <Card cardbody={cardbody2} figure={figure2} padding="0 0 0 10px" width="max-content" />
@@ -265,7 +274,7 @@ const Hopeps = () => {
                 
             </CardContainer>
            
-                  <TransactionList/>
+                  <TransactionList />
         </HopepsBox>
     </Layout>
   )

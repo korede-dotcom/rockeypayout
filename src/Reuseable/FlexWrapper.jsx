@@ -134,7 +134,7 @@ const FlexWrapper = ({
           <div className="details">
             <img src={currency === "NGN" ? ngn : gb} alt="" />
             {/* <span>5,250,532.89 NGN</span> */}
-            <span>{amount}  <QueryParams/></span>
+            <span>{amount}  {/*<QueryParams/>*/}</span>
            
           </div>
         </div>

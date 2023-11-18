@@ -2168,7 +2168,7 @@ const handleset2 = () => {
                         readOnly
                         id="liveKey"
                       />
-                      <img src={copy} alt="" onClick={() => handleCopyClick("testKey")} />
+                      <img src={copy} alt="" onClick={() => handleCopyClick("liveKey")} />
                     </div>
                   </div>
                   <div className="re" onClick={() => setReveal(!reveal)}>

@@ -16,6 +16,7 @@ import { QueryParams } from "../reuseables/QueryParams";
 import Selects from 'react-select';
 import { useLocation } from "react-router-dom";
 import { encode } from 'base64-js';
+import Btn from "../reuseables/Btn";
 
 
 const FlexWrapper = ({
@@ -36,6 +37,7 @@ const FlexWrapper = ({
   const [payout, setPayout] = useState(false);
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showBene, setshowBene] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedOption2, setSelectedOption2] = useState(null);
   const [payoutParam, setpayoutParam] = useState(
@@ -189,8 +191,6 @@ const FlexWrapper = ({
     setLoading(true);
     const getDetails = JSON.parse(localStorage.getItem("details"));
 
-const username = getDetails?.username;
-const password = getDetails?.password;
 
 // Concatenate clientId and liveKey with a colon
 const credentials = `${user?.data?.clientKeys?.clientId}:${user?.data?.clientKeys?.liveKey}`;
@@ -200,7 +200,7 @@ const encodedCredentials = btoa(credentials);
 console.log("🚀 ~ file: FlexWrapper.jsx:229 ~ createPayoutReq ~ encodedCredentials:", encodedCredentials)
 
 const myHeaders = new Headers();
-myHeaders.set('Authorization', `Basic ${encodedCredentials}`);
+// myHeaders.set('Authorization', `Basic ${encodedCredentials}`);
 myHeaders.append("clientId", user?.data?.clientKeys?.clientId);
 myHeaders.set('Content-Type', 'application/json');
 
@@ -215,7 +215,7 @@ const requestOptions = {
 
 try {
   const response = await fetch(
-    'https://apidoc.transferrocket.co.uk//processpayout.io',
+    'https://apidoc.transferrocket.co.uk//processwebpayoutclientrequest',
     requestOptions
   );
   console.log("🚀 ~ file: FlexWrapper.jsx:211 ~ createPayoutReq ~ response:", response)
@@ -313,7 +313,7 @@ try {
                 
                 >
                   <ModalInner>
-                    <p className="quick">Quickly send money to your clients</p>
+                    {/* <p className="quick">Quickly send money to your clients</p> */}
                     <TextInput label="senderName" placeholder="John Deo" name="senderName" change={handlechange2} />
                  
                     {/* <Select label="Bank" /> */}
@@ -350,7 +350,64 @@ try {
 
                     />
                     <br/>
-                    <p>Select Your Beneficairy</p>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                    <p>Select Your Beneficairy </p>
+                      <p style={{color:"green"}} onClick={() => setshowBene(!showBene)}>add beneficairy</p>
+                      {
+                        showBene &&
+                              <Modal
+                              // height="350px"
+                              padding="1em"
+                              width="20%"
+                              setShow={showBene}
+                              setPayout={setPayout}
+                              modalName="Quick create Beneficiary"
+                              btn="Proceed"
+                              cancleModal={() => {
+                               
+                                setshowBene(!showBene)
+                              }}
+                              loading={loading}
+                              handleSubmit={createPayoutReq}
+                            
+                            >
+                             <TextInput  label="Beneficiary Phonenumber" />
+                             <p>Select Bank</p>
+                             <Selects
+                        placeholder="Select Bank"
+                        styles={{
+                          control: styles => ({
+                            ...styles,
+                            backgroundColor: 'white',
+                            padding:"5px",
+                            // width: 554,
+                            borderRadius:"8px",
+                            border: "1px solid #d0d5dd",
+                            boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)",
+                            // border: 'none', // Remove the border
+                            // boxShadow: 'none', // Remove the box shadow
+                          }),
+                          singleValue: styles => ({
+                            ...styles,
+                            color: '#000'
+                          }),
+                          option: (styles, { isFocused }) => ({
+                            ...styles,
+                            backgroundColor: isFocused ? 'rgb(0, 168, 90)' : '#ededed',
+                            color: isFocused ? 'white' : 'black'
+                          })
+                      
+                          // Custom styles if needed
+                        }}
+                        value={selectedOption2}
+                        onChange={handleSelectChangebene}
+                        options={beneoptions}
+
+                    />
+                              <TextInput label="Beneficiary Account Number" />
+                            </Modal>
+                      }
+                    </div>
                     <Selects
                         placeholder="Select Beneficiary"
                         styles={{

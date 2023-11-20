@@ -306,11 +306,12 @@ const requestOptions = {
 
 try {
   const response = await fetch(
-    'https://apidoc.transferrocket.co.uk//processwebpayoutclientrequest',
+    'http://188.212.124.39:3007/request',
     requestOptions
   );
   console.log("🚀 ~ file: FlexWrapper.jsx:211 ~ createPayoutReq ~ response:", response)
   const data = await response.json();
+  console.log("🚀 ~ file: FlexWrapper.jsx:314 ~ createPayoutReq ~ data:", data)
 
   setLoading(false);
 
@@ -358,7 +359,8 @@ try {
       toast.error('An error occurred while creating beneficiary.');
     }
   }
-  const lookup = async (e) => {
+
+const lookup = async (e) => {
 
     const getDetails = JSON.parse(localStorage.getItem("userDetails"));
     var requestOptions = {

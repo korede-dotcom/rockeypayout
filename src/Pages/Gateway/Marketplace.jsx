@@ -69,7 +69,7 @@ const Marketplace = () => {
         const data = await response.json();
     
         if (data?.status) {
-            toast.status(data.message)
+            toast.success(data.message)
           navigate('/overview');
           setLoading(false);
         setClickedItemId(null);

@@ -1695,7 +1695,7 @@ const columns = [
   //   width: 130,
   // },
   {
-    title: "CLIENT ID",
+    title: "APP ID",
     dataIndex: "id",
     width: 140,
   },

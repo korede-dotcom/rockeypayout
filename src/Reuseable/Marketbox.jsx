@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const Marketbox = ({ logo, name, subname, word, subscribe, subStatus,handleSubcribe }) => {
+const Marketbox = ({ logo, name, subname, word, subscribe, subStatus,handleSubscribe ,load,load2}) => {
   return (
     <MarketBox>
       <div className="top">
@@ -20,9 +20,9 @@ const Marketbox = ({ logo, name, subname, word, subscribe, subStatus,handleSubcr
       <div className="bottom">
         <div className="left">
           {subStatus !== true ? 
-            <p className="sub" onClick={handleSubcribe}>subscribe</p>
+            <p className="sub" onClick={handleSubscribe}>{ load ? 'loading ...' : "subscribe"}</p>
            : 
-            <p className="unsub" onClick={handleSubcribe}>subscribed</p>
+            <p className="unsub" onClick={[]}>{"subscribed"}</p>
           }
         </div>
         <div className="right">

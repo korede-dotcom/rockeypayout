@@ -7,6 +7,7 @@ import FlexItems from '../../Reuseable/FlexItems';
 import Marketbox from '../../Reuseable/Marketbox';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { Spin } from '@arco-design/web-react';
 
 const Marketplace = () => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const Marketplace = () => {
   const [getUser, setUser] = useState();
   const [getSub, setSub] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [fullLoad, setFullLoad] = useState(false);
   const [clickedItemId, setClickedItemId] = useState(null);
   
   const makeRequest = useCallback(async () => {
@@ -28,6 +30,7 @@ const Marketplace = () => {
   }, []);
 
   const fetchData = useCallback(async () => {
+    setFullLoad(true)
       const userDetails = JSON.parse(localStorage?.getItem('userDetails'));
     setUser(userDetails);
     const payoutProviders = userDetails?.data?.payOutClientWalletPayOutProviders || [];
@@ -36,6 +39,7 @@ const Marketplace = () => {
 
     const marketData = await makeRequest();
     setMarket(marketData);
+    setFullLoad(false)
   }, [makeRequest]);
 
   useEffect(() => {
@@ -65,7 +69,14 @@ const Marketplace = () => {
         const data = await response.json();
     
         if (data?.status) {
+            toast.status(data.message)
           navigate('/overview');
+          setLoading(false);
+        setClickedItemId(null);
+        }else{
+            toast.error(data.message)
+            setLoading(false);
+            setClickedItemId(null);
         }
         
         console.log('🚀 ~ file: Marketplace.jsx:49 ~ handleSubcribe ~ data:', data);
@@ -73,10 +84,9 @@ const Marketplace = () => {
         toast.error(error.message)
         setLoading(false);
         setClickedItemId(null);
-        navigate('/overview');
+        // navigate('/overview');
         
     }
-
     setLoading(false);
     setClickedItemId(null);
   };
@@ -88,6 +98,8 @@ const Marketplace = () => {
           <h1>Marketplace</h1>
           <p>Subscribe to various gateways providers on the platform</p>
         </div>
+        {fullLoad ? <Spin dot/> :
+        (
         <Box width="100%" border="none" margin="20px 0" radius="15px" flexDirection="column" padding="0 20px 20px 20px">
           <FlexItems text="All Gateways" />
           <hr style={{ width: '100%', border: '.5px solid #EAECF0' }} />
@@ -97,20 +109,30 @@ const Marketplace = () => {
               const subscriptionStatus = matchingProvider ? matchingProvider?.status === 'true' : false;
 
               return (
-                <Marketbox
-                  handleSubscribe={() => handleSubscribed(id)}
-                  key={i}
-                  logo={logo}
-                  name={name}
-                  subname={name?.toString().split('-')[1]}
-                  word={word}
-                  subStatus={subscriptionStatus}
-                  load={loading && clickedItemId === id}
-                />
+               <>
+               {
+                loading ? <Spin dot/> : (
+                    <Marketbox
+                      handleSubscribe={() => handleSubscribed(id)}
+                      handleSubscribed={() => toast.success("already subscribed to this gateway")}
+                      key={i}
+                      logo={logo}
+                      name={name}
+                      subname={name?.toString().split('-')[1]}
+                      word={word}
+                      subStatus={subscriptionStatus}
+                      load={loading && clickedItemId === id}
+                    />
+                )
+               }
+               </>
               );
             })}
           </BoxWrapper>
         </Box>
+
+        )
+        }
       </MarketplaceBox>
     </Layout>
   );

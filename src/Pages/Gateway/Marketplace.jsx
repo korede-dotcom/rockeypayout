@@ -60,7 +60,7 @@ const Marketplace = () => {
     var requestOptions = {
       method: 'POST',
       body: JSON.stringify({
-        "payoutProviderId": parseInt(id),
+        "providerId": parseInt(id),
       }),
       redirect: 'follow',
     };

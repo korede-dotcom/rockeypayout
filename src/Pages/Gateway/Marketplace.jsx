@@ -65,7 +65,7 @@ const Marketplace = () => {
       redirect: 'follow',
     };
     try {
-        const response = await fetch(`https://apidoc.transferrocket.co.uk/createpayoutclientwalletgatewayprovider`, requestOptions);
+        const response = await fetch(`https://apidoc.transferrocket.co.uk/createpayoutclientwalletgatewayprovider/${getUser.data.userId}`, requestOptions);
         const data = await response.json();
     
         if (data?.status) {

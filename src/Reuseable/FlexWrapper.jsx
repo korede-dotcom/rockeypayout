@@ -114,6 +114,7 @@ const FlexWrapper = ({
     }));
     // Do something with selected option if needed
   };
+
   const handleSelectChangebank = selectedOption3 => {
     console.log("🚀 ~ file: FlexWrapper.jsx:116 ~ hansdleSelectChangebank ~ selectedOption3:", selectedOption3)
     setSelectedOption3(selectedOption3);
@@ -171,9 +172,6 @@ const FlexWrapper = ({
   const [fundingRequest, setFundingRequest] = useState({
     userId: null,
     amountRequested: '',
-    userWallet: {
-      walletId: null
-    },
     comment: "",
     lastUpdatedBy: 0
   });
@@ -202,9 +200,27 @@ const FlexWrapper = ({
 
   const handlechange = (e) => {
     const { name, value } = e.target;
+    const id = queryParams.get('id');
+    const cid = queryParams.get('cid');
+    const currency = queryParams.get('currency');
+
+    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+
+    // Log user details
+    // console.log("🚀 ~ file: FlexWrapper.jsx:208 ~ handlechange ~ userDetails:", userDetails?.data?.payOutClientWalletPayOutProviders);
+    
+    // Find a wallet based on provider ID and currency code
+    const findWallet = userDetails?.data?.payOutClientWalletPayOutProviders.find((wallet) => {
+      return wallet.providerId == id &&  wallet.wallet.country.currencyCode == currency;
+    });
+    console.log("🚀 ~ file: FlexWrapper.jsx:216 ~ findWal ~ findWallet:", findWallet)
+
       setFundingRequest(prevState => ({
 
         ...prevState,
+        userWallet: {
+          walletId: findWallet?.wallet?.walletId
+        },
       amountRequested: parseInt(prevState.amountRequested),
         [name]: value,
       }));
@@ -277,6 +293,7 @@ const FlexWrapper = ({
    }
    console.log("🚀 ~ file: FlexWrapper.jsx:96 ~ CreateWalletFundingRequest ~ data:", data)
   }
+
 const createPayoutReq = async () => {
   
     setLoading(true);

@@ -67,10 +67,15 @@ const Marketplace = () => {
     try {
         const response = await fetch(`https://apidoc.transferrocket.co.uk/createpayoutclientwalletgatewayprovider/${getUser.data.userId}`, requestOptions);
         const data = await response.json();
-    
+
+        const res = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${getUser.data.userId}`);
+        const data2 = await res.json();
+        console.log("🚀 ~ file: Marketplace.jsx:73 ~ handleSubscribed ~ data2:", data2)
+        localStorage.setItem("userDetails",JSON.stringify(data2))
         if (data?.status) {
             toast.success(data.message)
-          navigate('/overview');
+            window.location.reload();
+        //   navigate('/marketplace'); 
           setLoading(false);
         setClickedItemId(null);
         }else{

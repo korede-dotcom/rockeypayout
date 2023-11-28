@@ -13,6 +13,8 @@ useEffect(() => {
 
 },[])
 
+
+
   return (
     
     <Layout>
@@ -90,6 +92,8 @@ useEffect(() => {
 };
 
 export default Security;
+
+
 
 const UserProfileBox = styled.div`
   .head {

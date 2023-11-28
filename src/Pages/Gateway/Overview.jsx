@@ -43,6 +43,7 @@ const Overview = () => {
     style: 'currency',
     currency: "NGN",
   });
+  
   const sorted = data?.data?.transactionVolume[0]
   console.log("🚀 ~ file: Overview.jsx:39 ~ Overview ~ sorted:", data2)
 

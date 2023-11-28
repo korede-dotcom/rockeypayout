@@ -76,9 +76,9 @@ const Login = () => {
       "city": {
           "id": ""
       },
-      "state": {
-          "id": ""
-      },
+      // "state": {
+      //     "id": ""
+      // },
       "country": {
           "id": ""
       },
@@ -237,24 +237,24 @@ const Login = () => {
       .catch((error) => console.log("error", error));
   }, []);
 
-  useEffect(() => {
-    // Fetch states whenever the country ID changes
-    const requestOptions = {
-      method: "GET",
-      redirect: "follow",
-    };
+  // useEffect(() => {
+  //   // Fetch states whenever the country ID changes
+  //   const requestOptions = {
+  //     method: "GET",
+  //     redirect: "follow",
+  //   };
 
-    fetch(
-      `https://apidoc.transferrocket.co.uk/getstates?countryId=${countryId}&stateId=0`,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setState(data.data);
+  //   fetch(
+  //     `https://apidoc.transferrocket.co.uk/getstates?countryId=${countryId}&stateId=0`,
+  //     requestOptions
+  //   )
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setState(data.data);
        
-      })
-      .catch((error) => console.log("error", error));
-  }, [countryId]);
+  //     })
+  //     .catch((error) => console.log("error", error));
+  // }, [countryId]);
 
   useEffect(() => {
     // Fetch cities whenever the state ID changes
@@ -264,7 +264,7 @@ const Login = () => {
     };
 
     fetch(
-      `https://apidoc.transferrocket.co.uk/getcities?countryId=${countryId}&stateId=${stateId}&citiId=0`,
+      `https://apidoc.transferrocket.co.uk/getcities?countryId=${countryId}&citiId=0`,
       requestOptions
     )
       .then((response) => response.json())
@@ -276,7 +276,7 @@ const Login = () => {
         }
       })
       .catch((error) => console.log("error", error));
-  }, [stateId]);
+  }, [countryId]);
   useEffect(() => {
 
   }, []);
@@ -440,6 +440,7 @@ const Login = () => {
                       })
                     }}
                     value={countryId}
+                    style={{width:"200px"}}
                   >
                     {country.map((m, i) => (
                       <option key={i} value={m.id}>
@@ -448,7 +449,7 @@ const Login = () => {
                     ))}
                   </select>
                 </Selector>
-                <Selector>
+                {/* <Selector>
                   <p>State</p>
                   <select
                     onChange={(e) => {
@@ -466,7 +467,7 @@ const Login = () => {
                       </option>
                     ))}
                   </select>
-                </Selector>
+                </Selector> */}
 
                 <Selector>
                   <p>City</p>
@@ -479,6 +480,7 @@ const Login = () => {
                       })
                     }}
                     value={cityId}
+                    style={{width:"200px"}}
                   >
                     {city.map((m, i) => (
                       <option key={i} value={m.id}>
@@ -537,7 +539,7 @@ const Login = () => {
                 
               </Wrap>{" "}
               {
-            formData?.country?.id?.toString().length &&  formData?.state?.id?.toString().length && formData?.city?.id?.toString().length && formData?.idType?.id?.toString().length && formData?.email.length > 1 && formData?.phone.length > 1 && formData.bvn.length  > 1 && formData.address.length > 1 ? (
+            formData?.country?.id?.toString().length  && formData?.city?.id?.toString().length && formData?.idType?.id?.toString().length && formData?.email.length > 1 && formData?.phone.length > 1 && formData.bvn.length  > 1 && formData.address.length > 1 ? (
                   <div className="next" onClick={handleContinueClick}>
                     <button>continue</button>
                   </div>

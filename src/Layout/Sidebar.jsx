@@ -284,10 +284,10 @@ useEffect(() => {
       const payOutClientWalletPayOutProviders = gateData?.data?.payOutClientWalletPayOutProviders || [];
       setGate(gateData);
       const formattedGatewayItems = payOutClientWalletPayOutProviders.map((d) => ({
-        title: `${d?.providerName} [${d?.wallet?.country?.currencyCode}]`,
+        title: `${d?.providerName} [${d?.wallet?.currency?.code}]`,
         path: d?.providerName?.includes("HopePSB")
-          ? `/hopebank/?currency=${d?.wallet?.country?.currencyCode}&id=${d?.providerId}&cid=${d?.wallet?.country?.id}`
-          : `/ohentpay/?currency=${d?.wallet?.country?.currencyCode}&id=${d?.providerId}&cid=${d?.wallet?.country?.id}`,
+          ? `/hopebank/?currency=${d?.wallet?.currency?.code}&id=${d?.providerId}&cid=${d?.wallet?.currency?.id}`
+          : `/ohentpay/?currency=${d?.wallet?.currency?.code}&id=${d?.providerId}&cid=${d?.wallet?.currency?.id}`,
         image: d?.providerName?.includes("HopePSB") ? <img src={hope} alt="" /> : <img src={Ohentpay} alt="" />,
       }));
 

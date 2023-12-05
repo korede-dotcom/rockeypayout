@@ -65,7 +65,7 @@ const Hopeps = () => {
   
     // Rest of your logic
     const findCurrency = getUser?.data?.payOutClientWalletPayOutProviders?.find(
-      (d) => d?.wallet?.country?.currencyCode === currency
+      (d) => d?.wallet?.currency?.code === currency
     );
     setBalance(findCurrency?.wallet)
       setSorted(findCurrency?.walletTransactionVolume)

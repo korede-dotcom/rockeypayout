@@ -144,7 +144,7 @@ function TransactionList({ data }) {
       width: 250,
     },
     {
-      title: "CLIENT",
+      title: "APP",
       dataIndex: "payoutClientApp['appName']",
       width: 190,
     },

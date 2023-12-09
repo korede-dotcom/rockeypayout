@@ -30,6 +30,9 @@ import { Dropdown } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 import CustomTable from "../../reuseables/CustomTable";
 import Tranx  from "../../reuseables/Tranx";
+import {  useRef } from 'react';
+import { Table, Input, Button } from '@arco-design/web-react';
+import { IconSearch } from '@arco-design/web-react/icon';
 
 const Overview = () => {
   const navigate = useNavigate();
@@ -38,11 +41,13 @@ const Overview = () => {
   const [trx, settrx] = useState(null);
   const [loading, setLoading] = useState(false);
   const [userDetails, setuserDetails] = useState(null);
+  const inputRef = useRef(null);
 
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: "NGN",
   });
+  const formatters = new Intl.NumberFormat();
   
   const sorted = data?.data?.transactionVolume[0]
   console.log("🚀 ~ file: Overview.jsx:39 ~ Overview ~ sorted:", data2)
@@ -232,6 +237,40 @@ const Overview = () => {
     {
       title: "CLIENT ID",
       dataIndex: "id",
+      filterIcon: <IconSearch />,
+      filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
+        return (
+          <div className='arco-table-custom-filter'>
+            <Input.Search
+              ref={inputRef}
+              searchButton
+              placeholder='Please enter id'
+              value={filterKeys[0] || ''}
+              onChange={(value) => {
+                setFilterKeys(value ? [value] : []);
+              }}
+              onSearch={() => {
+                confirm();
+              }}
+            />
+          </div>
+        );
+      },
+      onFilter: (value, row) => (value ? row?.id?.toString().indexOf(value) !== -1 : true),
+      onFilterDropdownVisibleChange: (visible) => {
+        if (visible) {
+          setTimeout(() => inputRef.current.focus(), 150);
+        }
+      },
+      sorter: (a, b) => {
+        if (a.id > b.id) {
+          return 1;
+        }
+        if (a.id < b.id) {
+          return -1;
+        }
+        return 0;
+      },
       width: 140,
     },
     {
@@ -242,7 +281,42 @@ const Overview = () => {
     {
       title: "AMOUNT REQUESTED",
       dataIndex: "amountRequested",
+      filterIcon: <IconSearch />,
+      filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
+        return (
+          <div className='arco-table-custom-filter'>
+            <Input.Search
+              ref={inputRef}
+              searchButton
+              placeholder='Please enter amount'
+              value={filterKeys[0] || ''}
+              onChange={(value) => {
+                setFilterKeys(value ? [value] : []);
+              }}
+              onSearch={() => {
+                confirm();
+              }}
+            />
+          </div>
+        );
+      },
+      onFilter: (value, row) => (value ? row?.amountRequested?.toString().indexOf(value) !== -1 : true),
+      onFilterDropdownVisibleChange: (visible) => {
+        if (visible) {
+          setTimeout(() => inputRef.current.focus(), 150);
+        }
+      },
+      sorter: (a, b) => {
+        if (a.id > b.id) {
+          return 1;
+        }
+        if (a.id < b.id) {
+          return -1;
+        }
+        return 0;
+      },
       width: 190,
+      render: (item) => formatters.format(item) ,
     },
     {
       title: "STATUS",
@@ -259,6 +333,40 @@ const Overview = () => {
     {
       title: "COMMENT",
       dataIndex: "comment",
+      filterIcon: <IconSearch />,
+      filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
+        return (
+          <div className='arco-table-custom-filter'>
+            <Input.Search
+              ref={inputRef}
+              searchButton
+              placeholder='Please enter comment'
+              value={filterKeys[0] || ''}
+              onChange={(value) => {
+                setFilterKeys(value ? [value] : []);
+              }}
+              onSearch={() => {
+                confirm();
+              }}
+            />
+          </div>
+        );
+      },
+      onFilter: (value, row) => (value ? row?.comment?.toString().indexOf(value) !== -1 : true),
+      onFilterDropdownVisibleChange: (visible) => {
+        if (visible) {
+          setTimeout(() => inputRef.current.focus(), 150);
+        }
+      },
+      sorter: (a, b) => {
+        if (a.id > b.id) {
+          return 1;
+        }
+        if (a.id < b.id) {
+          return -1;
+        }
+        return 0;
+      },
       //render: () => "Other 1",
       width: 220,
     },
@@ -276,6 +384,40 @@ const Overview = () => {
     {
       title: "DATE ADDED",
       dataIndex: "dateCreated",
+      filterIcon: <IconSearch />,
+      filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
+        return (
+          <div className='arco-table-custom-filter'>
+            <Input.Search
+              ref={inputRef}
+              searchButton
+              placeholder='Please enter dateCreated'
+              value={filterKeys[0] || ''}
+              onChange={(value) => {
+                setFilterKeys(value ? [value] : []);
+              }}
+              onSearch={() => {
+                confirm();
+              }}
+            />
+          </div>
+        );
+      },
+      onFilter: (value, row) => (value ? row?.dateCreated?.toString().indexOf(value) !== -1 : true),
+      onFilterDropdownVisibleChange: (visible) => {
+        if (visible) {
+          setTimeout(() => inputRef.current.focus(), 150);
+        }
+      },
+      sorter: (a, b) => {
+        if (a.id > b.id) {
+          return 1;
+        }
+        if (a.id < b.id) {
+          return -1;
+        }
+        return 0;
+      },
       width: 220,
     },
   ];

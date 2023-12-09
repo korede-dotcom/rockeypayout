@@ -14,6 +14,29 @@ font-family: 'Raleway', sans-serif;
 .arco-spin-dot{
   background-color: #fff !important;
 }
+.arco-table-custom-filter {
+  padding: 10px;
+  background-color: var(--color-bg-5);
+  box-shadow: green;
+}
+.arco-btn-primary:not(.arco-btn-disabled) {
+  background-color: #00A85A;
+  
+}
+.arco-table-filters-active svg {
+color: #00A85A;
+
+}
+.arco-table-th-item-title{
+  font-size: 13px;
+}
+arco-space-item button{
+}
+.arco-table-sorter {
+  display: inline-block;
+  /* margin-left: 8px; */
+  vertical-align: -3px;
+}
 /* .container{
   display:flex;
 }

@@ -14,8 +14,12 @@ import { QueryParams } from '../reuseables/QueryParams';
 import { useLocation } from "react-router-dom";
 // import { getPayoutClientDashboard } from "../services/PayoutDashboard";
 import { kFormatter4 } from "../utils/format";
+import {  useRef } from 'react';
+import { Table, Input, Button } from '@arco-design/web-react';
+import { IconSearch } from '@arco-design/web-react/icon';
 
 function TransactionList({ data }) {
+  const inputRef = useRef(null);
   const [sortdate, setSortDate] = useState(0);
   const [datar, setData] = useState(null);
   const [data2, setData2] = useState(null);
@@ -31,6 +35,15 @@ function TransactionList({ data }) {
 
   
   const formatter = new Intl.NumberFormat();
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  const handleSearch = (event) => {
+    console.log("🚀 ~ file: Tranx.jsx:38 ~ handleSearch ~ event.target.value:", event.target.value)
+    setSearchQuery(event.target.value);
+  };
+
+ 
+
 
   // const formattedValue = formatter.format(123456.78);
   // console.log(formattedValue);
@@ -120,44 +133,191 @@ function TransactionList({ data }) {
 
 //   console.log(clients);
 
-  const columns = [
+const columns = [
     {
       title: "TRANSACTION REF",
       dataIndex: "clientRef",
       fixed: "left",
-      /*   sorter: {
-        compare: (a, b) => a.name - b.name,
-        multiple: 1,
-      }, */
+      filterIcon: <IconSearch />,
+      filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
+        return (
+          <div className='arco-table-custom-filter'>
+            <Input.Search
+              ref={inputRef}
+              searchButton
+              placeholder='Please enter transaction ref'
+              value={filterKeys[0] || ''}
+              onChange={(value) => {
+                setFilterKeys(value ? [value] : []);
+              }}
+              onSearch={() => {
+                confirm();
+              }}
+            />
+          </div>
+        );
+      },
+      onFilter: (value, row) => (value ? row?.clientRef?.indexOf(value) !== -1 : true),
+      onFilterDropdownVisibleChange: (visible) => {
+        if (visible) {
+          setTimeout(() => inputRef.current.focus(), 150);
+        }
+      },
+      sorter: (a, b) => {
+        if (a.clientRef > b.clientRef) {
+          return 1;
+        }
+        if (a.clientRef < b.clientRef) {
+          return -1;
+        }
+        return 0;
+      },
+      sortDirections: ["descend", "ascend"],
       width: 160,
     },
     {
       title: "ID",
       dataIndex: "id",
-      /*   sorter: {
-        compare: (a, b) => a.name - b.name,
-        multiple: 1,
-      }, */
+      filterIcon: <IconSearch />,
+      filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
+        return (
+          <div className='arco-table-custom-filter'>
+            <Input.Search
+              ref={inputRef}
+              searchButton
+              placeholder='Please enter gateway'
+              value={filterKeys[0] || ''}
+              onChange={(value) => {
+                setFilterKeys(value ? [value] : []);
+              }}
+              onSearch={() => {
+                confirm();
+              }}
+            />
+          </div>
+        );
+      },
+      onFilter: (value, row) => (value ? row?.id?.indexOf(value) !== -1 : true),
+      onFilterDropdownVisibleChange: (visible) => {
+        if (visible) {
+          setTimeout(() => inputRef.current.focus(), 150);
+        }
+      },
+      sorter: (a, b) => {
+        if (a.id > b.id) {
+          return 1;
+        }
+        if (a.id < b.id) {
+          return -1;
+        }
+        return 0;
+      },
       width: 160,
     },
     {
       title: "TRANSACTION STATUS",
       dataIndex: "statusNew",
+      sorter: (a, b) => {
+        if (a.statusNew > b.statusNew) {
+          return 1;
+        }
+        if (a.statusNew < b.statusNew) {
+          return -1;
+        }
+        return 0;
+      },
       width: 180,
     },
     {
       title: "DATE",
-      dataIndex: "dateCreated",
+      dataIndex: "dateCreated", 
+       filterIcon: <IconSearch />,
+      filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
+        return (
+          <div className='arco-table-custom-filter'>
+            <Input.Search
+              ref={inputRef}
+              searchButton
+              placeholder='Please enter date'
+              value={filterKeys[0] || ''}
+              onChange={(value) => {
+                setFilterKeys(value ? [value] : []);
+              }}
+              onSearch={() => {
+                confirm();
+              }}
+            />
+          </div>
+        );
+      },
+      onFilter: (value, row) => (value ? row?.dateCreated?.indexOf(value) !== -1 : true),
+      onFilterDropdownVisibleChange: (visible) => {
+        if (visible) {
+          setTimeout(() => inputRef.current.focus(), 150);
+        }
+      },
+      sorter: (a, b) => {
+        if (a.dateCreated > b.dateCreated) {
+          return 1;
+        }
+        if (a.dateCreated < b.dateCreated) {
+          return -1;
+        }
+        return 0;
+      },
       width: 250,
     },
     {
       title: "APP",
       dataIndex: "payoutClientApp['appName']",
+      sorter: (a, b) => {
+        if (a.payoutClientApp.appName > b.payoutClientApp.appName) {
+          return 1;
+        }
+        if (a.payoutClientApp.appName < b.payoutClientApp.appName) {
+          return -1;
+        }
+        return 0;
+      },
       width: 190,
     },
     {
       title: "GATEWAY",
       dataIndex: "newGateWay",
+      filterIcon: <IconSearch />,
+      filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
+        return (
+          <div className='arco-table-custom-filter'>
+            <Input.Search
+              ref={inputRef}
+              searchButton
+              placeholder='Please enter gateway'
+              value={filterKeys[0] || ''}
+              onChange={(value) => {
+                setFilterKeys(value ? [value] : []);
+              }}
+              onSearch={() => {
+                confirm();
+              }}
+            />
+          </div>
+        );
+      },
+      onFilter: (value, row) => (value ? row?.newGateWay?.indexOf(value) !== -1 : true),
+      onFilterDropdownVisibleChange: (visible) => {
+        if (visible) {
+          setTimeout(() => inputRef.current.focus(), 150);
+        }
+      },
+      sorter: (a, b) => {
+        if (a.newGateWay > b.newGateWay) {
+          return 1;
+        }
+        if (a.newGateWay < b.newGateWay) {
+          return -1;
+        }
+        return 0;
+      },
       width: 230,
 
       //render: () => "Other",
@@ -165,39 +325,190 @@ function TransactionList({ data }) {
     {
       title: "RECEIVER",
       dataIndex: "beneficiary['beneficiaryName']",
-      //render: () => "Other 1",
+      filterIcon: <IconSearch />,
+      filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
+        return (
+          <div className='arco-table-custom-filter'>
+            <Input.Search
+              ref={inputRef}
+              searchButton
+              placeholder='Please enter name'
+              value={filterKeys[0] || ''}
+              onChange={(value) => {
+                setFilterKeys(value ? [value] : []);
+              }}
+              onSearch={() => {
+                confirm();
+              }}
+            />
+          </div>
+        );
+      },
+      onFilter: (value, row) => (value ? row?.beneficiary.beneficiaryName?.indexOf(value) !== -1 : true),
+      onFilterDropdownVisibleChange: (visible) => {
+        if (visible) {
+          setTimeout(() => inputRef.current.focus(), 150);
+        }
+      },
+
+      sorter: (a, b) => {
+        if (a.beneficiary.beneficiaryName > b.beneficiary.beneficiaryName) {
+          return 1;
+        }
+        if (a.beneficiary.beneficiaryName < b.beneficiary.beneficiaryName) {
+          return -1;
+        }
+        return 0;
+      },
       width: 220,
     },
     {
       title: "BANK",
       dataIndex: "beneficiary['beneficiaryBank']['bankName']",
+      filterIcon: <IconSearch />,
+      filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
+        return (
+          <div className='arco-table-custom-filter'>
+            <Input.Search
+              ref={inputRef}
+              searchButton
+              placeholder='Please enter gateway'
+              value={filterKeys[0] || ''}
+              onChange={(value) => {
+                setFilterKeys(value ? [value] : []);
+              }}
+              onSearch={() => {
+                confirm();
+              }}
+            />
+          </div>
+        );
+      },
+      onFilter: (value, row) => (value ? row?.beneficiary.beneficiaryBank.bankName?.indexOf(value) !== -1 : true),
+      onFilterDropdownVisibleChange: (visible) => {
+        if (visible) {
+          setTimeout(() => inputRef.current.focus(), 150);
+        }
+      },
+      sorter: (a, b) => {
+        if (a.beneficiary.beneficiaryBank.bankName > b.beneficiary.beneficiaryBank.bankName) {
+          return 1;
+        }
+        if (a.beneficiary.beneficiaryBank.bankName < b.beneficiary.beneficiaryBank.bankName) {
+          return -1;
+        }
+        return 0;
+      },
       width: 200,
       //render: () => "Other 2",
     },
     {
       title: "ACCOUNT NO",
       dataIndex: "beneficiary['beneficiaryBank']['accountNumber']",
+      sorter: (a, b) => {
+        if (a.beneficiary.beneficiaryBank.accountNumber > b.beneficiary.beneficiaryBank.accountNumber) {
+          return 1;
+        }
+        if (a.beneficiary.beneficiaryBank.accountNumber < b.beneficiary.beneficiaryBank.accountNumber) {
+          return -1;
+        }
+        return 0;
+      },
       width: 140,
     },
     {
       title: "CURRENCY",
       dataIndex: "country['currencyCode']",
+      sorter: (a, b) => {
+        if (a.country.currencyCode > b.country.currencyCode) {
+          return 1;
+        }
+        if (a.country.currencyCode < b.country.currencyCode) {
+          return -1;
+        }
+        return 0;
+      },
       width: 100,
     },
     {
       title: "AMOUNT",
       dataIndex: "Amount",
       width: 120,
+      sorter: (a, b) => {
+        if (a.Amount > b.Amount) {
+          return 1;
+        }
+        if (a.Amount < b.Amount) {
+          return -1;
+        }
+        return 0;
+      },
+      filters: [
+        {
+          text: '> 20000',
+          value: '20000',
+        },
+        {
+          text: '> 30000',
+          value: '30000',
+        },
+      ],
+      defaultFilters: ['0'],
+      onFilter: (value, row) => row.Amount > value,
       render: (item) => formatter.format(item) ,
     },
     {
       title: "TRANSFER FEE",
       dataIndex: "transferFee",
+      sorter: (a, b) => {
+        if (a.transferFee > b.transferFee) {
+          return 1;
+        }
+        if (a.transferFee < b.transferFee) {
+          return -1;
+        }
+        return 0;
+      },
+      width: 120,
+    },
+    {
+      title: "PAYOUT PROVIDER STATUS",
+      dataIndex: "payoutProviderStatus",
+      sorter: (a, b) => {
+        if (a.payoutProviderStatus > b.payoutProviderStatus) {
+          return 1;
+        }
+        if (a.payoutProviderStatus < b.payoutProviderStatus) {
+          return -1;
+        }
+        return 0;
+      },
+      width: 120,
+    },
+    {
+      title: "PAYOUT PROVIDER MESSAGE",
+      dataIndex: "payoutProviderMessage",
+      // font size
+      sorter: (a, b) => {
+        if (a.payoutProviderMessage > b.payoutProviderMessage) {
+          return 1;
+        }
+        if (a.payoutProviderMessage < b.payoutProviderMessage) {
+          return -1;
+        }
+        return 0;
+      },
       width: 120,
     },
   ];
 
-  const newData = trx?.map((item) => {
+
+
+  const newData = trx?.filter((item) =>
+  Object.values(item).some((value) =>
+    typeof value === 'string' &&
+    value.toLowerCase().includes(searchQuery.toLowerCase())
+  ))?.map((item) => {
     return {
       ...item,
       newGateWay: (
@@ -251,16 +562,26 @@ function TransactionList({ data }) {
     };
   });
 
+
+//  const filteredData = newData?.filter((item) =>
+//     Object.values(item).some((value) =>
+//       typeof value === 'string' &&
+//       value.toLowerCase().includes(searchQuery.toLowerCase())
+//     )
+//   );
+
   console.log(newData);
 
   return (
     <Content>
       <div className="tablecontent">
-        <div className="content">
+        <div className="content" style={{display:"flex",justifyContent:"space-between"}}>
           <div className="heading">Payout Transactions List </div>
+          
         </div>
 
         <CustomTable
+          
           noData={trx?.length}
         //   loading={isLoading || isFetching}
           Apidata={newData}

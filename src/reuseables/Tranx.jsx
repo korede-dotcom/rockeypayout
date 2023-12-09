@@ -29,6 +29,13 @@ function TransactionList({ data }) {
   // Access the query parameters from the location object
   const queryParams = new URLSearchParams(location.search);
 
+  
+  const formatter = new Intl.NumberFormat();
+
+  // const formattedValue = formatter.format(123456.78);
+  // console.log(formattedValue);
+  
+
   useEffect(() => {
 
     if (window.location.pathname === "/transaction") {
@@ -181,7 +188,7 @@ function TransactionList({ data }) {
       title: "AMOUNT",
       dataIndex: "Amount",
       width: 120,
-      render: (item) => kFormatter4(item),
+      render: (item) => formatter.format(item) ,
     },
     {
       title: "TRANSFER FEE",

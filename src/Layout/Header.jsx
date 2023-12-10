@@ -106,10 +106,10 @@ const handleLink = (key) => {
         ))}
       </div>
       <div className="right">
-        <div className="toggle">
+        {/* <div className="toggle">
           <Checkbox onClick={() => setLive(!live)} change={live} />
           <p>{live ? "Live" : "Test"}</p>
-        </div>
+        </div> */}
         <span className="notifi">
           <img src={notifi} alt="" />
         </span>

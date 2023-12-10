@@ -157,7 +157,7 @@ const columns = [
           </div>
         );
       },
-      onFilter: (value, row) => (value ? row?.clientRef?.indexOf(value) !== -1 : true),
+      onFilter: (value, row) => (value ? row?.clientRef?.toString().indexOf(value) !== -1 : true),
       onFilterDropdownVisibleChange: (visible) => {
         if (visible) {
           setTimeout(() => inputRef.current.focus(), 150);
@@ -197,7 +197,7 @@ const columns = [
           </div>
         );
       },
-      onFilter: (value, row) => (value ? row?.id?.indexOf(value) !== -1 : true),
+      onFilter: (value, row) => (value ? row?.id?.toString().indexOf(value) !== -1 : true),
       onFilterDropdownVisibleChange: (visible) => {
         if (visible) {
           setTimeout(() => inputRef.current.focus(), 150);

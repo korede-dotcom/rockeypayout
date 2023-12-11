@@ -17,6 +17,8 @@ import { kFormatter4 } from "../utils/format";
 import {  useRef } from 'react';
 import { Table, Input, Button } from '@arco-design/web-react';
 import { IconSearch } from '@arco-design/web-react/icon';
+import Btn from "./Btn";
+import { IconDownload } from "@arco-design/web-react/icon";
 
 function TransactionList({ data }) {
   const inputRef = useRef(null);
@@ -571,14 +573,74 @@ const columns = [
 //   );
 
   console.log(newData);
+  const downloadCsv = () => {
+    const head = ['transactionref', 'id', 'status', 'dateCreated', 'appName', 'gateWay', 'receiver', 'bank', 'account', 'currency', 'Amount', 'transferFee', 'payoutProviderMessage', 'payoutProviderStatus'];
+    const headers = Object.values(head).toString();
+  
+    const myData = newData;
+    const formattedData = [];
+    const currentDate = new Date().toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    });
+  
+    const fileName = `transactions_${currentDate}.csv`;
+  
+    for (let i = 0; i < myData.length; i++) {
+      formattedData.push({
+        transactionref: myData[i].clientRef,
+        id: myData[i].id,
+        status: myData[i].status,
+        dateCreated: myData[i].dateCreated,
+        appName: myData[i]?.payoutClientApp?.appName || null,
+        gateWay: myData[i].payOutProvider.name || null,
+        receiver: myData[i].beneficiary.beneficiaryName,
+        bank: myData[i].beneficiary.beneficiaryBank.bankName,
+        account: myData[i].beneficiary.beneficiaryBank.accountNumber,
+        currency: myData[i].currency?.code || null,
+        Amount: myData[i].Amount,
+        transferFee: myData[i].transferFee,
+        payoutProviderMessage: myData[i].payoutProviderMessage,
+        payoutProviderStatus: myData[i].payoutProviderStatus,
+      });
+    }
+  
+    console.log(formattedData);
+  
+    const objValues = formattedData.map(item => Object.values(item).toString());
+    const csv = [headers, ...objValues].join('\n');
+  
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+  
+    const a = document.createElement('a');
+    a.download = fileName;
+    a.href = url;
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(blob);
+  };
+  
+
 
   return (
     <Content>
       <div className="tablecontent">
         <div className="content" style={{display:"flex",justifyContent:"space-between"}}>
           <div className="heading">Payout Transactions List </div>
+          <div className="heading" onClick={downloadCsv}>
+            <Btn >
+              <small> 
+                
+                <IconDownload/>
+                transaction</small>
+            </Btn>
+          </div>
           
         </div>
+
+        
 
         <CustomTable
           
@@ -618,6 +680,9 @@ const columns = [
 
 export default TransactionList;
 const Content = styled.div`
+small {
+    font-size: 60%;
+}
   border-radius: 30px;
   .top {
     padding: 10px 30px 30px 20px;

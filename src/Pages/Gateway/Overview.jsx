@@ -33,6 +33,8 @@ import Tranx  from "../../reuseables/Tranx";
 import {  useRef } from 'react';
 import { Table, Input, Button } from '@arco-design/web-react';
 import { IconSearch } from '@arco-design/web-react/icon';
+import { IconDownload } from "@arco-design/web-react/icon";
+import Btn from "../../reuseables/Btn";
 
 const Overview = () => {
   const navigate = useNavigate();
@@ -612,6 +614,54 @@ const data = await response.json()
 
   }
 
+  const downloadCsv = () => {
+    const head = ['id', 'requeststatus', 'amount','amountApproved','balanceBeforeRequest','walletid' ,'status', 'name', 'comment','currency','date'];
+    const headers = Object.values(head).toString();
+  
+    const myData = newData;
+    const formattedData = [];
+    const currentDate = new Date().toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    });
+  
+    const fileName = `requestlogs_${currentDate}.csv`;
+  
+    for (let i = 0; i < myData.length; i++) {
+      formattedData.push({
+        // transactionref: myData[i].clientRef,
+        id: myData[i].id,
+        requeststatus: myData[i]?.status || null,
+        amount: myData[i]?.amountRequested || null,
+        amountApproved: myData[i]?.amountApproved || null,
+        balanceBeforeRequest: myData[i]?.balanceBeforeRequest || null,
+        walletid: myData[i]?.userWallet?.walletId || null,
+        status: myData[i].status,
+        clientName: myData[i].clientName || null,
+        comment: myData[i].comment || null,
+        currency: myData[i].userWallet.currency?.code || null,
+        dateCreated: myData[i].dateCreated,
+     
+      });
+    }
+  
+    console.log(formattedData);
+  
+    const objValues = formattedData.map(item => Object.values(item).toString());
+    const csv = [headers, ...objValues].join('\n');
+  
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+  
+    const a = document.createElement('a');
+    a.download = fileName;
+    a.href = url;
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(blob);
+  };
+
   return (
     <Layout>
       <OverviewContainer>
@@ -643,8 +693,18 @@ const data = await response.json()
         </CardContainer>
         <Content>
         <div className="tablecontent">
-        <div className="content">
+        <div className="content" style={{display:"flex",justifyContent:"space-between"}}>
           <div className="heading">Client Fund Request Log </div>
+          <div className="heading" onClick={downloadCsv}>
+           <Btn>
+              <small> 
+                
+                <IconDownload/>
+                request log</small>
+
+           </Btn>
+        
+          </div>
         </div>
 
         <CustomTable
@@ -668,6 +728,9 @@ export default Overview;
 
 
 const Content = styled.div`
+small {
+    font-size: 60%;
+}
   border-radius: 30px;
   .top {
     padding: 10px 30px 30px 20px;

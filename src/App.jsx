@@ -35,10 +35,6 @@ import Beneficiary from "./Pages/Beneficiary/Beneficairy";
 import { Toaster } from "react-hot-toast";
 function App() {
   const [count, setCount] = useState(0);
-
-
-  
-
   return (
     <Router>
          <Toaster
@@ -73,7 +69,7 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/overview" element={<Overview />} />
             <Route path="/ohentpay" element={<Ohentpay />} />
-            <Route path="/hopebank" element={<Hopeps />} />
+            <Route path="/gateways" element={<Hopeps />} />
             <Route path="/marketplace" element={<Marketplace />} />
             <Route path="/transaction" element={<Transactions />} />
             <Route path="/beneficiary" element={<Beneficiary />} />

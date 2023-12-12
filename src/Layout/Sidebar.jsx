@@ -279,17 +279,29 @@ useEffect(() => {
 
       const response = await axios.get(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userDetails.data.userId}`);
       const gateData = response.data;
+
+      const response2 = await fetch('https://apidoc.transferrocket.co.uk//getpayoutprovider');
+      const data2 = await response2.json();
+      console.log("🚀 ~ file: Sidebar.jsx:285 ~ fetchUserDetails ~ data2:", data2)
       setuserDetails(userDetails);
       
-      const payOutClientWalletPayOutProviders = gateData?.data?.payOutClientWalletPayOutProviders || [];
-      setGate(gateData);
-      const formattedGatewayItems = payOutClientWalletPayOutProviders.map((d) => ({
-        title: `${d?.providerName} [${d?.wallet?.currency?.code}]`,
-        path: d?.providerName?.includes("HopePSB")
-          ? `/hopebank/?currency=${d?.wallet?.currency?.code}&id=${d?.providerId}&cid=${d?.wallet?.currency?.id}`
-          : `/ohentpay/?currency=${d?.wallet?.currency?.code}&id=${d?.providerId}&cid=${d?.wallet?.currency?.id}`,
-        image: d?.providerName?.includes("HopePSB") ? <img src={hope} alt="" /> : <img src={Ohentpay} alt="" />,
-      }));
+    const payOutClientWalletPayOutProviders = gateData?.data?.payOutClientWalletPayOutProviders || [];
+setGate(gateData);
+
+const formattedGatewayItems = payOutClientWalletPayOutProviders?.map((d) => {
+  const logoUrl = data2?.data?.find((item) => item.id === d.providerId)?.logo || "defaultLogoUrl";
+
+  return {
+    title: `${d?.providerName} [${d?.wallet?.currency?.code}]`,
+    path: d?.providerName?.includes("HopePSB")
+      ? `/gateways/?name=${d?.providerName.trim()}&currency=${d?.wallet?.currency?.code}&id=${d?.providerId}&cid=${d?.wallet?.currency?.id}`
+      : `/gateways/?name=${d?.providerName.trim()}&currency=${d?.wallet?.currency?.code}&id=${d?.providerId}&cid=${d?.wallet?.currency?.id}`,
+    image: <img src={logoUrl} alt="" />,
+  };
+});
+
+console.log(formattedGatewayItems);
+
 
       setDynamicGatewayItems(formattedGatewayItems);
 

@@ -39,6 +39,7 @@ const Hopeps = () => {
   const [currency,setCurrency] = useState(null)
   const [figure2,setfigure2] = useState(null)
   const [trk,settrk] = useState()
+  const [provD,setProvD] =useState("")
   
   // const sorted = ;
   // const balance = ;
@@ -57,6 +58,7 @@ const Hopeps = () => {
   
     // Extract the currency from the query parameters
     const currencyFromQuery = queryParams.get('currency');
+    const gateWayId = queryParams.get('id');
     console.log("🚀 ~ file: Hopeps.jsx:57 ~ useEffect ~ currencyFromQuery:", currencyFromQuery)
     settrk(currencyFromQuery)
     // Set a default currency code if it's not present
@@ -65,8 +67,10 @@ const Hopeps = () => {
   
     // Rest of your logic
     const findCurrency = getUser?.data?.payOutClientWalletPayOutProviders?.find(
-      (d) => d?.wallet?.currency?.code === currency
+      (d) => d?.wallet?.currency?.code === currency && d.providerId == parseInt(gateWayId)
     );
+    console.log("🚀 ~ file: Hopeps.jsx:71 ~ useEffect ~ findCurrency:", findCurrency)
+    setProvD(findCurrency)
     setBalance(findCurrency?.wallet)
       setSorted(findCurrency?.walletTransactionVolume)
     // ... (rest of your logic)
@@ -266,7 +270,7 @@ const Hopeps = () => {
     <Layout>
       {loading && <Loader/>}
         <HopepsBox>
-            <FlexWrapper name={`${balance?.name} `} subname="[Payarena]" amount={wBalance} word="This overview provides a comprehensive snapshot of wallet transactions on your system" currency={currency} />
+            <FlexWrapper name={`${balance?.name} `} subname={provD?.providerName} amount={wBalance} word="This overview provides a comprehensive snapshot of wallet transactions on your system" currency={currency} />
             <CardContainer>
               {
                 figure2 && <Card cardbody={cardbody2} figure={figure2} padding="0 0 0 10px" width="max-content" />

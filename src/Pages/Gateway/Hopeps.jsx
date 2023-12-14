@@ -59,6 +59,7 @@ const Hopeps = () => {
     // Extract the currency from the query parameters
     const currencyFromQuery = queryParams.get('currency');
     const gateWayId = queryParams.get('id');
+    const gateWayName = queryParams.get('name');
     console.log("🚀 ~ file: Hopeps.jsx:57 ~ useEffect ~ currencyFromQuery:", currencyFromQuery)
     settrk(currencyFromQuery)
     // Set a default currency code if it's not present
@@ -95,7 +96,7 @@ const Hopeps = () => {
 
   
     setLoading(false);
-  }, [queryParams.get('currency'),balance]);
+  }, [queryParams.get('currency'),balance,queryParams.get('name')]);
 
 
   

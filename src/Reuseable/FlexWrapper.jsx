@@ -175,6 +175,7 @@ const FlexWrapper = ({
     comment: "",
     lastUpdatedBy: 0
   });
+  console.log("🚀 ~ file: FlexWrapper.jsx:178 ~ fundingRequest:", fundingRequest)
 
   useEffect(() => {
    
@@ -211,7 +212,7 @@ const FlexWrapper = ({
     
     // Find a wallet based on provider ID and currency code
     const findWallet = userDetails?.data?.payOutClientWalletPayOutProviders.find((wallet) => {
-      return wallet.providerId == id &&  wallet.wallet.country.currencyCode == currency;
+      return wallet?.providerId === parseInt(id) &&  wallet?.wallet?.currency?.id === parseInt(cid);
     });
     console.log("🚀 ~ file: FlexWrapper.jsx:216 ~ findWal ~ findWallet:", findWallet)
 

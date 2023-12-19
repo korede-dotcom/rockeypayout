@@ -370,7 +370,7 @@ try {
 }
 
 
-  };
+};
 
   const createNewBene = async () => {
     setLoading(true);
@@ -379,32 +379,34 @@ try {
       const credentials = `${user?.data?.clientKeys?.clientId}:${user?.data?.clientKeys?.liveKey}`;
 
 // Use btoa for Base64 encoding
-const encodedCredentials = btoa(credentials);
-console.log("🚀 ~ file: FlexWrapper.jsx:229 ~ createPayoutReq ~ encodedCredentials:", encodedCredentials)
+      const encodedCredentials = btoa(credentials);
+      console.log("🚀 ~ file: FlexWrapper.jsx:229 ~ createPayoutReq ~ encodedCredentials:", encodedCredentials)
 
-const myHeaders = new Headers();
-myHeaders.set('Authorization', `Basic ${encodedCredentials}`);
-// myHeaders.append("clientId", user?.data?.clientKeys?.clientId);
-myHeaders.set('Content-Type', 'application/json');
+      const myHeaders = new Headers();
+      // myHeaders.set('Authorization', `Basic ${encodedCredentials}`);
+      // myHeaders.append("clientId", user?.data?.clientKeys?.clientId);
+      myHeaders.set('Content-Type', 'application/json');
 
 
-      var raw = JSON.stringify(createBene);
+    var raw = JSON.stringify(createBene);
 
     var requestOptions = {
       method: 'POST',
+      maxBodyLength: Infinity,
       headers: myHeaders,
       body: raw,
       redirect: 'follow'
     };
 
+    const response = await fetch("https://apidoc.transferrocket.co.uk//adduserbeneficiary", requestOptions);
     // const response = await fetch("https://apidoc.transferrocket.co.uk//creatpayoutbeneficiary.io", requestOptions);
     // 188.212.124.39
-    const response = await fetch(`http://188.212.124.39:3007/createbeneficiary/?auth=${encodedCredentials}`, requestOptions);
+    // const response = await fetch(`http://188.212.124.39:3007/createbeneficiary/?auth=${encodedCredentials}`, requestOptions);
     const data = await response.json();
     console.log("🚀 ~ file: FlexWrapper.jsx:378 ~ createNewBene ~ data:", data)
-    if (data.responseData) {
+    if (data.status) {
       setName(" ")
-      toast.success(data.responseData.message)
+      toast.success(data.message)
       setshowBene(!showBene);
       setLoading(false);
       const userDetails = JSON.parse(localStorage.getItem("userDetails"));
@@ -422,7 +424,13 @@ myHeaders.set('Content-Type', 'application/json');
   
       // console.log("🚀 ~ file: FlexWrapper.jsx:403 ~ createNewBene ~ gateData:", gateData)
       
+    }else{
+      setName(" ")
+      toast.error(data.message)
+      setshowBene(!showBene);
+      setLoading(false);
     }
+
     } catch (error) {
       setShow(!show);
       console.error('Error in creating beneficiary:', error);
@@ -499,7 +507,7 @@ const lookup = async (e) => {
   }
 
 
-  }
+}
   
 
   return (

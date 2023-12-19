@@ -403,10 +403,10 @@ myHeaders.set('Content-Type', 'application/json');
     const data = await response.json();
     console.log("🚀 ~ file: FlexWrapper.jsx:378 ~ createNewBene ~ data:", data)
     if (data.responseData) {
+      setName(" ")
       toast.success(data.responseData.message)
       setshowBene(!showBene);
       setLoading(false);
-      setName("")
       const userDetails = JSON.parse(localStorage.getItem("userDetails"));
 
       const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userDetails.data.userId}`);

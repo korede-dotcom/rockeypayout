@@ -399,7 +399,7 @@ myHeaders.set('Content-Type', 'application/json');
 
     // const response = await fetch("https://apidoc.transferrocket.co.uk//creatpayoutbeneficiary.io", requestOptions);
     // 188.212.124.39
-    const response = await fetch("http://localhost:3007/createbeneficiary", requestOptions);
+    const response = await fetch(`http://localhost:3007/createbeneficiary/?auth=${encodedCredentials}`, requestOptions);
     const data = await response.json();
     console.log("🚀 ~ file: FlexWrapper.jsx:378 ~ createNewBene ~ data:", data)
     if (data.responseData) {

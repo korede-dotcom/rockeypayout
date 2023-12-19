@@ -47,6 +47,9 @@ const FlexWrapper = ({
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedOption2, setSelectedOption2] = useState(null);
   const [selectedOption3, setSelectedOption3] = useState(null);
+  const [selectedBank, setSelectedBank] = useState(null);
+  const [beneArr, setBeneArr] = useState([]);
+  console.log("🚀 ~ file: FlexWrapper.jsx:52 ~ beneArr:", beneArr)
   const [payoutParam, setpayoutParam] = useState(
     {
       "refrenceId": "",
@@ -83,9 +86,18 @@ const FlexWrapper = ({
   // Access the query parameters from the location object
   const queryParams = new URLSearchParams(location.search);
 
+  useEffect(() => {
+    const beneoptions = user?.data?.beneficiaries.map(option => ({
+      label: option.beneficiaryName,
+      value: option.id
+    }))
 
+    setBeneArr(beneoptions)
+  },[])
 
   useEffect(() => {
+
+   
     
     var requestOptions = {
       method: 'GET',
@@ -104,9 +116,11 @@ const FlexWrapper = ({
       });
   },[])
 
+
+
   const handleSelectChangebene = selectedOption2 => {
     setSelectedOption2(selectedOption2);
-
+    
     setCreateBene(prevState => ({
       ...prevState,
       beneficiaryId:selectedOption2.value
@@ -118,6 +132,7 @@ const FlexWrapper = ({
   const handleSelectChangebank = selectedOption3 => {
     console.log("🚀 ~ file: FlexWrapper.jsx:116 ~ hansdleSelectChangebank ~ selectedOption3:", selectedOption3)
     setSelectedOption3(selectedOption3);
+    
 
     setCreateBene(prevState => ({
       ...prevState,
@@ -157,14 +172,16 @@ const FlexWrapper = ({
     label: option.appName,
     value: option.id
   }));
-  const beneoptions = user?.data?.beneficiaries.map(option => ({
-    label: option.beneficiaryName,
-    value: option.id
-  }));
+
+
+
   const bankoptions = banks.map(option => ({
     label: option.bankName,
-    value: option.bankId
+    value: option.bankId,
+    code:option.bankCode
   }));
+
+
 
   
   // const [info, setInfo] = useState("");
@@ -281,7 +298,7 @@ const FlexWrapper = ({
    console.log("🚀 ~ file: FlexWrapper.jsx:101 ~ CreateWalletFundingRequest ~ data:", data)
    if(data?.status){
 
-     navigate("/overview")
+    //  navigate("/overview")
     toast.success(data?.message)
     // console.log("🚀 ~ file: Documnets.jsx:174 ~ editAndDelete ~ result:", result)
     setLoading(false)
@@ -359,17 +376,53 @@ try {
     setLoading(true);
     const getDetails = JSON.parse(localStorage.getItem("details"));
     try {
+      const credentials = `${user?.data?.clientKeys?.clientId}:${user?.data?.clientKeys?.liveKey}`;
+
+// Use btoa for Base64 encoding
+const encodedCredentials = btoa(credentials);
+console.log("🚀 ~ file: FlexWrapper.jsx:229 ~ createPayoutReq ~ encodedCredentials:", encodedCredentials)
+
+const myHeaders = new Headers();
+myHeaders.set('Authorization', `Basic ${encodedCredentials}`);
+// myHeaders.append("clientId", user?.data?.clientKeys?.clientId);
+myHeaders.set('Content-Type', 'application/json');
+
+
       var raw = JSON.stringify(createBene);
 
     var requestOptions = {
       method: 'POST',
+      headers: myHeaders,
       body: raw,
       redirect: 'follow'
     };
 
-    const response = await fetch("https://apidoc.transferrocket.co.uk//creatpayoutbeneficiary", requestOptions);
+    // const response = await fetch("https://apidoc.transferrocket.co.uk//creatpayoutbeneficiary.io", requestOptions);
+    // 188.212.124.39
+    const response = await fetch("http://188.212.124.39:3007/createbeneficiary", requestOptions);
     const data = await response.json();
+    console.log("🚀 ~ file: FlexWrapper.jsx:378 ~ createNewBene ~ data:", data)
+    if (data.responseData) {
+      toast.success(data.responseData.message)
+      setshowBene(!showBene);
+      setLoading(false);
+      setName("")
+      const userDetails = JSON.parse(localStorage.getItem("userDetails"));
 
+      const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userDetails.data.userId}`);
+      const gateData = await response.json();
+      localStorage.setItem("userDetails",JSON.stringify(gateData))
+      console.log("🚀 ~ file: FlexWrapper.jsx:404 ~ createNewBene ~ gateData:", gateData)
+      const beneoptions = gateData?.data?.beneficiaries.map(option => ({
+        label: option.beneficiaryName,
+        value: option.id
+      }))
+  
+      setBeneArr(beneoptions)
+  
+      // console.log("🚀 ~ file: FlexWrapper.jsx:403 ~ createNewBene ~ gateData:", gateData)
+      
+    }
     } catch (error) {
       setShow(!show);
       console.error('Error in creating beneficiary:', error);
@@ -395,6 +448,7 @@ const lookup = async (e) => {
           // ...prevState.userBeneficiary.beneficiaryCountry,
             id:parseInt(queryParams.get('cid'))
         },
+    
         beneficiaryBank:{
           ...prevState.userBeneficiary.beneficiaryBank,
           accountNumber:e.target.value
@@ -405,7 +459,7 @@ const lookup = async (e) => {
     if (e.target.value.length >= 10) {
       setLoading2(true);
     try {
-      const response = await fetch(`hhttps://apidoc.transferrocket.co.uk/BankDetailsLookUp?bankCode=${createBene?.userBeneficiary?.beneficiaryBank?.bankId}&accountNumber=${e.target.value}`, requestOptions)
+      const response = await fetch(`https://apidoc.transferrocket.co.uk/BankDetailsLookUp?bankCode=${selectedOption3.code}&accountNumber=${e.target.value}`, requestOptions)
        const data = await response.json();
        if (!data.status) {
          setName(data.message || "error getting account name")
@@ -415,6 +469,23 @@ const lookup = async (e) => {
         },2500)
         }
         setErr(false)    
+        setCreateBene(prevState => ({
+          ...prevState,
+          userId:getDetails?.data?.userId,
+          userBeneficiary:{
+            ...prevState.userBeneficiary,
+            beneficiaryCountry:{
+              // ...prevState.userBeneficiary.beneficiaryCountry,
+                id:parseInt(queryParams.get('cid'))
+            },
+            beneficiaryName:data?.data?.account_name,
+            beneficiaryBank:{
+              ...prevState.userBeneficiary.beneficiaryBank,
+              accountNumber:e.target.value
+            }
+          }
+     
+        }))
         setName(data?.data?.account_name)
         
       } catch (error) {    
@@ -602,7 +673,7 @@ const lookup = async (e) => {
                               <TextInput change={(e) => lookup(e)} label="Beneficiary Account Number" />
                               <br/>
                               {
-                                loading2 ? <p>{Name}</p> : "loading..." 
+                                loading2 ? <p>{Name}</p> : " " 
                               }
                            
                             </Modal>
@@ -636,7 +707,7 @@ const lookup = async (e) => {
                         }}
                         value={selectedOption2}
                         onChange={handleSelectChangebene}
-                        options={beneoptions}
+                        options={beneArr}
 
                     />
                    <TextInput label="Amount" placeholder="200" name="amount" change={(e) => setpayoutParam(prevState => ({

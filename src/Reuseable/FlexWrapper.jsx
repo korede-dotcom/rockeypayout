@@ -85,7 +85,11 @@ const FlexWrapper = ({
 
   // Access the query parameters from the location object
   const queryParams = new URLSearchParams(location.search);
-
+  
+  const beneoptions = user?.data?.beneficiaries.map(option => ({
+    label: option.beneficiaryName,
+    value: option.id
+  }))
   useEffect(() => {
     const beneoptions = user?.data?.beneficiaries.map(option => ({
       label: option.beneficiaryName,
@@ -715,7 +719,7 @@ const lookup = async (e) => {
                         }}
                         value={selectedOption2}
                         onChange={handleSelectChangebene}
-                        options={beneArr}
+                        options={beneArr || beneoptions}
 
                     />
                    <TextInput label="Amount" placeholder="200" name="amount" change={(e) => setpayoutParam(prevState => ({

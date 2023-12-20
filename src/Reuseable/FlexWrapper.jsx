@@ -87,12 +87,15 @@ const FlexWrapper = ({
   const queryParams = new URLSearchParams(location.search);
   
   const beneoptions = user?.data?.beneficiaries.map(option => ({
-    label: option.beneficiaryName,
-    value: option.id
+  label: `${option.beneficiaryName}\n[${option?.beneficiaryBank?.accountNumber} - ${option?.beneficiaryBank?.bankName}]`,
+
+    // label: option.beneficiaryName,
+    value: option.id,
+   
   }))
   useEffect(() => {
     const beneoptions = user?.data?.beneficiaries.map(option => ({
-      label: option.beneficiaryName,
+      label: `${option.beneficiaryName}\n[${option?.beneficiaryBank?.accountNumber} - ${option?.beneficiaryBank?.bankName}]`,
       value: option.id
     }))
 
@@ -123,7 +126,11 @@ const FlexWrapper = ({
 
 
   const handleSelectChangebene = selectedOption2 => {
-    setSelectedOption2(selectedOption2);
+    const removeLines = selectedOption2?.label?.toString()?.replace("\n"," ")?.split("[")[0];
+    const bankDetails = selectedOption2?.label?.toString()?.replace("\n"," ")?.split("[")[1];
+    setSelectedOption2(
+      {label: removeLines, value: selectedOption2.value,bankDetails}
+  );
     
     setCreateBene(prevState => ({
       ...prevState,
@@ -420,7 +427,7 @@ try {
       localStorage.setItem("userDetails",JSON.stringify(gateData))
       console.log("🚀 ~ file: FlexWrapper.jsx:404 ~ createNewBene ~ gateData:", gateData)
       const beneoptions = gateData?.data?.beneficiaries.map(option => ({
-        label: option.beneficiaryName,
+        label: `${option.beneficiaryName}\n[${option?.beneficiaryBank?.accountNumber} - ${option?.beneficiaryBank?.bankName}]`,
         value: option.id
       }))
   
@@ -575,6 +582,8 @@ const lookup = async (e) => {
                     }
                     )
                     setShow(!show)
+                    setSelectedOption2(null)
+
                   }}
                   loading={loading}
                   handleSubmit={createPayoutReq}
@@ -720,8 +729,11 @@ const lookup = async (e) => {
                         value={selectedOption2}
                         onChange={handleSelectChangebene}
                         options={beneArr || beneoptions}
-
+                        getOptionLabel={option => option?.label}
+                       
                     />
+                    <p style={{marginTop:"5px"}}>{selectedOption2 ? `[${selectedOption2?.bankDetails}` : ""}</p>
+           
                    <TextInput label="Amount" placeholder="200" name="amount" change={(e) => setpayoutParam(prevState => ({
                                       ...prevState,
                                       amount:parseInt(e.target.value)

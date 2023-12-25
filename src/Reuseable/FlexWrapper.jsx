@@ -339,7 +339,7 @@ console.log("🚀 ~ file: FlexWrapper.jsx:229 ~ createPayoutReq ~ encodedCredent
 const myHeaders = new Headers();
 // myHeaders.set('Authorization', `Basic ${encodedCredentials}`);
 myHeaders.append("clientId", user?.data?.clientKeys?.clientId);
-// myHeaders.set('Content-Type', 'application/json');
+myHeaders.set('Content-Type', 'application/json');
 
 
 try {
@@ -353,7 +353,8 @@ try {
     maxBodyLength: Infinity,
   };
   const response = await fetch(
-    'https://apidoc.transferrocket.co.uk/processwebpayoutclientrequest',
+    // 'https://apidoc.transferrocket.co.uk/processwebpayoutclientrequest',
+    'https://payoutnodemiddleware.transferrocket.co.uk/request',
     requestOptions
   );
   console.log("🚀 ~ file: FlexWrapper.jsx:211 ~ createPayoutReq ~ response:", response)

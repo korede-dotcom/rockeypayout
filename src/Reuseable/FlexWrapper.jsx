@@ -338,22 +338,22 @@ console.log("🚀 ~ file: FlexWrapper.jsx:229 ~ createPayoutReq ~ encodedCredent
 
 const myHeaders = new Headers();
 // myHeaders.set('Authorization', `Basic ${encodedCredentials}`);
-// myHeaders.append("clientId", user?.data?.clientKeys?.clientId);
-myHeaders.set('Content-Type', 'application/json');
+myHeaders.append("clientId", user?.data?.clientKeys?.clientId);
+// myHeaders.set('Content-Type', 'application/json');
 
-const raw = JSON.stringify(payoutParam);
-
-const requestOptions = {
-  method: 'POST',
-  headers: myHeaders,
-  body: raw,
-  redirect: 'follow',
-  maxBodyLength: Infinity,
-};
 
 try {
+  const raw = JSON.stringify(payoutParam);
+  
+  const requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow',
+    maxBodyLength: Infinity,
+  };
   const response = await fetch(
-    'https://apidoc.transferrocket.co.uk//processwebpayoutclientrequest',
+    'https://apidoc.transferrocket.co.uk/processwebpayoutclientrequest',
     requestOptions
   );
   console.log("🚀 ~ file: FlexWrapper.jsx:211 ~ createPayoutReq ~ response:", response)
@@ -410,7 +410,7 @@ try {
       redirect: 'follow'
     };
 
-    const response = await fetch("https://apidoc.transferrocket.co.uk//adduserbeneficiary", requestOptions);
+    const response = await fetch("https://apidoc.transferrocket.co.uk/adduserbeneficiary", requestOptions);
     // const response = await fetch("https://apidoc.transferrocket.co.uk//creatpayoutbeneficiary.io", requestOptions);
     // 188.212.124.39
     // const response = await fetch(`http://188.212.124.39:3007/createbeneficiary/?auth=${encodedCredentials}`, requestOptions);

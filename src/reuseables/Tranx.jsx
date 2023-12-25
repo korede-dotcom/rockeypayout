@@ -20,12 +20,14 @@ import { IconSearch } from '@arco-design/web-react/icon';
 import Btn from "./Btn";
 import { IconDownload } from "@arco-design/web-react/icon";
 
-function TransactionList({ data }) {
+function TransactionList({ type }) {
   const inputRef = useRef(null);
   const [sortdate, setSortDate] = useState(0);
   const [datar, setData] = useState(null);
   const [data2, setData2] = useState(null);
   const [trx, settrx] = useState(null);
+  const [trxsort, settrxsort] = useState(null);
+  const [trxsort2, settrxsort2] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
@@ -84,29 +86,44 @@ function TransactionList({ data }) {
     }else{
 
         const userId = JSON.parse(localStorage.getItem("userDetails"))
+        console.log("🚀 ~ file: Tranx.jsx:87 ~ useEffect ~ userId:", userId)
         const currencyFromQuery = queryParams.get('currency');
         const id = parseInt(queryParams.get('id'));
         console.log("🚀 ~ file: Tranx.jsx:69 ~ useEffect ~ id:", id)
-    
+      let gatewaytrx;
         const fetchData = async () => {
           try {
-            const requestOptions = {
-              method: 'GET',
-              redirect: 'follow'
-            };
+            // const requestOptions = {
+            //   method: 'GET',
+            //   redirect: 'follow'
+            // };
     
-            const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userId?.data?.userId}`, requestOptions);
-            const result = await response.json();
-            console.log("🚀 ~ file: Tranx.jsx:79 ~ fetchData ~ result:", result)
+            // const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userId?.data?.userId}`, requestOptions);
+            // const result = await response.json();
+            // console.log("🚀 ~ file: Tranx.jsx:79 ~ fetchData ~ result:", result)
             
-            // Set the fetched data to state
-            setData(result);
-            setLoading(false)
-            const filterTrnx = result?.data?.payOutTransactions?.filter(d => d?.payOutProvider?.id === id && d?.country?.currencyCode === currencyFromQuery)
+            // // Set the fetched data to state
+            // setData(result);
+            // setLoading(false)
+            const filterTrnx = userId?.data?.payOutTransactions?.sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated)).slice(0, 20) // Sort in descending order.slice(0, 20); // Get the first 20 transactions
+           switch (type) {
+            case "overview":
+              settrxsort(filterTrnx);
+              
+              break;
+            case `${queryParams.get('currency')-queryParams.get('name')}`:
+               gatewaytrx = userId?.data?.payOutTransactions?.filter(d => d?.currency.id === parseInt(queryParams.get('cid')) && d?.currency.code.toString() === queryParams.get('currency').toString())
+               console.log("🚀 ~ file: Tranx.jsx:116 ~ fetchData ~ gatewaytrx:", gatewaytrx)
+              settrxsort2(gatewaytrx);
+              
+              break;
+           
+            default:
+              break;
+           }
             console.log("🚀 ~ file: Tranx.jsx:84 ~ fetchData ~ filterTrnx:", filterTrnx)
-            settrx(filterTrnx);
-            localStorage.getItem("userDetails",JSON.stringify(result))
-            console.log("Fetched data:", result);
+            // localStorage.getItem("userDetails",JSON.stringify(result))
+            // console.log("Fetched data:", result);
           } catch (error) {
             console.error("Error fetching data:", error);
             // Handle errors here
@@ -564,6 +581,121 @@ const columns = [
     };
   });
 
+  const newData2 = trxsort?.filter((item) =>
+  Object.values(item).some((value) =>
+    typeof value === 'string' &&
+    value.toLowerCase().includes(searchQuery.toLowerCase())
+  ))?.map((item) => {
+    return {
+      ...item,
+      newGateWay: (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <img
+            style={{
+              width: "30px",
+              height: "30px",
+              borderRadius: "1000px",
+              marginRight: "10px",
+              objectFit: "cover",
+            }}
+            src={item?.payOutProvider["logo"]}
+            alt=""
+          />
+          {item?.payOutProvider["name"]}
+        </div>
+      ),
+      statusNew: (
+        <>
+          {" "}
+          <div
+            style={{
+              padding: "8px 16px",
+              borderRadius: "10000px",
+              background:
+                item?.status === "Successful"
+                  ? "#63ff706c"
+                  : item?.status === "Pending"
+                  ? "#FEF0C7"
+                  : "#ff63634b",
+              color:
+                item?.status === "Successful"
+                  ? "green"
+                  : item?.status === "Pending"
+                  ? "#DC6803"
+                  : "red",
+              width: "fit-content",
+              fontWeight: "700",
+            }}
+          >
+            {item?.status}
+          </div>
+        </>
+      ),
+    };
+  });
+  const newData3 = trxsort2?.filter((item) =>
+  Object.values(item).some((value) =>
+    typeof value === 'string' &&
+    value.toLowerCase().includes(searchQuery.toLowerCase())
+  ))?.map((item) => {
+    return {
+      ...item,
+      newGateWay: (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <img
+            style={{
+              width: "30px",
+              height: "30px",
+              borderRadius: "1000px",
+              marginRight: "10px",
+              objectFit: "cover",
+            }}
+            src={item?.payOutProvider["logo"]}
+            alt=""
+          />
+          {item?.payOutProvider["name"]}
+        </div>
+      ),
+      statusNew: (
+        <>
+          {" "}
+          <div
+            style={{
+              padding: "8px 16px",
+              borderRadius: "10000px",
+              background:
+                item?.status === "Successful"
+                  ? "#63ff706c"
+                  : item?.status === "Pending"
+                  ? "#FEF0C7"
+                  : "#ff63634b",
+              color:
+                item?.status === "Successful"
+                  ? "green"
+                  : item?.status === "Pending"
+                  ? "#DC6803"
+                  : "red",
+              width: "fit-content",
+              fontWeight: "700",
+            }}
+          >
+            {item?.status}
+          </div>
+        </>
+      ),
+    };
+  });
+
 
 //  const filteredData = newData?.filter((item) =>
 //     Object.values(item).some((value) =>
@@ -641,14 +773,34 @@ const columns = [
         </div>
 
         
+      {
+        type === "overview" ? (
+          <CustomTable
+            
+            noData={trxsort?.length}
+          //   loading={isLoading || isFetching}
+            Apidata={newData2}
+            tableColumns={columns}
+          />
 
-        <CustomTable
-          
+        ) : (type === `${queryParams.get('currency')-queryParams.get('name')}` ) ? (
+          <CustomTable
+            
+          noData={trxsort2?.length}
+        //   loading={isLoading || isFetching}
+          Apidata={newData3}
+          tableColumns={columns}
+        />
+        ) : (
+          <CustomTable
+            
           noData={trx?.length}
         //   loading={isLoading || isFetching}
           Apidata={newData}
           tableColumns={columns}
         />
+        )
+      }
 
         {/* <div className="row">
           <span>Showing 1-5 of entries</span>

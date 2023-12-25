@@ -18,17 +18,25 @@ const Transactions = () => {
   const [data, setData] = useState(null);
   const [trx, settrx] = useState(null);
   const [loading, setLoading] = useState(false);
+  const userId = JSON.parse(localStorage.getItem("userDetails"))
+
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: "NGN",
+  });
 
   useEffect(() => {
     setLoading(true)
     const fetchData = async () => {
+      settrx(userId?.data?.payOutTransactions);
+      setLoading(false)
       try {
         const requestOptions = {
           method: 'GET',
           redirect: 'follow'
         };
 
-        const response = await fetch("https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/45586980", requestOptions);
+        const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userId?.data?.userId}`, requestOptions);
         const result = await response.json();
 
         // Set the fetched data to state

@@ -99,6 +99,7 @@ const Overview = () => {
   ];
   useEffect(() => {
     setuserDetails(JSON.parse(localStorage.getItem("userDetails")))
+    setData(JSON.parse(localStorage.getItem("userDetails")));
   },[])
   useEffect(() => {
 
@@ -716,7 +717,7 @@ const data = await response.json()
         </div>
 
         </Content>
-       <Tranx/>
+       <Tranx type="overview"/>
       
       
       </OverviewContainer>

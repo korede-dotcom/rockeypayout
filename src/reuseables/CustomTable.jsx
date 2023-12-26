@@ -83,6 +83,20 @@ const CustomTable = ({ Apidata, tableColumns, loading, noData }) => {
   return (
     <Content>
       <Table
+       onRow={(record, index) => {
+        return {
+          onClick: (event) => {
+            // Disable text selection on single click
+            console.log("🚀 ~ file: CustomTable.jsx:91 ~ CustomTable ~ event.currentTarget:", event.target.innerText)
+            event.target.style.userSelect = 'text';
+          },
+          onDoubleClick: (event) => {
+            // Enable text selection on double click
+            event.target.style.userSelect = 'text';
+          },
+          
+        };
+      }}
         loading={loading}
         noDataElement={noData}
         columns={tableColumns || columns}
@@ -111,13 +125,16 @@ const CustomTable = ({ Apidata, tableColumns, loading, noData }) => {
 
 export default CustomTable;
 const Content = styled.div`
+
   .table3 {
     th {
       padding: 0px;
       font-size: 12px;
+      user-select: text;
     }
     td {
       padding: 20px;
+      user-select: text;
     }
   }
 `;

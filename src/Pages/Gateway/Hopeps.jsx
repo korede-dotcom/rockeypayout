@@ -279,7 +279,7 @@ const Hopeps = () => {
                 
             </CardContainer>
            
-                  <TransactionList type={`${queryParams.get('currency')-queryParams.get('name')}`}  />
+                  <TransactionList type={`${queryParams.get('currency')-queryParams.get('name')-queryParams.get('id')}`}  />
         </HopepsBox>
     </Layout>
   )

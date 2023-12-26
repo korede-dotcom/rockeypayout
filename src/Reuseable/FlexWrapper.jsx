@@ -59,7 +59,7 @@ const FlexWrapper = ({
       "amount": undefined,
       "naration": "",
       "senderName": "",
-      "beneficiaryId" : undefined
+      // "beneficiaryId" : undefined
   }
   );
   const [createBene,setCreateBene] = useState(
@@ -128,15 +128,20 @@ const FlexWrapper = ({
   const handleSelectChangebene = selectedOption2 => {
     const removeLines = selectedOption2?.label?.toString()?.replace("\n"," ")?.split("[")[0];
     const bankDetails = selectedOption2?.label?.toString()?.replace("\n"," ")?.split("[")[1];
+    setpayoutParam(prev => ({
+      beneficiaryId:selectedOption2.value,
+      ...prev,
+    }))
     setSelectedOption2(
       {label: removeLines, value: selectedOption2.value,bankDetails}
-  );
+      );
+      console.log("🚀 ~ file: FlexWrapper.jsx:133 ~ handleSelectChangebene ~ selectedOption2.value:", selectedOption2.value)
+      setCreateBene(prevState => ({
+        ...prevState,
+        beneficiaryId:selectedOption2.value
+  
+      }));
     
-    setCreateBene(prevState => ({
-      ...prevState,
-      beneficiaryId:selectedOption2.value
-
-    }));
     // Do something with selected option if needed
   };
 
@@ -174,7 +179,7 @@ const FlexWrapper = ({
     setpayoutParam(prevState => ({
       ...prevState,
       appId: selectedOption?.value,
-      refrenceId:`${selectedOption?.label?.trim()?.substring(0,2).toUpperCase()}${randomEightDigitNumber}`
+      refrenceId:`${user?.data?.companyName?.trim()?.substring(0,2).toUpperCase()}${randomEightDigitNumber}`
     }));
     // Do something with selected option if needed
   };
@@ -327,6 +332,11 @@ const createPayoutReq = async () => {
   
     setLoading(true);
     const getDetails = JSON.parse(localStorage.getItem("details"));
+  
+      console.log("🚀 ~ file: FlexWrapper.jsx:335 ~ createPayoutReq ~ selectedOption2.value:", selectedOption2.value)
+
+  
+
 
 
 // Concatenate clientId and liveKey with a colon
@@ -363,19 +373,25 @@ try {
 
   setLoading(false);
 
-  if (data?.status) {
+  if (data?.data?.status) {
     toast.success(data?.message);
     setLoading(false);
     setShow(!show);
     // Reset the payoutParam state
     setpayoutParam({});
+    setSelectedOption("")
+    setSelectedOption2("")
   } else {
     setpayoutParam({});
+    setSelectedOption("")
+    setSelectedOption2("")
     toast.error(data?.message);
     setShow(!show);
   }
 } catch (error) {
   setpayoutParam({});
+  setSelectedOption("")
+  setSelectedOption2("")
   setShow(!show);
   console.error('Error in createPayoutReq:', error);
   setLoading(false);
@@ -585,6 +601,7 @@ const lookup = async (e) => {
                     )
                     setShow(!show)
                     setSelectedOption2(null)
+                    setSelectedOption(null)
 
                   }}
                   loading={loading}

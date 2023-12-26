@@ -111,7 +111,7 @@ function TransactionList({ type }) {
               settrxsort(filterTrnx);
               
               break;
-            case `${queryParams.get('currency')-queryParams.get('name')}`:
+            case `${queryParams.get('currency')-queryParams.get('name')-queryParams.get('name')}`:
                gatewaytrx = userId?.data?.payOutTransactions?.filter(d => d?.currency.id === parseInt(queryParams.get('cid')) && d?.currency.code.toString() === queryParams.get('currency').toString())
                console.log("🚀 ~ file: Tranx.jsx:116 ~ fetchData ~ gatewaytrx:", gatewaytrx)
               settrxsort2(gatewaytrx);

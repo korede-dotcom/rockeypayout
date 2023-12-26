@@ -65,15 +65,15 @@ function TransactionList({ type }) {
               redirect: 'follow'
             };
     
-            const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userId?.data?.userId}`, requestOptions);
-            const result = await response.json();
+            // const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userId?.data?.userId}`, requestOptions);
+            // const result = await response.json();
             
             // Set the fetched data to state
-            setData(result);
-            setLoading(false)
-            settrx(result?.data?.payOutTransactions);
-            localStorage.getItem("userDetails",JSON.stringify(result))
-            console.log("Fetched data:", result);
+            setData(userId);
+            // setLoading(false)
+            settrx(userId?.data?.payOutTransactions);
+            // localStorage.getItem("userDetails",JSON.stringify(result))
+            // console.log("Fetched data:", result);
           } catch (error) {
             console.error("Error fetching data:", error);
             // Handle errors here
@@ -111,8 +111,8 @@ function TransactionList({ type }) {
               settrxsort(filterTrnx);
               
               break;
-            case `${queryParams.get('currency')-queryParams.get('name')-queryParams.get('name')}`:
-               gatewaytrx = userId?.data?.payOutTransactions?.filter(d => d?.currency.id === parseInt(queryParams.get('cid')) && d?.currency.code.toString() === queryParams.get('currency').toString())
+            case `${queryParams.get('id')-queryParams.get('name')}`:
+               gatewaytrx = userId?.data?.payOutTransactions?.filter(d => d?.payOutProvider?.id === parseInt(queryParams.get('id')) && d?.currency.id === parseInt(queryParams.get('cid')) && d?.currency.code.toString() === queryParams.get('currency').toString())
                console.log("🚀 ~ file: Tranx.jsx:116 ~ fetchData ~ gatewaytrx:", gatewaytrx)
               settrxsort2(gatewaytrx);
               
@@ -135,7 +135,7 @@ function TransactionList({ type }) {
 
     }
     // setLoading(true)
-  }, [queryParams.get('currency')]);
+  }, [queryParams.get('currency'),queryParams.get('id')]);
 
 
 

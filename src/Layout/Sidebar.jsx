@@ -268,34 +268,34 @@ const Sidebar = ({ selectedCategory }) => {
 //   setSidebarData(sidebarData);
 // }, []);
 
-useEffect(() => {
 
-},[])
 
 useEffect(() => {
   const fetchUserDetails = async () => {
     try {
       const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+      const gatewaysP = JSON.parse(localStorage.getItem("gateways"));
 
-      const response = await axios.get(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userDetails.data.userId}`);
-      const gateData = response.data;
+      // const response = await axios.get(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userDetails.data.userId}`);
+      // const gateData = response.data;
+      const gateData = userDetails;
 
-      const response2 = await fetch('https://apidoc.transferrocket.co.uk//getpayoutprovider');
-      const data2 = await response2.json();
-      console.log("🚀 ~ file: Sidebar.jsx:285 ~ fetchUserDetails ~ data2:", data2)
+      // const response2 = await fetch('https://apidoc.transferrocket.co.uk//getpayoutprovider');
+      // const data2 = await response2.json();
+      console.log("🚀 ~ file: Sidebar.jsx:285 ~ fetchUserDetails ~ data2:", gatewaysP)
       setuserDetails(userDetails);
       
     const payOutClientWalletPayOutProviders = gateData?.data?.payOutClientWalletPayOutProviders || [];
 setGate(gateData);
 
 const formattedGatewayItems = payOutClientWalletPayOutProviders?.map((d) => {
-  const logoUrl = data2?.data?.find((item) => item.id === d.providerId)?.logo || "defaultLogoUrl";
+  const logoUrl = gatewaysP?.data?.find((item) => item.id === d.providerId)?.logo || "defaultLogoUrl";
 
   return {
     title: `${d?.providerName} [${d?.wallet?.currency?.code}]`,
     path: d?.providerName?.includes("HopePSB")
-      ? `/gateways/?name=${d?.providerName.trim()}&currency=${d?.wallet?.currency?.code}&id=${d?.providerId}&cid=${d?.wallet?.currency?.id}`
-      : `/gateways/?name=${d?.providerName.trim()}&currency=${d?.wallet?.currency?.code}&id=${d?.providerId}&cid=${d?.wallet?.currency?.id}`,
+      ? `/gateways?name=${d?.providerName.toString().trim()}&currency=${d?.wallet?.currency?.code}&id=${d?.providerId}&cid=${d?.wallet?.currency?.id}`
+      : `/gateways?name=${d?.providerName.toString().trim()}&currency=${d?.wallet?.currency?.code}&id=${d?.providerId}&cid=${d?.wallet?.currency?.id}`,
     image: <img src={logoUrl} alt="" />,
   };
 });
@@ -444,7 +444,9 @@ console.log(formattedGatewayItems);
   const matchingCategories = SidebarData.filter(
     (item) => item.pageName === selectedCategory
   );
-  const locate = window.location.pathname;
+  const locate = window.location.href;
+  // const locate = window.location.pathname;
+  console.log("🚀 ~ file: Sidebar.jsx:447 ~ Sidebar ~ locate:", locate)
 
   return (
     <SidebarContainer isOpen={isOpen}>
@@ -476,18 +478,21 @@ console.log(formattedGatewayItems);
             >
               {selectedCategoryData?.Name}
             </p>
-            <div className="navcContainer">
+            {/* <div className="navcContainer">
               {selectedCategoryData?.Gateway?.map((m, i) => {
                 // setNav(m.path);
                 return (
                   <div
                     key={i}
-                    className={` navbx ${locate === m?.path && "active"}`}
+                    // className={` navbx ${locate === m?.path && "active"}`}
+                    className={`navbx ${locate.includes(m?.path) ? "active" : ""}`}
                   >
                     <div className="navImg">{m?.image}</div>
                     <span
                       onClick={() => {
-                        Navigate(m?.path);
+                        Navigate(m?.path),
+                        document.querySelector("navbx").classList.add("active")
+
                       }}
                       style={{ display: isOpen ? "" : "none" }}
                     >
@@ -496,7 +501,31 @@ console.log(formattedGatewayItems);
                   </div>
                 );
               })}
-            </div>
+            </div> */}<div className="navcContainer">
+  {selectedCategoryData?.Gateway?.map((m, i) => {
+  const pathWithQuery = new URL(m.path, window.location.origin).href;
+  console.log("🚀 ~ file: Sidebar.jsx:506 ~ {selectedCategoryData?.Gateway?.map ~ pathWithQuery:", pathWithQuery)
+
+  return (
+    <div
+      key={i}
+      className={`navbx ${locate === pathWithQuery ? "active" : ""}`}
+      onClick={() => {
+        Navigate(m.path);
+        // Optionally, you can update the URL with the query parameters
+        // history.pushState({}, "", pathWithQuery);
+      }}
+    >
+      <div className="navImg">{m?.image}</div>
+      <span style={{ display: isOpen ? "" : "none" }}>
+        {m.title}
+      </span>
+    </div>
+  );
+})}
+</div>
+
+
           </nav>
         ))}
       </div>

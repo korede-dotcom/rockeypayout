@@ -27,8 +27,9 @@ const Transactions = () => {
 
   useEffect(() => {
     setLoading(true)
+    settrx(userId?.data?.payOutTransactions);
+    setLoading(false)
     const fetchData = async () => {
-      settrx(userId?.data?.payOutTransactions);
       setLoading(false)
       try {
         const requestOptions = {
@@ -51,7 +52,7 @@ const Transactions = () => {
     };
 
     // Call the fetch function
-    fetchData();
+    // fetchData();
   }, []);
 
   const OverviewHeaders = [

@@ -66,7 +66,15 @@ function LoginR() {
         mutate(loginDetails)
     }
     console.log(loginDetails)
+    useEffect(() => {
+        const fecther = async () => {
+            const response2 = await fetch('https://apidoc.transferrocket.co.uk//getpayoutprovider');
+            const data2 = await response2.json();
+            localStorage.setItem("gateways",JSON.stringify(data2))
+        }
+        fecther()
 
+    },[])
 
     const handleChange = (e, i) => {
         const { name,value } = e.target

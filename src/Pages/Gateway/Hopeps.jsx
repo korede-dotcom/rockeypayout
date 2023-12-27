@@ -46,16 +46,28 @@ const Hopeps = () => {
   
   console.log("🚀 ~ file: Hopeps.jsx:38 ~ Hopeps ~ balance:", balance)
 
-  
+  const userId = JSON.parse(localStorage.getItem("userDetails"))
   const location = useLocation();
 
   // Access the query parameters from the location object
   const queryParams = new URLSearchParams(location.search);
+  const fecther = async () => {
+    const requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+    };
+
+    const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userId?.data?.userId}`, requestOptions);
+    const result = await response.json();
+    console.log("🚀 ~ file: Hopeps.jsx:241 ~ fecther ~ result:", result)
+    location.setItem("userDetails",JSON.stringify(result))
+    
+  }
 
   
   useEffect(() => {
     setLoading(true);
-  
+    fecther();
     // Extract the currency from the query parameters
     const currencyFromQuery = queryParams.get('currency');
     const gateWayId = queryParams.get('id');
@@ -230,8 +242,8 @@ const Hopeps = () => {
   ];
 
   // const figure2 = 
-
-
+ 
+  
   useEffect(() => {
 
     setLoading(true)
@@ -253,7 +265,9 @@ const Hopeps = () => {
         
         // Set the fetched data to state
         setData(result);
+
         setLoading(false)
+      
         // settrx(result?.data?.payOutTransactions);
         console.log("Fetched data:", result);
       } catch (error) {

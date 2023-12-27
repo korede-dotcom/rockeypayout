@@ -129,12 +129,17 @@ const Content = styled.div`
   .table3 {
     th {
       padding: 0px;
-      font-size: 12px;
+      font-size: 10px;
+      font-weight: 100;
       user-select: text;
     }
     td {
-      padding: 20px;
+      /* padding: 10px; */
       user-select: text;
+    }
+    .arco-table-cell-wrap-value{
+      font-size: 13px;
+      /* text-align: center; */
     }
   }
 `;

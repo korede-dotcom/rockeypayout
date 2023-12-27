@@ -82,9 +82,9 @@ const Overview = () => {
     },
     {
       Image: cancelled,
-      name: "Cancelled",
+      name: "failed",
       downImg: down,
-      count:sorted?.cancelled,
+      count:sorted?.failed,
       day: "count",
       border: "border",
       padding: "padding",
@@ -95,7 +95,7 @@ const Overview = () => {
     { number: formatter.format(sorted?.totalAmount || 0) || 0 },
     { number: formatter.format(sorted?.successfulAmount || 0) || 0},
     { number: formatter.format(sorted?.pendingAmount || 0) || 0},
-    { number: formatter.format(sorted?.cancelledAmount || 0) || 0},
+    { number: formatter.format(sorted?.failedAmount || 0) || 0},
   ];
   useEffect(() => {
     setuserDetails(JSON.parse(localStorage.getItem("userDetails")))
@@ -110,10 +110,10 @@ const Overview = () => {
 
     const fetchData = async () => {
       try {
-        // const requestOptions = {
-        //   method: 'GET',
-        //   redirect: 'follow'
-        // };
+        const requestOptions = {
+          method: 'GET',
+          redirect: 'follow'
+        };
 
         // const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userId?.data?.userId}`, requestOptions);
         // const result = await response.json();
@@ -124,8 +124,8 @@ const Overview = () => {
         setLoading(false)
         settrx(userId?.data?.payOutTransactions);
         // localStorage.setItem("userDetails",JSON.stringify(result))
-        localStorage.setItem("userDetails",JSON.stringify(userId))
-        // console.log("Fetched data:", result);
+        localStorage.setItem("userDetails",JSON.stringify(result))
+        console.log("Fetched data:", result);
       } catch (error) {
         console.error("Error fetching data:", error);
         // Handle errors here
@@ -337,46 +337,46 @@ const Overview = () => {
 
       //render: () => "Other",
     },
-    {
-      title: "COMMENT",
-      dataIndex: "comment",
-      filterIcon: <IconSearch />,
-      filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
-        return (
-          <div className='arco-table-custom-filter'>
-            <Input.Search
-              ref={inputRef}
-              searchButton
-              placeholder='Please enter comment'
-              value={filterKeys[0] || ''}
-              onChange={(value) => {
-                setFilterKeys(value ? [value] : []);
-              }}
-              onSearch={() => {
-                confirm();
-              }}
-            />
-          </div>
-        );
-      },
-      onFilter: (value, row) => (value ? row?.comment?.toString().indexOf(value) !== -1 : true),
-      onFilterDropdownVisibleChange: (visible) => {
-        if (visible) {
-          setTimeout(() => inputRef.current.focus(), 150);
-        }
-      },
-      sorter: (a, b) => {
-        if (a.id > b.id) {
-          return 1;
-        }
-        if (a.id < b.id) {
-          return -1;
-        }
-        return 0;
-      },
-      //render: () => "Other 1",
-      width: 220,
-    },
+    // {
+    //   title: "COMMENT",
+    //   dataIndex: "comment",
+    //   filterIcon: <IconSearch />,
+    //   filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
+    //     return (
+    //       <div className='arco-table-custom-filter'>
+    //         <Input.Search
+    //           ref={inputRef}
+    //           searchButton
+    //           placeholder='Please enter comment'
+    //           value={filterKeys[0] || ''}
+    //           onChange={(value) => {
+    //             setFilterKeys(value ? [value] : []);
+    //           }}
+    //           onSearch={() => {
+    //             confirm();
+    //           }}
+    //         />
+    //       </div>
+    //     );
+    //   },
+    //   onFilter: (value, row) => (value ? row?.comment?.toString().indexOf(value) !== -1 : true),
+    //   onFilterDropdownVisibleChange: (visible) => {
+    //     if (visible) {
+    //       setTimeout(() => inputRef.current.focus(), 150);
+    //     }
+    //   },
+    //   sorter: (a, b) => {
+    //     if (a.id > b.id) {
+    //       return 1;
+    //     }
+    //     if (a.id < b.id) {
+    //       return -1;
+    //     }
+    //     return 0;
+    //   },
+    //   //render: () => "Other 1",
+    //   width: 220,
+    // },
     // {
     //   title: "EMAIL",
     //   dataIndex: "email",
@@ -733,6 +733,7 @@ export default Overview;
 
 
 const Content = styled.div`
+
 small {
     font-size: 60%;
 }

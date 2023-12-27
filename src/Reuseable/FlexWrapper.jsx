@@ -83,8 +83,26 @@ const FlexWrapper = ({
 
   const location = useLocation();
 
+
   // Access the query parameters from the location object
   const queryParams = new URLSearchParams(location.search);
+
+  const fecther = async () => {
+    const requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+    };
+
+    const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userId?.data?.userId}`, requestOptions);
+    const result = await response.json();
+    location.setItem("test",JSON.stringify(result))
+    
+  }
+  
+
+  useEffect(() => {
+    fecther();
+  },[])
   
   const beneoptions = user?.data?.beneficiaries.map(option => ({
   label: `${option.beneficiaryName}\n[${option?.beneficiaryBank?.accountNumber} - ${option?.beneficiaryBank?.bankName}]`,

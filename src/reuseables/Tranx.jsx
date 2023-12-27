@@ -51,20 +51,29 @@ function TransactionList({ type }) {
 
   // const formattedValue = formatter.format(123456.78);
   // console.log(formattedValue);
+  const fecther = async () => {
+    const requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+    };
+
+    const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userId?.data?.userId}`, requestOptions);
+    const result = await response.json();
+    location.setItem("test",JSON.stringify(result))
+    
+  }
   
 
   useEffect(() => {
+    fecther()
+
 
     if (window.location.pathname === "/transaction") {
         const userId = JSON.parse(localStorage.getItem("userDetails"))
     
         const fetchData = async () => {
           try {
-            const requestOptions = {
-              method: 'GET',
-              redirect: 'follow'
-            };
-    
+          
             // const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userId?.data?.userId}`, requestOptions);
             // const result = await response.json();
             
@@ -192,47 +201,48 @@ const columns = [
         return 0;
       },
       sortDirections: ["descend", "ascend"],
-      width: 160,
+      // width: 160,
+      
     },
-    {
-      title: "ID",
-      dataIndex: "id",
-      filterIcon: <IconSearch />,
-      filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
-        return (
-          <div className='arco-table-custom-filter'>
-            <Input.Search
-              ref={inputRef}
-              searchButton
-              placeholder='Please enter gateway'
-              value={filterKeys[0] || ''}
-              onChange={(value) => {
-                setFilterKeys(value ? [value] : []);
-              }}
-              onSearch={() => {
-                confirm();
-              }}
-            />
-          </div>
-        );
-      },
-      onFilter: (value, row) => (value ? row?.id?.toString().indexOf(value) !== -1 : true),
-      onFilterDropdownVisibleChange: (visible) => {
-        if (visible) {
-          setTimeout(() => inputRef.current.focus(), 150);
-        }
-      },
-      sorter: (a, b) => {
-        if (a.id > b.id) {
-          return 1;
-        }
-        if (a.id < b.id) {
-          return -1;
-        }
-        return 0;
-      },
-      width: 160,
-    },
+    // {
+    //   title: "ID",
+    //   dataIndex: "id",
+    //   filterIcon: <IconSearch />,
+    //   filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
+    //     return (
+    //       <div className='arco-table-custom-filter'>
+    //         <Input.Search
+    //           ref={inputRef}
+    //           searchButton
+    //           placeholder='Please enter gateway'
+    //           value={filterKeys[0] || ''}
+    //           onChange={(value) => {
+    //             setFilterKeys(value ? [value] : []);
+    //           }}
+    //           onSearch={() => {
+    //             confirm();
+    //           }}
+    //         />
+    //       </div>
+    //     );
+    //   },
+    //   onFilter: (value, row) => (value ? row?.id?.toString().indexOf(value) !== -1 : true),
+    //   onFilterDropdownVisibleChange: (visible) => {
+    //     if (visible) {
+    //       setTimeout(() => inputRef.current.focus(), 150);
+    //     }
+    //   },
+    //   sorter: (a, b) => {
+    //     if (a.id > b.id) {
+    //       return 1;
+    //     }
+    //     if (a.id < b.id) {
+    //       return -1;
+    //     }
+    //     return 0;
+    //   },
+    //   width: 160,
+    // },
     {
       title: "TRANSACTION STATUS",
       dataIndex: "statusNew",
@@ -245,7 +255,7 @@ const columns = [
         }
         return 0;
       },
-      width: 180,
+      // width: 180,
     },
     {
       title: "DATE",
@@ -286,64 +296,162 @@ const columns = [
       },
       width: 250,
     },
-    {
-      title: "APP",
-      dataIndex: "payoutClientApp['appName']",
-      sorter: (a, b) => {
-        if (a.payoutClientApp.appName > b.payoutClientApp.appName) {
-          return 1;
-        }
-        if (a.payoutClientApp.appName < b.payoutClientApp.appName) {
-          return -1;
-        }
-        return 0;
-      },
-      width: 190,
-    },
-    {
-      title: "GATEWAY",
-      dataIndex: "newGateWay",
-      filterIcon: <IconSearch />,
-      filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
-        return (
-          <div className='arco-table-custom-filter'>
-            <Input.Search
-              ref={inputRef}
-              searchButton
-              placeholder='Please enter gateway'
-              value={filterKeys[0] || ''}
-              onChange={(value) => {
-                setFilterKeys(value ? [value] : []);
-              }}
-              onSearch={() => {
-                confirm();
-              }}
-            />
-          </div>
-        );
-      },
-      onFilter: (value, row) => (value ? row?.newGateWay?.indexOf(value) !== -1 : true),
-      onFilterDropdownVisibleChange: (visible) => {
-        if (visible) {
-          setTimeout(() => inputRef.current.focus(), 150);
-        }
-      },
-      sorter: (a, b) => {
-        if (a.newGateWay > b.newGateWay) {
-          return 1;
-        }
-        if (a.newGateWay < b.newGateWay) {
-          return -1;
-        }
-        return 0;
-      },
-      width: 230,
+    // {
+    //   title: "APP",
+    //   dataIndex: "payoutClientApp['appName']",
+    //   sorter: (a, b) => {
+    //     if (a.payoutClientApp.appName > b.payoutClientApp.appName) {
+    //       return 1;
+    //     }
+    //     if (a.payoutClientApp.appName < b.payoutClientApp.appName) {
+    //       return -1;
+    //     }
+    //     return 0;
+    //   },
+    //   width: 190,
+    // },
+    // {
+    //   title: "GATEWAY",
+    //   dataIndex: "newGateWay",
+    //   filterIcon: <IconSearch />,
+    //   filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
+    //     return (
+    //       <div className='arco-table-custom-filter'>
+    //         <Input.Search
+    //           ref={inputRef}
+    //           searchButton
+    //           placeholder='Please enter gateway'
+    //           value={filterKeys[0] || ''}
+    //           onChange={(value) => {
+    //             setFilterKeys(value ? [value] : []);
+    //           }}
+    //           onSearch={() => {
+    //             confirm();
+    //           }}
+    //         />
+    //       </div>
+    //     );
+    //   },
+    //   onFilter: (value, row) => (value ? row?.newGateWay?.indexOf(value) !== -1 : true),
+    //   onFilterDropdownVisibleChange: (visible) => {
+    //     if (visible) {
+    //       setTimeout(() => inputRef.current.focus(), 150);
+    //     }
+    //   },
+    //   sorter: (a, b) => {
+    //     if (a.newGateWay > b.newGateWay) {
+    //       return 1;
+    //     }
+    //     if (a.newGateWay < b.newGateWay) {
+    //       return -1;
+    //     }
+    //     return 0;
+    //   },
+    //   width: 230,
 
-      //render: () => "Other",
-    },
+    //   //render: () => "Other",
+    // },
+    // {
+    //   title: "RECEIVER",
+    //   dataIndex: "beneficiary['beneficiaryName']",
+    //   filterIcon: <IconSearch />,
+    //   filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
+    //     return (
+    //       <div className='arco-table-custom-filter'>
+    //         <Input.Search
+    //           ref={inputRef}
+    //           searchButton
+    //           placeholder='Please enter name'
+    //           value={filterKeys[0] || ''}
+    //           onChange={(value) => {
+    //             setFilterKeys(value ? [value] : []);
+    //           }}
+    //           onSearch={() => {
+    //             confirm();
+    //           }}
+    //         />
+    //       </div>
+    //     );
+    //   },
+    //   onFilter: (value, row) => (value ? row?.beneficiary.beneficiaryName?.indexOf(value) !== -1 : true),
+    //   onFilterDropdownVisibleChange: (visible) => {
+    //     if (visible) {
+    //       setTimeout(() => inputRef.current.focus(), 150);
+    //     }
+    //   },
+
+    //   sorter: (a, b) => {
+    //     if (a.beneficiary.beneficiaryName > b.beneficiary.beneficiaryName) {
+    //       return 1;
+    //     }
+    //     if (a.beneficiary.beneficiaryName < b.beneficiary.beneficiaryName) {
+    //       return -1;
+    //     }
+    //     return 0;
+    //   },
+    //   width: 220,
+    // },
+    // {
+    //   title: "BANK",
+    //   dataIndex: "beneficiary['beneficiaryBank']['bankName']",
+    //   filterIcon: <IconSearch />,
+    //   filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
+    //     return (
+    //       <div className='arco-table-custom-filter'>
+    //         <Input.Search
+    //           ref={inputRef}
+    //           searchButton
+    //           placeholder='Please enter gateway'
+    //           value={filterKeys[0] || ''}
+    //           onChange={(value) => {
+    //             setFilterKeys(value ? [value] : []);
+    //           }}
+    //           onSearch={() => {
+    //             confirm();
+    //           }}
+    //         />
+    //       </div>
+    //     );
+    //   },
+    //   onFilter: (value, row) => (value ? row?.beneficiary.beneficiaryBank.bankName?.indexOf(value) !== -1 : true),
+    //   onFilterDropdownVisibleChange: (visible) => {
+    //     if (visible) {
+    //       setTimeout(() => inputRef.current.focus(), 150);
+    //     }
+    //   },
+    //   sorter: (a, b) => {
+    //     if (a.beneficiary.beneficiaryBank.bankName > b.beneficiary.beneficiaryBank.bankName) {
+    //       return 1;
+    //     }
+    //     if (a.beneficiary.beneficiaryBank.bankName < b.beneficiary.beneficiaryBank.bankName) {
+    //       return -1;
+    //     }
+    //     return 0;
+    //   },
+    //   width: 200,
+    //   //render: () => "Other 2",
+    // },
+    // {
+    //   title: "ACCOUNT NO",
+    //   dataIndex: "beneficiary['beneficiaryBank']['accountNumber']",
+    //   sorter: (a, b) => {
+    //     if (a.beneficiary.beneficiaryBank.accountNumber > b.beneficiary.beneficiaryBank.accountNumber) {
+    //       return 1;
+    //     }
+    //     if (a.beneficiary.beneficiaryBank.accountNumber < b.beneficiary.beneficiaryBank.accountNumber) {
+    //       return -1;
+    //     }
+    //     return 0;
+    //   },
+    //   width: 140,
+    // },
     {
       title: "RECEIVER",
-      dataIndex: "beneficiary['beneficiaryName']",
+      dataIndex: 'beneficiary',
+      render: (text, record) => {
+        const { beneficiaryName, beneficiaryBank, beneficiaryAccountNumber } = record.beneficiary;
+        return `${beneficiaryName} [${beneficiaryBank.bankName} - ${beneficiaryBank.accountNumber}]`;
+      },
       filterIcon: <IconSearch />,
       filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
         return (
@@ -369,7 +477,6 @@ const columns = [
           setTimeout(() => inputRef.current.focus(), 150);
         }
       },
-
       sorter: (a, b) => {
         if (a.beneficiary.beneficiaryName > b.beneficiary.beneficiaryName) {
           return 1;
@@ -379,76 +486,24 @@ const columns = [
         }
         return 0;
       },
-      width: 220,
+      // width: 20,
     },
-    {
-      title: "BANK",
-      dataIndex: "beneficiary['beneficiaryBank']['bankName']",
-      filterIcon: <IconSearch />,
-      filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
-        return (
-          <div className='arco-table-custom-filter'>
-            <Input.Search
-              ref={inputRef}
-              searchButton
-              placeholder='Please enter gateway'
-              value={filterKeys[0] || ''}
-              onChange={(value) => {
-                setFilterKeys(value ? [value] : []);
-              }}
-              onSearch={() => {
-                confirm();
-              }}
-            />
-          </div>
-        );
-      },
-      onFilter: (value, row) => (value ? row?.beneficiary.beneficiaryBank.bankName?.indexOf(value) !== -1 : true),
-      onFilterDropdownVisibleChange: (visible) => {
-        if (visible) {
-          setTimeout(() => inputRef.current.focus(), 150);
-        }
-      },
-      sorter: (a, b) => {
-        if (a.beneficiary.beneficiaryBank.bankName > b.beneficiary.beneficiaryBank.bankName) {
-          return 1;
-        }
-        if (a.beneficiary.beneficiaryBank.bankName < b.beneficiary.beneficiaryBank.bankName) {
-          return -1;
-        }
-        return 0;
-      },
-      width: 200,
-      //render: () => "Other 2",
-    },
-    {
-      title: "ACCOUNT NO",
-      dataIndex: "beneficiary['beneficiaryBank']['accountNumber']",
-      sorter: (a, b) => {
-        if (a.beneficiary.beneficiaryBank.accountNumber > b.beneficiary.beneficiaryBank.accountNumber) {
-          return 1;
-        }
-        if (a.beneficiary.beneficiaryBank.accountNumber < b.beneficiary.beneficiaryBank.accountNumber) {
-          return -1;
-        }
-        return 0;
-      },
-      width: 140,
-    },
-    {
-      title: "CURRENCY",
-      dataIndex: "country['currencyCode']",
-      sorter: (a, b) => {
-        if (a.country.currencyCode > b.country.currencyCode) {
-          return 1;
-        }
-        if (a.country.currencyCode < b.country.currencyCode) {
-          return -1;
-        }
-        return 0;
-      },
-      width: 100,
-    },
+    // Other columns...
+    
+    // {
+    //   title: "CURRENCY",
+    //   dataIndex: "country['currencyCode']",
+    //   sorter: (a, b) => {
+    //     if (a.country.currencyCode > b.country.currencyCode) {
+    //       return 1;
+    //     }
+    //     if (a.country.currencyCode < b.country.currencyCode) {
+    //       return -1;
+    //     }
+    //     return 0;
+    //   },
+    //   width: 100,
+    // },
     {
       title: "AMOUNT",
       dataIndex: "Amount",
@@ -476,20 +531,20 @@ const columns = [
       onFilter: (value, row) => row.Amount > value,
       render: (item) => formatter.format(item) ,
     },
-    {
-      title: "TRANSFER FEE",
-      dataIndex: "transferFee",
-      sorter: (a, b) => {
-        if (a.transferFee > b.transferFee) {
-          return 1;
-        }
-        if (a.transferFee < b.transferFee) {
-          return -1;
-        }
-        return 0;
-      },
-      width: 120,
-    },
+    // {
+    //   title: "TRANSFER FEE",
+    //   dataIndex: "transferFee",
+    //   sorter: (a, b) => {
+    //     if (a.transferFee > b.transferFee) {
+    //       return 1;
+    //     }
+    //     if (a.transferFee < b.transferFee) {
+    //       return -1;
+    //     }
+    //     return 0;
+    //   },
+    //   width: 120,
+    // },
     {
       title: "PAYOUT PROVIDER STATUS",
       dataIndex: "payoutProviderStatus",
@@ -502,7 +557,7 @@ const columns = [
         }
         return 0;
       },
-      width: 120,
+      // width: 120,
     },
     {
       title: "PAYOUT PROVIDER MESSAGE",
@@ -517,7 +572,7 @@ const columns = [
         }
         return 0;
       },
-      width: 120,
+      // width: 120,
     },
   ];
 
@@ -638,6 +693,7 @@ const columns = [
       ),
     };
   });
+
   const newData3 = trxsort2?.filter((item) =>
   Object.values(item).some((value) =>
     typeof value === 'string' &&
@@ -776,7 +832,7 @@ const columns = [
       {
         type === "overview" ? (
           <CustomTable
-            
+             
             noData={trxsort?.length}
           //   loading={isLoading || isFetching}
             Apidata={newData2}
@@ -795,6 +851,7 @@ const columns = [
           <CustomTable
             
           noData={trx?.length}
+          
         //   loading={isLoading || isFetching}
           Apidata={newData}
           tableColumns={columns}

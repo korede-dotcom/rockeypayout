@@ -63,6 +63,7 @@ import Iframe from "../../reuseables/Iframe";
 const Details = () => {
   const [mod, setMo] = useState(false);
   const [mod2, setMo2] = useState(false);
+  const [mod3, setMo3] = useState(false);
   const [reveal, setReveal] = useState(false);
   const [others, setOther] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -71,6 +72,8 @@ const Details = () => {
   const [frame, showFrame] = useState(false);
   const [act1, setAct1] = useState(true);
   const [act2, setAct2] = useState(false);
+  const [appToBeEdited, setappToBeEdited] = useState(null);
+  console.log("🚀 ~ file: Details.jsx:76 ~ Details ~ appToBeEdited:", appToBeEdited)
   
 
 
@@ -512,6 +515,13 @@ const [WebhooksHHead, setWebhooksHead] = useState(
   const [createApp, setcreateApp] = useState(
     {
       "clientId": "",
+      "appName": "",
+      "appDescription": "",
+      "appWebHook": ""
+  });
+  const [editApp, seteditApp] = useState(
+    {
+      "id":undefined,
       "appName": "",
       "appDescription": "",
       "appWebHook": ""
@@ -1608,6 +1618,18 @@ const [WebhooksHHead, setWebhooksHead] = useState(
     })
 
   }
+  const handleeditapp = (e) => {
+    const {name,value} = e?.target;
+
+    seteditApp(prev => {
+      return {
+        ...prev,
+        [name]:value,
+        ["id"]:parseInt(appToBeEdited?.id)
+      }
+    })
+
+  }
 
   const handleCopyClick = async (element) => {
 
@@ -1669,6 +1691,53 @@ const submitCreateApp = async ()  => {
   console.log("🚀 ~ file: Details.jsx:97 ~ submitCreateApp ~ data:", data)
 
 }
+const submitEditApp = async ()  => {
+  setLoading(true)
+  var requestOptions = {
+    method: 'POST',
+    body: JSON.stringify(editApp),
+    redirect: 'follow'
+  };
+  try {
+    
+    const response = await fetch("https://apidoc.transferrocket.co.uk//updatepayoutclientapp", requestOptions)
+    const data = await response.json();
+  
+    if (data) {
+      const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${getUser?.data?.userId}`);
+      const result = await response.json();
+      localStorage.setItem("userDetails",JSON.stringify(result))
+      setUser(result)
+    }
+  
+  
+    if(data?.status){
+      setLoading(false)
+      toast.success(data?.message)
+      // setInfo(data?.message)
+      //     setTimeout(() => {
+        //    setInfo("")
+        window.location.reload()
+        setMo2(!mod3)
+        
+       //  }, 1000);
+      }else{
+        
+        setLoading(false)
+        toast.error(data?.message)
+        setMo2(!mod3)
+    }
+  } catch (error) {
+    setLoading(false)
+    toast.error(error?.message)
+    setMo3(!mod3)
+  }
+  
+
+
+  console.log("🚀 ~ file: Details.jsx:97 ~ submitCreateApp ~ data:", data)
+
+}
 
 
 const handleSelect = (name) => {
@@ -1684,16 +1753,16 @@ const handleSelect = (name) => {
 const [active, setActive] = useState();
 
 const columns = [
-  // {
-  //   title: "ACTIONS",
-  //   dataIndex: "action",
-  //   fixed: "left",
-  //   /*   sorter: {
-  //     compare: (a, b) => a.name - b.name,
-  //     multiple: 1,
-  //   }, */
-  //   width: 130,
-  // },
+  {
+    title: "ACTIONS",
+    dataIndex: "action",
+    fixed: "left",
+    /*   sorter: {
+      compare: (a, b) => a.name - b.name,
+      multiple: 1,
+    }, */
+    width: 100,
+  },
   {
     title: "APP ID",
     dataIndex: "id",
@@ -1717,7 +1786,7 @@ const columns = [
   {
     title: "DATE CREATED",
     dataIndex: "dateCreated",
-    width: 190,
+    width: 100,
 
     //render: () => "Other",
   },
@@ -1763,13 +1832,13 @@ const newData =getUser?.data?.clientApps?.map((item, index) => {
         }}
         onClick={(e) => {
           e.stopPropagation();
-          if (item?.status === "Pending") {
+          // if (item?.status === "Pending") {
             if (active === item?.id) {
               setActive("");
             } else {
               setActive(item?.id);
             }
-          }
+          // }
         }}
       >
         <svg
@@ -1779,7 +1848,7 @@ const newData =getUser?.data?.clientApps?.map((item, index) => {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           style={{
-            cursor: item?.status === "Pending" ? "pointer" : "not-allowed",
+            // cursor: item?.status === "Pending" ? "pointer" : "not-allowed",
           }}
         >
           <path
@@ -1814,6 +1883,8 @@ const newData =getUser?.data?.clientApps?.map((item, index) => {
                 //   objectId: item?.id,
                 //   action: 1,
                 // });
+                setappToBeEdited(item)
+                setMo3(true)
               }}
               style={{
                 padding: "10px",
@@ -1847,9 +1918,9 @@ const newData =getUser?.data?.clientApps?.map((item, index) => {
                   </clipPath>
                 </defs>
               </svg>
-              Approve
+              Update this app
             </div>
-            <div
+            {/* <div
               style={{
                 padding: "10px",
                 display: "flex",
@@ -1881,7 +1952,7 @@ const newData =getUser?.data?.clientApps?.map((item, index) => {
                 />
               </svg>
               Decline
-            </div>
+            </div> */}
           </div>
         )}
       </div>
@@ -2198,6 +2269,33 @@ const handleset2 = () => {
                 <OInput label="appName" name="appName" onChange={handlecreateuser}/>
                 <OInput label="appDescription" name="appDescription" onChange={handlecreateuser} />
                 <OInput label="appWebHook" name="appWebHook" onChange={handlecreateuser} />
+
+                </div>
+                
+                
+              </Modal>
+            )}
+            {mod3 && (
+              <Modal
+                width="430px"
+                // height="350px"
+                modalName="Update App"
+                setPayout={setMo}
+                setShow=""
+                style={{ padding: "0 10px" }}
+                btn="update"
+                handleSubmit={submitEditApp}
+                cancleModal={() => setMo3(!mod3)}
+                loading={loading}
+                disabled={Object.values(editApp).some(value => value === "")}
+
+              >
+                {/* {info && <p style={{color:"green"}}>{info}</p>} */}
+                <div style={{paddingInline:"20px"}}>
+                  <i style={{color:"grey"}}>app details is shown as placeholder start typing to edit</i>
+                <OInput label="appName" name="appName" placeholder={appToBeEdited?.appName} onChange={handleeditapp}/>
+                <OInput label="appDescription" name="appDescription"  placeholder={appToBeEdited?.appDescription} onChange={handleeditapp} />
+                <OInput label="appWebHook" name="appWebHook" placeholder={appToBeEdited?.appWebHook} onChange={handleeditapp} />
 
                 </div>
                 

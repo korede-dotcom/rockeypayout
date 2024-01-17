@@ -1735,7 +1735,6 @@ const submitEditApp = async ()  => {
   
 
 
-  console.log("🚀 ~ file: Details.jsx:97 ~ submitCreateApp ~ data:", data)
 
 }
 

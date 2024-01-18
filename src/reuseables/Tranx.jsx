@@ -52,6 +52,7 @@ function TransactionList({ type }) {
   // const formattedValue = formatter.format(123456.78);
   // console.log(formattedValue);
   const fecther = async () => {
+    const userId = JSON.parse(localStorage.getItem("userDetails"))
     const requestOptions = {
       method: 'GET',
       redirect: 'follow'
@@ -449,8 +450,8 @@ const columns = [
       title: "RECEIVER",
       dataIndex: 'beneficiary',
       render: (text, record) => {
-        const { beneficiaryName, beneficiaryBank, beneficiaryAccountNumber } = record.beneficiary;
-        return `${beneficiaryName} [${beneficiaryBank.bankName} - ${beneficiaryBank.accountNumber}]`;
+        // const { beneficiaryName, beneficiaryBank, beneficiaryAccountNumber } = record?.beneficiary;
+        return `${record?.beneficiary?.beneficiaryName && record?.beneficiary?.beneficiaryName} [${record?.beneficiary?.beneficiaryBank?.bankName} - ${record?.beneficiary?.beneficiaryBank?.accountNumber}]`;
       },
       filterIcon: <IconSearch />,
       filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {

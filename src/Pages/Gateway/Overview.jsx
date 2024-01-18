@@ -189,11 +189,11 @@ const Overview = () => {
       name: "transferFee",
       image: <img src={tablearrow} alt="" />,
     },
-    {
-      id: 4,
-      name: "beneficiaryName",
-      image: <img src={tablearrow} alt="" />,
-    },
+    // {
+    //   id: 4,
+    //   name: "beneficiaryName",
+    //   image: <img src={tablearrow} alt="" />,
+    // },
     {
       id: 5,
       name: "beneficiaryPhoneNumber",

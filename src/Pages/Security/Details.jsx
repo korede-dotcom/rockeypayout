@@ -1670,7 +1670,7 @@ const submitCreateApp = async ()  => {
       // setInfo(data?.message)
       //     setTimeout(() => {
         //    setInfo("")
-        window.location.reload()
+        // window.location.reload()
         setMo2(!mod2)
         
        //  }, 1000);

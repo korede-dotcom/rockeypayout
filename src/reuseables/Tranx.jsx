@@ -20,6 +20,7 @@ import { IconSearch } from '@arco-design/web-react/icon';
 import Btn from "./Btn";
 import { IconDownload } from "@arco-design/web-react/icon";
 import Modal from "../Reuseable/Modal";
+import ngFlag from "../assets/ngn.svg"
 
 function TransactionList({ type }) {
   const inputRef = useRef(null);
@@ -31,8 +32,8 @@ function TransactionList({ type }) {
   const [trxsort2, settrxsort2] = useState(null);
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
-  const [TransactionDetails, setTransactionDetails] = useState(undefined);
-  console.log("🚀 ~ TransactionList ~ TransactionDetails:", TransactionDetails?.trnx)
+  const [TransactionDetails, setTransactionDetails] = useState("");
+
 
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   console.log("🚀 ~ file: Tranx.jsx:20 ~ TransactionList ~ userDetails:", userDetails)
@@ -814,7 +815,69 @@ const columns = [
     a.remove();
     URL.revokeObjectURL(blob);
   };
+
+  const downloadOneTrnx = () => {
+    const downloadCsv = () => {
+      const head = ['transactionref','dateCreated','beneficiaryName','bankName','currency','amount','status','note','payoutProviderMessage',];
+      const headers = Object.values(head).toString();
+    
+      const myData = [TransactionDetails];
+      console.log("🚀 ~ downloadCsv ~ myData:", myData)
+      const formattedData = [];
+      const currentDate = new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      });
+    
+      const fileName = `transactions_${currentDate}.csv`;
+    
+      for (let i = 0; i < myData.length; i++) {
+        formattedData.push({
+          transactionref: myData[i]?.clientRef,
+          dateCreated: myData[i].dateCreated,
+          beneficiaryName: myData[i]?.beneficiary?.beneficiaryName,
+          bankName: myData[i]?.beneficiary?.beneficiaryBank?.bankName,
+          currency: myData[i]?.currency?.name,
+          amount: myData[i]?.TransactionDetails?.Amount,
+          status: myData[i]?.TransactionDetails?.status,
+          note: myData[i]?.TransactionDetails?.note,
+          payoutProviderMessage: myData[i]?.TransactionDetails?.payoutProviderMessage,
+          // id: myData[i].id,
+          // status: myData[i].status,
+          // appName: myData[i]?.payoutClientApp?.appName || null,
+          // gateWay: myData[i].payOutProvider.name || null,
+          // receiver: myData[i].beneficiary.beneficiaryName,
+          // bank: myData[i].beneficiary.beneficiaryBank.bankName,
+          // account: myData[i].beneficiary.beneficiaryBank.accountNumber,
+          // currency: myData[i].currency?.code || null,
+          // Amount: myData[i].Amount,
+          // transferFee: myData[i].transferFee,
+          // payoutProviderMessage: myData[i].payoutProviderMessage,
+          // payoutProviderStatus: myData[i].payoutProviderStatus,
+        });
+      }
+    
+      console.log(formattedData);
+    
+      const objValues = formattedData.map(item => Object.values(item).toString());
+      const csv = [headers, ...objValues].join('\n');
+    
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+    
+      const a = document.createElement('a');
+      a.download = fileName;
+      a.href = url;
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(blob);
+    };
+    downloadCsv();
+  }
+ 
   
+
 
 
   return (
@@ -835,13 +898,45 @@ const columns = [
 
       {
         show ? (
-          <Modal modalName="transaction details" cancleModal={() => setShow(!show)} btn="download">
+          <Modal modalName="transaction details" cancleModal={() => setShow(!show)} btn="download" handleSubmit={downloadOneTrnx} showcancel={true}>
             <div className="parentflex">
               <div className="innerflex">
-                <p className="boldlight">hi</p>
-                <p className="bold">Hello</p>
+                <p className="boldlight">Transaction Reference</p>
+                <p className="bold">{TransactionDetails?.clientRef}</p>
               </div>
-          
+              <div className="innerflex">
+                <p className="boldlight">Transaction Date</p>
+                <p className="bold">{TransactionDetails?.dateCreated}</p>
+              </div>
+              <div className="innerflex">
+                <p className="boldlight">Receiver</p>
+                <p className="bold" style={{fontSize:"9px"}}>{TransactionDetails?.beneficiary?.beneficiaryName}</p>
+              </div>
+              <div className="innerflex">
+                <p className="boldlight">Bank</p>
+                <p className="bold">{TransactionDetails?.beneficiary?.beneficiaryBank?.bankName}</p>
+              </div>
+              <div className="innerflex">
+                <p className="boldlight">Currency</p>
+                <p className="bold">{TransactionDetails?.currency?.code === "NGN" ? (<img src={ngFlag} />) : TransactionDetails?.currency?.code}</p>
+              </div>
+              <div className="innerflex">
+                <p className="boldlight">Amount</p>
+                <p className="bold">{formatter.format(TransactionDetails?.Amount)}</p>
+              </div>
+              <div className="innerflex">
+                <p className="boldlight">status</p>
+                <p className="bold">{TransactionDetails?.status}</p>
+              </div>
+              <div className="innerflex">
+                <p className="boldlight">Note</p>
+                <p className="bold">{TransactionDetails?.note}</p>
+              </div>
+              <div className="innerflex">
+                <p className="boldlight">Payout message</p>
+                <p className="bold">{TransactionDetails?.payoutProviderMessage}</p>
+              </div>
+            
            
             </div>
           </Modal>
@@ -874,7 +969,7 @@ const columns = [
           noData={trx?.length}
            showTheModal={(e) => {
              setShow(!show)
-             setTransactionDetails(e)
+             setTransactionDetails(e?.trnx)
            }}
           //  handleClose={handleClose}
           //  setShowTheModal={setShowTheModal}
@@ -920,7 +1015,7 @@ const Content = styled.div`
 .parentflex{
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
   padding-inline: 10px;
   justify-content: center;
   max-height: 300px;
@@ -935,11 +1030,13 @@ const Content = styled.div`
    align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid #e2dfdf;
+    gap: 10px;
     .boldlight{
       text-transform: capitalize;
       color: #687182;
     }
     .bold{
+      font-size: 13px;
       font-weight: bold;
     }
   }

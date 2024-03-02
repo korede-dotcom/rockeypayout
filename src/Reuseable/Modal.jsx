@@ -3,7 +3,7 @@ import styled from "styled-components";
 import cancel from '../assets/cancel.svg'
 import { Spin } from "@arco-design/web-react";
 
-const Modal = ({ width, height, children, setPayout, setShow, modalName, btn,handleSubmit ,cancleModal,loading,disabled,padding}) => {
+const Modal = ({ width, height, children, setPayout, setShow, modalName, btn,handleSubmit ,cancleModal,loading,disabled,padding,showcancel}) => {
 
   return (
     <ModalBox>
@@ -31,7 +31,10 @@ const Modal = ({ width, height, children, setPayout, setShow, modalName, btn,han
         {modalName !== "API KEY" &&
         <div className="buttons">
           <div className="btnbx">
-            <div className="cancel" onClick={cancleModal} >Cancel</div>
+            {
+              showcancel ? "" :  <div className="cancel" onClick={cancleModal} >Cancel</div>
+            }
+           
             <button className="proceed" disabled={disabled} onClick={handleSubmit} >{loading ? <Spin dot/> : btn}</button>
           </div>
         </div>

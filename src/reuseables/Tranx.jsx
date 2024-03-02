@@ -32,7 +32,7 @@ function TransactionList({ type }) {
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
   const [TransactionDetails, setTransactionDetails] = useState(undefined);
-  console.log("🚀 ~ TransactionList ~ TransactionDetails:", TransactionDetails.trnx)
+  console.log("🚀 ~ TransactionList ~ TransactionDetails:", TransactionDetails?.trnx)
 
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   console.log("🚀 ~ file: Tranx.jsx:20 ~ TransactionList ~ userDetails:", userDetails)
@@ -835,12 +835,13 @@ const columns = [
 
       {
         show ? (
-          <Modal modalName="transaction details" cancleModal={() => setShow(!show)}>
+          <Modal modalName="transaction details" cancleModal={() => setShow(!show)} btn="download">
             <div className="parentflex">
               <div className="innerflex">
-                <p>hi</p>
-                <p>Hello</p>
+                <p className="boldlight">hi</p>
+                <p className="bold">Hello</p>
               </div>
+          
            
             </div>
           </Modal>
@@ -920,10 +921,27 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  padding-inline: 10px;
   justify-content: center;
+  max-height: 300px;
+  overflow-y: scroll;
+  ::-webkit-scrollbar{
+    color: #e2dfdf;
+  }
+
   .innerflex{
     display: flex;
-    justify-content: space-around;
+    padding-inline: 10px;
+   align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e2dfdf;
+    .boldlight{
+      text-transform: capitalize;
+      color: #687182;
+    }
+    .bold{
+      font-weight: bold;
+    }
   }
 }
 

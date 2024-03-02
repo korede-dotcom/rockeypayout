@@ -21,6 +21,10 @@ const Modal = ({ width, height, children, setPayout, setShow, modalName, btn,han
         modalName === "API KEY" &&  <img onClick={() => {setPayout(false); setShow(false)}} src={cancel} alt="" />
 
         }
+        {
+        modalName === "transaction details" &&  <img onClick={cancleModal} src={cancel} alt="" />
+
+        }
         </div>
         {modalName === "Payout"   && <p className="quick">Quickly send money to your clients</p>}
         {children}

@@ -19,6 +19,7 @@ import { Table, Input, Button } from '@arco-design/web-react';
 import { IconSearch } from '@arco-design/web-react/icon';
 import Btn from "./Btn";
 import { IconDownload } from "@arco-design/web-react/icon";
+import Modal from "../Reuseable/Modal";
 
 function TransactionList({ type }) {
   const inputRef = useRef(null);
@@ -29,6 +30,9 @@ function TransactionList({ type }) {
   const [trxsort, settrxsort] = useState(null);
   const [trxsort2, settrxsort2] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [show, setShow] = useState(false);
+  const [TransactionDetails, setTransactionDetails] = useState(undefined);
+  console.log("🚀 ~ TransactionList ~ TransactionDetails:", TransactionDetails.trnx)
 
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   console.log("🚀 ~ file: Tranx.jsx:20 ~ TransactionList ~ userDetails:", userDetails)
@@ -829,7 +833,21 @@ const columns = [
           
         </div>
 
-        
+      {
+        show ? (
+          <Modal modalName="transaction details" cancleModal={() => setShow(!show)}>
+            <div className="parentflex">
+              <div className="innerflex">
+                <p>hi</p>
+                <p>Hello</p>
+              </div>
+           
+            </div>
+          </Modal>
+        ) : ""
+      }
+
+
       {
         type === "overview" ? (
           <CustomTable
@@ -838,6 +856,7 @@ const columns = [
           //   loading={isLoading || isFetching}
             Apidata={newData2}
             tableColumns={columns}
+          
           />
 
         ) : (type === `${queryParams.get('currency')-queryParams.get('name')}` ) ? (
@@ -852,7 +871,14 @@ const columns = [
           <CustomTable
             
           noData={trx?.length}
-          
+           showTheModal={(e) => {
+             setShow(!show)
+             setTransactionDetails(e)
+           }}
+          //  handleClose={handleClose}
+          //  setShowTheModal={setShowTheModal}
+          //  dataForModal={dataForModal}
+          //  columnsForModal = {modalColumn}
         //   loading={isLoading || isFetching}
           Apidata={newData}
           tableColumns={columns}
@@ -890,6 +916,17 @@ const columns = [
 
 export default TransactionList;
 const Content = styled.div`
+.parentflex{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  .innerflex{
+    display: flex;
+    justify-content: space-around;
+  }
+}
+
 small {
     font-size: 60%;
 }

@@ -22,7 +22,7 @@ const Modal = ({ width, height, children, setPayout, setShow, modalName, btn,han
 
         }
         {
-        modalName === "transaction details" &&  <img onClick={cancleModal} src={cancel} alt="" />
+        modalName === "Transaction details" &&  <img onClick={cancleModal} src={cancel} alt="" />
 
         }
         </div>

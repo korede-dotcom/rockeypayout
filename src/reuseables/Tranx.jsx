@@ -898,7 +898,7 @@ const columns = [
 
       {
         show ? (
-          <Modal modalName="transaction details" cancleModal={() => setShow(!show)} btn="download" handleSubmit={downloadOneTrnx} showcancel={true}>
+          <Modal modalName="Transaction details" cancleModal={() => setShow(!show)} btn="download" handleSubmit={downloadOneTrnx} showcancel={true}>
             <div className="parentflex">
               <div className="innerflex">
                 <p className="boldlight">Transaction Reference</p>
@@ -910,7 +910,7 @@ const columns = [
               </div>
               <div className="innerflex">
                 <p className="boldlight">Receiver</p>
-                <p className="bold" style={{fontSize:"9px"}}>{TransactionDetails?.beneficiary?.beneficiaryName}</p>
+                <p className="bold" style={{fontSize:"11px"}}>{TransactionDetails?.beneficiary?.beneficiaryName}</p>
               </div>
               <div className="innerflex">
                 <p className="boldlight">Bank</p>
@@ -1036,8 +1036,8 @@ const Content = styled.div`
       color: #687182;
     }
     .bold{
-      font-size: 13px;
-      font-weight: bold;
+      font-size: 12px;
+      font-weight: light;
     }
   }
 }

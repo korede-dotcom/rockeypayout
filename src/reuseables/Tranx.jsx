@@ -1018,7 +1018,7 @@ const Content = styled.div`
   gap: 20px;
   padding-inline: 10px;
   justify-content: center;
-  max-height: 300px;
+  max-height: 413px;
   overflow-y: scroll;
   ::-webkit-scrollbar{
     color: #e2dfdf;

@@ -537,20 +537,20 @@ const columns = [
       onFilter: (value, row) => row.Amount > value,
       render: (item) => formatter.format(item) ,
     },
-    // {
-    //   title: "TRANSFER FEE",
-    //   dataIndex: "transferFee",
-    //   sorter: (a, b) => {
-    //     if (a.transferFee > b.transferFee) {
-    //       return 1;
-    //     }
-    //     if (a.transferFee < b.transferFee) {
-    //       return -1;
-    //     }
-    //     return 0;
-    //   },
-    //   width: 120,
-    // },
+    {
+      title: "TRANSFER FEE",
+      dataIndex: "transferFee",
+      sorter: (a, b) => {
+        if (a.transferFee > b.transferFee) {
+          return 1;
+        }
+        if (a.transferFee < b.transferFee) {
+          return -1;
+        }
+        return 0;
+      },
+      width: 120,
+    },
     {
       title: "PAYOUT PROVIDER STATUS",
       dataIndex: "payoutProviderStatus",

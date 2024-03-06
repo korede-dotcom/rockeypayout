@@ -921,6 +921,14 @@ const data = await response.json()
                 <p className="bold">{formatters.format(TransactionDetails?.amountApproved)}</p>
               </div>
               <div className="innerflex">
+                <p className="boldlight">Charges</p>
+                <p className="bold">{formatters.format(TransactionDetails?.charges)}</p>
+              </div>
+              <div className="innerflex">
+                <p className="boldlight">Balance</p>
+                <p className="bold">{formatters.format(TransactionDetails?.userWallet?.balance)}</p>
+              </div>
+              <div className="innerflex">
                 <p className="boldlight">Amount Requested</p>
                 <p className="bold">{formatters.format(TransactionDetails?.amountRequested)}</p>
               </div>

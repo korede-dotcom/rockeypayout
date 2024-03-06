@@ -334,6 +334,126 @@ const Overview = () => {
       render: (item) => formatters.format(item) ,
     },
     {
+      title: "AMOUNT APPROVED",
+      dataIndex: "amountApproved",
+      filterIcon: <IconSearch />,
+      filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
+        return (
+          <div className='arco-table-custom-filter'>
+            <Input.Search
+              ref={inputRef}
+              searchButton
+              placeholder='Please enter amount'
+              value={filterKeys[0] || ''}
+              onChange={(value) => {
+                setFilterKeys(value ? [value] : []);
+              }}
+              onSearch={() => {
+                confirm();
+              }}
+            />
+          </div>
+        );
+      },
+      onFilter: (value, row) => (value ? row?.amountRequested?.toString().indexOf(value) !== -1 : true),
+      onFilterDropdownVisibleChange: (visible) => {
+        if (visible) {
+          setTimeout(() => inputRef.current.focus(), 150);
+        }
+      },
+      sorter: (a, b) => {
+        if (a.id > b.id) {
+          return 1;
+        }
+        if (a.id < b.id) {
+          return -1;
+        }
+        return 0;
+      },
+      width: 190,
+      render: (item) => formatters.format(item) ,
+    },
+    {
+      title: "CHARGES",
+      dataIndex: "charges",
+      filterIcon: <IconSearch />,
+      filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
+        return (
+          <div className='arco-table-custom-filter'>
+            <Input.Search
+              ref={inputRef}
+              searchButton
+              placeholder='Please enter amount'
+              value={filterKeys[0] || ''}
+              onChange={(value) => {
+                setFilterKeys(value ? [value] : []);
+              }}
+              onSearch={() => {
+                confirm();
+              }}
+            />
+          </div>
+        );
+      },
+      onFilter: (value, row) => (value ? row?.amountRequested?.toString().indexOf(value) !== -1 : true),
+      onFilterDropdownVisibleChange: (visible) => {
+        if (visible) {
+          setTimeout(() => inputRef.current.focus(), 150);
+        }
+      },
+      sorter: (a, b) => {
+        if (a.id > b.id) {
+          return 1;
+        }
+        if (a.id < b.id) {
+          return -1;
+        }
+        return 0;
+      },
+      width: 190,
+      render: (item) => formatters.format(item) ,
+    },
+    {
+      title: "BALANCE",
+      dataIndex: "userWallet.balance",
+      filterIcon: <IconSearch />,
+      filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
+        return (
+          <div className='arco-table-custom-filter'>
+            <Input.Search
+              ref={inputRef}
+              searchButton
+              placeholder='Please enter amount'
+              value={filterKeys[0] || ''}
+              onChange={(value) => {
+                setFilterKeys(value ? [value] : []);
+              }}
+              onSearch={() => {
+                confirm();
+              }}
+            />
+          </div>
+        );
+      },
+      onFilter: (value, row) => (value ? row?.amountRequested?.toString().indexOf(value) !== -1 : true),
+      onFilterDropdownVisibleChange: (visible) => {
+        if (visible) {
+          setTimeout(() => inputRef.current.focus(), 150);
+        }
+      },
+      sorter: (a, b) => {
+        if (a.id > b.id) {
+          return 1;
+        }
+        if (a.id < b.id) {
+          return -1;
+        }
+        return 0;
+      },
+      width: 190,
+      render: (item) => formatters.format(item) ,
+    },
+    {
       title: "BALANCE BEFORE REQUEST",
       dataIndex: "balanceBeforeRequest",
       filterIcon: <IconSearch />,
@@ -668,7 +788,7 @@ const data = await response.json()
   }
 
   const downloadCsv = () => {
-    const head = ['id', 'requeststatus', 'amount','amountApproved','balanceBeforeRequest','walletid' ,'status', 'name', 'comment','currency','date'];
+    const head = ['id', 'requeststatus', 'amount','amountApproved','charges','balance','balanceBeforeRequest','walletid' ,'status', 'name', 'comment','currency','date'];
     const headers = Object.values(head).toString();
   
     const myData = newData;
@@ -690,6 +810,8 @@ const data = await response.json()
         requeststatus: myData[i]?.status || null,
         amount: myData[i]?.amountRequested || null,
         amountApproved: myData[i]?.amountApproved || null,
+        charges: myData[i]?.charges || null,
+        balance: myData[i]?.userWallet?.balance || null,
         balanceBeforeRequest: myData[i]?.balanceBeforeRequest || null,
         walletid: myData[i]?.userWallet?.walletId || null,
         clientName: myData[i].clientName || null,

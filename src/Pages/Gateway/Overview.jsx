@@ -35,6 +35,11 @@ import { Table, Input, Button } from '@arco-design/web-react';
 import { IconSearch } from '@arco-design/web-react/icon';
 import { IconDownload } from "@arco-design/web-react/icon";
 import Btn from "../../reuseables/Btn";
+import Modal from "../../Reuseable/Modal";
+import Pdf from "../../Reuseable/Pdf";
+import ngFlag from "../../assets/ngn.svg"
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 const Overview = () => {
   const navigate = useNavigate();
@@ -44,6 +49,9 @@ const Overview = () => {
   const [loading, setLoading] = useState(false);
   const [userDetails, setuserDetails] = useState(null);
   const inputRef = useRef(null);
+  const [show, setShow] = useState(false);
+  const [downloadPdf, setdownloadPdf] = useState(false);
+  const [TransactionDetails, setTransactionDetails] = useState("");
 
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -189,11 +197,11 @@ const Overview = () => {
       name: "transferFee",
       image: <img src={tablearrow} alt="" />,
     },
-    // {
-    //   id: 4,
-    //   name: "beneficiaryName",
-    //   image: <img src={tablearrow} alt="" />,
-    // },
+    {
+      id: 4,
+      name: "beneficiaryName",
+      image: <img src={tablearrow} alt="" />,
+    },
     {
       id: 5,
       name: "beneficiaryPhoneNumber",
@@ -288,6 +296,46 @@ const Overview = () => {
     {
       title: "AMOUNT REQUESTED",
       dataIndex: "amountRequested",
+      filterIcon: <IconSearch />,
+      filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
+        return (
+          <div className='arco-table-custom-filter'>
+            <Input.Search
+              ref={inputRef}
+              searchButton
+              placeholder='Please enter amount'
+              value={filterKeys[0] || ''}
+              onChange={(value) => {
+                setFilterKeys(value ? [value] : []);
+              }}
+              onSearch={() => {
+                confirm();
+              }}
+            />
+          </div>
+        );
+      },
+      onFilter: (value, row) => (value ? row?.amountRequested?.toString().indexOf(value) !== -1 : true),
+      onFilterDropdownVisibleChange: (visible) => {
+        if (visible) {
+          setTimeout(() => inputRef.current.focus(), 150);
+        }
+      },
+      sorter: (a, b) => {
+        if (a.id > b.id) {
+          return 1;
+        }
+        if (a.id < b.id) {
+          return -1;
+        }
+        return 0;
+      },
+      width: 190,
+      render: (item) => formatters.format(item) ,
+    },
+    {
+      title: "BALANCE BEFORE REQUEST",
+      dataIndex: "balanceBeforeRequest",
       filterIcon: <IconSearch />,
       filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
         return (
@@ -636,13 +684,14 @@ const data = await response.json()
     for (let i = 0; i < myData.length; i++) {
       formattedData.push({
         // transactionref: myData[i].clientRef,
+        sn: i + 1,
+        status: myData[i].status,
         id: myData[i].id,
         requeststatus: myData[i]?.status || null,
         amount: myData[i]?.amountRequested || null,
         amountApproved: myData[i]?.amountApproved || null,
         balanceBeforeRequest: myData[i]?.balanceBeforeRequest || null,
         walletid: myData[i]?.userWallet?.walletId || null,
-        status: myData[i].status,
         clientName: myData[i].clientName || null,
         comment: myData[i].comment || null,
         currency: myData[i].userWallet.currency?.code || null,
@@ -712,11 +761,99 @@ const data = await response.json()
           </div>
         </div>
 
+        {
+        show ? (
+          <Modal loading={loading} modalName="Client Fund Request Details" cancleModal={() => setShow(!show)} handleSubmit={() => {
+            setLoading(true)
+            const handleDownloadPDF = () => {
+              const input = document.getElementById('content-to-pdf');
+        
+              html2canvas(input)
+                .then((canvas) => {
+                  const imgData = canvas.toDataURL('image/png');
+                  const pdf = new jsPDF('p', 'mm', 'a4');
+                  const imgWidth = 100; // Reduce image width
+                  const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                  const x = (pdf.internal.pageSize.width - imgWidth) / 2; // Center horizontally
+                  const y = (pdf.internal.pageSize.height - imgHeight) / 6; // Center vertically
+        
+                  pdf.addImage(imgData, 'PNG', x, y, imgWidth, imgHeight); // Add image at centered position
+                  pdf.save('downloaded-pdf.pdf');
+                  setLoading(false)
+                  setShow(false)
+                });
+            }
+            handleDownloadPDF()
+
+          }} showcancel={true} btn="download receipt">
+            <Pdf download={downloadPdf} name="test">
+            <div className="parentflex">
+              <br/>
+              <br/>
+            <div className="innerflex">
+                <p className="boldlight">Client Name</p>
+                <p className="bold" style={{fontSize:"11px"}}>{TransactionDetails?.clientName}</p>
+              </div>
+              <div className="innerflex">
+                <p className="boldlight">Amount Approved</p>
+                <p className="bold">{formatters.format(TransactionDetails?.amountApproved)}</p>
+              </div>
+              <div className="innerflex">
+                <p className="boldlight">Amount Requested</p>
+                <p className="bold">{formatters.format(TransactionDetails?.amountRequested)}</p>
+              </div>
+              <div className="innerflex">
+                <p className="boldlight">Transaction Date</p>
+                <p className="bold">{TransactionDetails?.dateCreated}</p>
+              </div>
+              <div className="innerflex">
+                <p className="boldlight">Wallet</p>
+                <p className="bold">{TransactionDetails?.userWallet?.name}</p>
+              </div>
+              <div className="innerflex">
+                <p className="boldlight">Balance BeforeRequest</p>
+                <p className="bold">{formatters.format(TransactionDetails?.amountRequested)}</p>
+              </div>
+              <div className="innerflex">
+                <p className="boldlight">Comment</p>
+                <p className="bold" style={{fontSize:"11px"}}>{TransactionDetails?.comment}</p>
+              </div>
+              <div className="innerflex">
+                <p className="boldlight">Id</p>
+                <p className="bold">{TransactionDetails?.id}</p>
+              </div>
+              <div className="innerflex">
+                <p className="boldlight">Currency</p>
+                <p className="bold">{TransactionDetails?.userWallet?.currency?.code === "NGN" ? (<img src={ngFlag} />) : TransactionDetails?.currency?.code}</p>
+              </div>
+              <div className="innerflex">
+                <p className="boldlight">status</p>
+                <p className="bold">{TransactionDetails?.status}</p>
+              </div>
+              {/* <div className="innerflex">
+                <p className="boldlight">Note</p>
+                <p className="bold">{TransactionDetails?.note}</p>
+              </div>
+              <div className="innerflex">
+                <p className="boldlight">Payout message</p>
+                <p className="bold">{TransactionDetails?.payoutProviderMessage}</p>
+              </div> */}
+            </div>
+            </Pdf>
+
+          </Modal>
+        ) : ""
+      }
+
         <CustomTable
           noData={data2?.data?.length}
           // loading={isLoading || isFetching}
           Apidata={newData}
           tableColumns={columns}
+          showTheModal={(e) => {
+            setShow(!show)
+            setTransactionDetails(e?.trnx)
+          }}
         />
         </div>
 
@@ -733,6 +870,36 @@ export default Overview;
 
 
 const Content = styled.div`
+
+.parentflex{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-inline: 10px;
+  justify-content: center;
+  max-height: 413px;
+  overflow-y: scroll;
+  ::-webkit-scrollbar{
+    color: #e2dfdf;
+  }
+
+  .innerflex{
+    display: flex;
+    padding-inline: 10px;
+   align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e2dfdf;
+    gap: 10px;
+    .boldlight{
+      text-transform: capitalize;
+      color: #687182;
+    }
+    .bold{
+      font-size: 12px;
+      font-weight: light;
+    }
+  }
+}
 
 small {
     font-size: 60%;

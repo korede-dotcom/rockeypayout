@@ -25,6 +25,10 @@ const Modal = ({ width, height, children, setPayout, setShow, modalName, btn,han
         modalName === "Transaction details" &&  <img onClick={cancleModal} src={cancel} alt="" />
 
         }
+        {
+        modalName === "Client Fund Request Details" &&  <img onClick={cancleModal} src={cancel} alt="" />
+
+        }
         </div>
         {modalName === "Payout"   && <p className="quick">Quickly send money to your clients</p>}
         {children}

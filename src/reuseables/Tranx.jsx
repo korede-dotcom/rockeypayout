@@ -21,6 +21,9 @@ import Btn from "./Btn";
 import { IconDownload } from "@arco-design/web-react/icon";
 import Modal from "../Reuseable/Modal";
 import ngFlag from "../assets/ngn.svg"
+import Pdf from "../Reuseable/Pdf";
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 function TransactionList({ type }) {
   const inputRef = useRef(null);
@@ -32,6 +35,7 @@ function TransactionList({ type }) {
   const [trxsort2, settrxsort2] = useState(null);
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
+  const [downloadPdf, setdownloadPdf] = useState(false);
   const [TransactionDetails, setTransactionDetails] = useState("");
 
 
@@ -210,45 +214,45 @@ const columns = [
       // width: 160,
       
     },
-    // {
-    //   title: "ID",
-    //   dataIndex: "id",
-    //   filterIcon: <IconSearch />,
-    //   filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
-    //     return (
-    //       <div className='arco-table-custom-filter'>
-    //         <Input.Search
-    //           ref={inputRef}
-    //           searchButton
-    //           placeholder='Please enter gateway'
-    //           value={filterKeys[0] || ''}
-    //           onChange={(value) => {
-    //             setFilterKeys(value ? [value] : []);
-    //           }}
-    //           onSearch={() => {
-    //             confirm();
-    //           }}
-    //         />
-    //       </div>
-    //     );
-    //   },
-    //   onFilter: (value, row) => (value ? row?.id?.toString().indexOf(value) !== -1 : true),
-    //   onFilterDropdownVisibleChange: (visible) => {
-    //     if (visible) {
-    //       setTimeout(() => inputRef.current.focus(), 150);
-    //     }
-    //   },
-    //   sorter: (a, b) => {
-    //     if (a.id > b.id) {
-    //       return 1;
-    //     }
-    //     if (a.id < b.id) {
-    //       return -1;
-    //     }
-    //     return 0;
-    //   },
-    //   width: 160,
-    // },
+    {
+      title: "balanceBeforeRequest",
+      dataIndex: "balanceBeforeRequest",
+      filterIcon: <IconSearch />,
+      filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
+        return (
+          <div className='arco-table-custom-filter'>
+            <Input.Search
+              ref={inputRef}
+              searchButton
+              placeholder='Please enter balanceBeforeRequest'
+              value={filterKeys[0] || ''}
+              onChange={(value) => {
+                setFilterKeys(value ? [value] : []);
+              }}
+              onSearch={() => {
+                confirm();
+              }}
+            />
+          </div>
+        );
+      },
+      onFilter: (value, row) => (value ? row?.id?.toString().indexOf(value) !== -1 : true),
+      onFilterDropdownVisibleChange: (visible) => {
+        if (visible) {
+          setTimeout(() => inputRef.current.focus(), 150);
+        }
+      },
+      sorter: (a, b) => {
+        if (a.id > b.id) {
+          return 1;
+        }
+        if (a.id < b.id) {
+          return -1;
+        }
+        return 0;
+      },
+      width: 160,
+    },
     {
       title: "TRANSACTION STATUS",
       dataIndex: "statusNew",
@@ -817,6 +821,14 @@ const columns = [
   };
 
   const downloadOneTrnx = () => {
+    if (downloadPdf) {
+      setdownloadPdf(false)
+    }else{
+      setdownloadPdf(true)
+
+    }
+    return
+    
     const downloadCsv = () => {
       const head = ['transactionref','dateCreated','beneficiaryName','bankName','currency','amount','status','note','payoutProviderMessage',];
       const headers = Object.values(head).toString();
@@ -898,7 +910,29 @@ const columns = [
 
       {
         show ? (
-          <Modal modalName="Transaction details" cancleModal={() => setShow(!show)} btn="download" handleSubmit={downloadOneTrnx} showcancel={true}>
+          <Modal loading={loading} modalName="Transaction details" cancleModal={() => setShow(!show)} handleSubmit={() => {
+            setLoading(true)
+            const handleDownloadPDF = () => {
+              const input = document.getElementById('content-to-pdf');
+        
+              html2canvas(input)
+                .then((canvas) => {
+                  const imgData = canvas.toDataURL('image/png');
+                  const pdf = new jsPDF('p', 'mm', 'a4');
+                  const imgWidth = 100; // Reduce image width
+                  const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                  const x = (pdf.internal.pageSize.width - imgWidth) / 2; // Center horizontally
+                  const y = (pdf.internal.pageSize.height - imgHeight) / 6; // Center vertically
+        
+                  pdf.addImage(imgData, 'PNG', x, y, imgWidth, imgHeight); // Add image at centered position
+                  pdf.save('downloaded-pdf.pdf');
+                  setLoading(false)
+                });
+            }
+            handleDownloadPDF()
+
+          }} showcancel={true} btn="download receipt">
+            <Pdf download={downloadPdf} name="test">
             <div className="parentflex">
               <div className="innerflex">
                 <p className="boldlight">Transaction Reference</p>
@@ -936,9 +970,9 @@ const columns = [
                 <p className="boldlight">Payout message</p>
                 <p className="bold">{TransactionDetails?.payoutProviderMessage}</p>
               </div>
-            
-           
             </div>
+            </Pdf>
+
           </Modal>
         ) : ""
       }
@@ -952,6 +986,10 @@ const columns = [
           //   loading={isLoading || isFetching}
             Apidata={newData2}
             tableColumns={columns}
+            showTheModal={(e) => {
+              setShow(!show)
+              setTransactionDetails(e?.trnx)
+            }}
           
           />
 
@@ -962,6 +1000,10 @@ const columns = [
         //   loading={isLoading || isFetching}
           Apidata={newData3}
           tableColumns={columns}
+          showTheModal={(e) => {
+            setShow(!show)
+            setTransactionDetails(e?.trnx)
+          }}
         />
         ) : (
           <CustomTable

@@ -517,6 +517,20 @@ const columns = [
       width: 120,
     },
     {
+      title: "WALLET BALANCE",
+      dataIndex: "walletBalance",
+      sorter: (a, b) => {
+        if (a.transferFee > b.transferFee) {
+          return 1;
+        }
+        if (a.transferFee < b.transferFee) {
+          return -1;
+        }
+        return 0;
+      },
+      width: 120,
+    },
+    {
       title: "PAYOUT PROVIDER STATUS",
       dataIndex: "payoutProviderStatus",
       sorter: (a, b) => {

@@ -215,45 +215,6 @@ const columns = [
       
     },
     {
-      title: "balanceBeforeRequest",
-      dataIndex: "balanceBeforeRequest",
-      filterIcon: <IconSearch />,
-      filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
-        return (
-          <div className='arco-table-custom-filter'>
-            <Input.Search
-              ref={inputRef}
-              searchButton
-              placeholder='Please enter balanceBeforeRequest'
-              value={filterKeys[0] || ''}
-              onChange={(value) => {
-                setFilterKeys(value ? [value] : []);
-              }}
-              onSearch={() => {
-                confirm();
-              }}
-            />
-          </div>
-        );
-      },
-      onFilter: (value, row) => (value ? row?.id?.toString().indexOf(value) !== -1 : true),
-      onFilterDropdownVisibleChange: (visible) => {
-        if (visible) {
-          setTimeout(() => inputRef.current.focus(), 150);
-        }
-      },
-      sorter: (a, b) => {
-        if (a.id > b.id) {
-          return 1;
-        }
-        if (a.id < b.id) {
-          return -1;
-        }
-        return 0;
-      },
-      width: 160,
-    },
-    {
       title: "TRANSACTION STATUS",
       dataIndex: "statusNew",
       sorter: (a, b) => {

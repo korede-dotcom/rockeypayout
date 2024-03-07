@@ -115,12 +115,12 @@ const handleLink = (key) => {
         </span>
         <div className="profilebx">
           <p className="profile" onClick={() => setShowProfile(!showProfile)}>
-            <img src={profile} alt="" />
+            <img src={user?.data?.logo || profile} alt="" />
           </p>
           {showProfile && (
             <Bomodal>
               <div className="top">
-                <img src={profile} alt="" />
+                <img src={user?.data?.logo || profile} alt="" />
                 <div className="deta">
                   <p>{user?.data?.username}</p>
                   <p>{user?.data?.email}</p>
@@ -142,6 +142,10 @@ const handleLink = (key) => {
                     <img src={pro} alt="" />
                     <span>View Profile</span>
                   </div>
+                  {/* <div className="bx" onClick={() => handleLink(1)}>
+                    <img src={pro} alt="" />
+                    <span>Update Profile Picture</span>
+                  </div> */}
                   <div className="bx" onClick={() => handleLink(2)}>
                     <img src={pas} alt="" />
                     <span>Change Password</span>

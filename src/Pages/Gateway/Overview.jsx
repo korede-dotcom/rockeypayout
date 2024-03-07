@@ -890,26 +890,69 @@ const data = await response.json()
             setLoading(true)
             const handleDownloadPDF = () => {
               const input = document.getElementById('content-to-pdf');
-        
-              html2canvas(input)
-                .then((canvas) => {
-                  const imgData = canvas.toDataURL('image/png');
-                  const pdf = new jsPDF('p', 'mm', 'a4');
-                  const imgWidth = 100; // Reduce image width
-                  const imgHeight = (canvas.height * imgWidth) / canvas.width;
-                  const x = (pdf.internal.pageSize.width - imgWidth) / 2; // Center horizontally
-                  const y = (pdf.internal.pageSize.height - imgHeight) / 6; // Center vertically
-        
-                  pdf.addImage(imgData, 'PNG', x, y, imgWidth, imgHeight); // Add image at centered position
-                  pdf.save('downloaded-pdf.pdf');
-                  setLoading(false)
-                  setShow(false)
+              const parentflex = document.querySelector(".parentflex")
+
+              // Download the image from the URL to the machine
+              fetch(userDetails?.data?.logo)
+                .then((response) => response.blob())
+                .then((blob) => {
+                  const url = window.URL.createObjectURL(blob);
+                  const img = new Image();
+                  
+                  
+                  img.src = url;
+                  img.style.height = "60px"
+                  img.style.width = "80px";
+                  img.style.display ="flex";
+                  img.style.justifyContent ="center";
+                  img.style.margin ="auto";
+
+
+                  // img.classList.add("logosize");
+                  
+                  // Append the Image element to the input element
+                  input.insertBefore(img, parentflex)
+                  // input.appendChild(img);
+                  // Use html2canvas to capture the content of the input element
+                  parentflex.style.height = "600px"
+                  html2canvas(input)
+                    .then((canvas) => {
+                      // Remove the appended Image element from the input
+                      input.removeChild(img);
+                      
+          
+                      const imgData = canvas.toDataURL('image/png');
+                      const pdf = new jsPDF('p', 'mm', 'a4');
+                      const imgWidth = 100; // Reduce image width
+                      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                      const x = (pdf.internal.pageSize.width - imgWidth) / 2; // Center horizontally
+                      const y = (pdf.internal.pageSize.height - imgHeight) / 6;
+          
+                      // Add image to PDF
+                      pdf.addImage(imgData, 'PNG',x, y, imgWidth, imgHeight); // Adjust position and size as needed
+          
+                      // Add additional text or content if needed
+                      // pdf.text('Additional text goes here', 10, 70); // Adjust position as needed
+          
+                      // Save PDF
+                      pdf.save('downloaded-pdf.pdf');
+                      setLoading(false); // Set loading state to false
+                    });
+                })
+                .catch((error) => {
+                  console.error('Error downloading image:', error);
+                  setLoading(false); // Set loading state to false
                 });
             }
             handleDownloadPDF()
 
           }} showcancel={true} btn="download receipt">
-            <Pdf download={downloadPdf} name="test">
+            <Pdf download={downloadPdf} name="test" logo={userDetails?.data?.logo}>
+            {/* <center>
+            {userDetails?.data?.logo && <img src={userDetails?.data?.logo} height="60px" alt="Logo" />}
+          <br />
+          <br />
+        </center> */}
             <div className="parentflex">
               <br/>
               <br/>
@@ -1001,6 +1044,12 @@ export default Overview;
 
 
 const Content = styled.div`
+
+.logosize{
+  display: flex ;
+  width: 100%;
+  justify-content: center ;
+}
 
 .parentflex{
   display: flex;

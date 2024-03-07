@@ -2,11 +2,20 @@ import React, { useState } from 'react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import Logo from '../images/logo.svg';
+import { useEffect } from 'react';
 
-const PDFGenerator = ({ children, name, download }) => {
+const PDFGenerator = ({ children, name, download,logo }) => {
+  const [userDetails,getUserdetails] = useState(null)
+
+  useEffect(() => {
+    const userId = JSON.parse(localStorage.getItem("userDetails"))
+    getUserdetails(userId)
+  },[])
 
   const handleDownloadPDF = () => {
       const input = document.getElementById('content-to-pdf');
+      
+
 
       html2canvas(input)
         .then((canvas) => {
@@ -27,11 +36,7 @@ const PDFGenerator = ({ children, name, download }) => {
   return (
     <div>
       <div id="content-to-pdf">
-        <center>
-          <img src={Logo} height="60px" alt="Logo" />
-          <br />
-          <br />
-        </center>
+        
         {children}
       </div>
       {/* <div style={{

@@ -5,8 +5,9 @@ import ReusableModal from "../../../reuseables/ReusableModal";
 import Btn from "../../../reuseables/Btn";
 import { Spin } from "@arco-design/web-react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
-const Documnets = () => {
+const Documnets = ({profilePictureUpload}) => {
   const [getUser,setUser] = useState()
   const [show,setShow] = useState(false)
   const [show2,setShow2] = useState(false)
@@ -16,6 +17,8 @@ const Documnets = () => {
   const [info,setInfo] = useState("")
   const [loading,setLoading] = useState(false)
   const [refetch,setRefetch] = useState(null)
+
+  const navigate = useNavigate();
   console.log("🚀 ~ file: File.jsx:12 ~ File ~ getUser:", getUser)
 useEffect(() => {
 
@@ -31,6 +34,7 @@ useEffect(() => {
     {img: getUser?.data?.companyCertificateURL,id:4,name:"registationcertificateurl"},
     {img: getUser?.data?.articlesAndMemorandumOfAssociation,id:5,name:"articleandmemorandumofassociation"},
     {img: getUser?.data?.utilityBill,id:6,name:"utilitybill"},
+    {img: getUser?.data?.logo,id:7,name:"logo"},
   ])
   
   console.log("🚀 ~ file: Documnets.jsx:34 ~ useEffect ~ getUser i have reloaded:", getUser)
@@ -123,11 +127,48 @@ const [selectedFile, setSelectedFile] = useState(null);
     setSelectedFile(null)
   }
 
-  const handleFileInputChange = async (name) => {
+  const handleFileInputChange = async () => {
+    console.log("🚀 ~ handleFileInputChange ~ logo:", getc)
     setLoading(true)
     var formdata = new FormData();
     formdata.append("file", selectedFile);
     console.log("🚀 ~ file: Documnets.jsx:72 ~ handleFileInputChange ~ selectedFile:", selectedFile)
+
+    if(getc?.id === 7) {
+      var requestOption = {
+        method: 'POST',
+        body: formdata,
+        redirect: 'follow'
+      };
+      
+     const response = await fetch(`https://apidoc.transferrocket.co.uk//FileUploadAPI/${getUser?.data?.userId}`, requestOption)
+      const responseData = await response.json();
+
+
+      var requestOpt = {
+        method: 'POST',
+        body: JSON.stringify({
+          userId : getUser?.data?.userId,
+          logo : responseData?.secure_url
+        }),
+        redirect: 'follow'
+      };
+
+     const res = await fetch(`https://apidoc.transferrocket.co.uk//updatepayoutclientlogo`, requestOpt)
+      const resData = await res.json();
+
+
+
+      const data = {
+        userId:getUser?.data?.userId,
+        action:1,
+        fileName:getc?.name,
+        fileURL:responseData?.secure_url
+      }
+      await editAndDelete(data)
+      setLoading(false)
+      return
+    }
     
     var requestOptions = {
       method: 'POST',
@@ -145,15 +186,84 @@ const [selectedFile, setSelectedFile] = useState(null);
       fileURL:responseData?.secure_url
     }
     await editAndDelete(data)
-    // setLoading(false)
+    setLoading(false)
  
     
   };
 
   const editAndDelete = async (data) => {
     setLoading(true)
-    
+
+
+    if (getc?.id === 7) {
+
+      var formdata = new FormData();
+      formdata.append("file", selectedFile);
+      console.log("🚀 ~ file: Documnets.jsx:72 ~ handleFileInputChange ~ selectedFile:", selectedFile)
+
+      var requestOpt = {
+        method: 'POST',
+        body: formdata,
+        redirect: 'follow'
+      };
+      
+     const respons = await fetch(`https://apidoc.transferrocket.co.uk//FileUploadAPI/${getUser?.data?.userId}`, requestOpt)
+      const responsedata = await respons.json();
+        
     var requestOptions = {
+      method: 'POST',
+      body: JSON.stringify({
+          userId : getUser?.data?.userId,
+          logo :responsedata.secure_url , 
+    }),
+      redirect: 'follow'
+    };
+    
+    
+
+    
+   const response = await fetch("https://apidoc.transferrocket.co.uk//updatepayoutclientlogo", requestOptions)
+    const responseData = await response.json();
+    if (responseData?.status) {
+      const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${data.userId}`, {method:"GET",redirect:"follow"});
+      const result = await response.json();
+      localStorage.setItem("userDetails",JSON.stringify(result))
+      console.log("🚀 ~ file: Documnets.jsx:174 ~ editAndDelete ~ result:", result)
+
+      setUserFiles([
+        {img: result?.data?.formCo7URL,id:1,name:"formco7"},
+        { img: result?.data?.formCo2URL,id:2,name:"formco2"},
+        {img: result?.data?.idURL,id:3,name:"idurl"},
+        {img: result?.data?.companyCertificateURL,id:4,name:"registationcertificateurl"},
+        {img: result?.data?.articlesAndMemorandumOfAssociation,id:5,name:"articleandmemorandumofassociation"},
+        {img: result?.data?.utilityBill,id:6,name:"utilitybill"},
+        {img: result?.data?.logo,id:7,name:"logo"},
+      ])
+      
+      setRefetch(true)
+      toast.success(responseData?.message)
+      setLoading(false)
+      setPreviewImage(null)
+      setEditable(true)
+      setShow2(!show2)
+      
+      navigate("/overview")
+      // window.location.reload()
+
+    }else{
+      setLoading(false)
+      // setInfo(responseData.message)
+      toast.error(responseData?.message)
+      setTimeout(() => {
+        setInfo("")
+      },2000)
+    }
+
+    return
+      
+    }
+    
+    var request = {
       method: 'POST',
       body: JSON.stringify(
         {
@@ -165,8 +275,10 @@ const [selectedFile, setSelectedFile] = useState(null);
       ),
       redirect: 'follow'
     };
+
+
     
-   const response = await fetch("https://apidoc.transferrocket.co.uk//updatepayoutclientfile", requestOptions)
+   const response = await fetch("https://apidoc.transferrocket.co.uk//updatepayoutclientfile", request)
     const responseData = await response.json();
     if (responseData?.status) {
       const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${data.userId}`, requestOptions);
@@ -180,6 +292,7 @@ const [selectedFile, setSelectedFile] = useState(null);
         {img: result?.data?.companyCertificateURL,id:4,name:"registationcertificateurl"},
         {img: result?.data?.articlesAndMemorandumOfAssociation,id:5,name:"articleandmemorandumofassociation"},
         {img: result?.data?.utilityBill,id:6,name:"utilitybill"},
+        {img: result?.data?.logo,id:7,name:"logo"},
       ])
       
       setRefetch(true)
@@ -214,6 +327,7 @@ const handleEdit = (id) => {
 }
   return (
     <DocumentsBox>
+      
       { show &&
       <ReusableModal customStyle={{height:"450px"}} isOpen={show} onClose={hadleClose} >
       {

@@ -885,7 +885,7 @@ const columns = [
 
       {
         show ? (
-          <Modal loading={loading} modalName="Transaction details" cancleModal={() => setShow(!show)} handleSubmit={() => {
+          <Modal width="350px" loading={loading} modalName="Transaction details" cancleModal={() => setShow(!show)} handleSubmit={() => {
             setLoading(true)
             const handleDownloadPDF = () => {
               const input = document.getElementById('content-to-pdf');

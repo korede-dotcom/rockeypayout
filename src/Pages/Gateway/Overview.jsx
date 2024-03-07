@@ -596,6 +596,7 @@ const Overview = () => {
       width: 220,
     },
   ];
+
   const [active, setActive] = useState();
 
     const newData = data2?.data?.map((item, index) => {
@@ -885,7 +886,7 @@ const data = await response.json()
 
         {
         show ? (
-          <Modal loading={loading} modalName="Client Fund Request Details" cancleModal={() => setShow(!show)} handleSubmit={() => {
+          <Modal width="350px" loading={loading} modalName="Client Fund Request Details" cancleModal={() => setShow(!show)} handleSubmit={() => {
             setLoading(true)
             const handleDownloadPDF = () => {
               const input = document.getElementById('content-to-pdf');

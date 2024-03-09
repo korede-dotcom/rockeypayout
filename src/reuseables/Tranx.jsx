@@ -18,12 +18,16 @@ import {  useRef } from 'react';
 import { Table, Input, Button } from '@arco-design/web-react';
 import { IconSearch } from '@arco-design/web-react/icon';
 import Btn from "./Btn";
+import Loader from "../Reuseable/Loader";
 import { IconDownload } from "@arco-design/web-react/icon";
 import Modal from "../Reuseable/Modal";
 import ngFlag from "../assets/ngn.svg"
 import Pdf from "../Reuseable/Pdf";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { DatePicker, Space } from '@arco-design/web-react';
+import { IconInfoCircle } from '@arco-design/web-react/icon';
+import toast from "react-hot-toast";
 
 function TransactionList({ type }) {
   const inputRef = useRef(null);
@@ -35,6 +39,8 @@ function TransactionList({ type }) {
   const [trxsort2, settrxsort2] = useState(null);
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
+  const [showDate, setshowDate] = useState(false);
+  const [dateQuery, setdateQuery] = useState("");
   const [downloadPdf, setdownloadPdf] = useState(false);
   const [TransactionDetails, setTransactionDetails] = useState("");
 
@@ -863,15 +869,56 @@ const columns = [
     downloadCsv();
   }
  
+  const queryDate = (e) => {
+
+  }
+
+
+
+
+useEffect(() => {
+  if (dateQuery.length > 0) {
+    setLoading(true)
+    const fecther = async () => {
+      const userId = JSON.parse(localStorage.getItem("userDetails"))
+      const requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+      };
   
+      // Filter Payout Transaction By Date…. getpayouttransactionbydate?startDate=2024-01-02&endDate=2024-01-02
+  
+      const response = await fetch(`https://apidoc.transferrocket.co.uk/getpayouttransactionbydate?startDate=${dateQuery && dateQuery[0]}&endDate=${dateQuery && dateQuery[1]}`, requestOptions);
+      const result = await response.json();
+      if (!result.status) {
+        return toast.error(result.message)
+      }
+      console.log("🚀 ~ fecther ~ result:", result)
+      settrx(result.data)
+      setLoading(false)
+      // location.setItem("test",JSON.stringify(result))
+      
+    }
+    fecther()
+  }
+
+},[dateQuery.length > 0])
+
 
 
 
   return (
     <Content>
+      {loading && <Loader/>}
       <div className="tablecontent">
         <div className="content" style={{display:"flex",justifyContent:"space-between"}}>
           <div className="heading">Payout Transactions List </div>
+          <div >
+          <DatePicker.RangePicker onClear={() => {
+            settrx(userDetails?.data?.payOutTransactions), setdateQuery("")
+
+          }} onChange={(e) => setdateQuery(e)} placeholder="filter by date" style={{ width: 350,padding:"20px",borderRadius:"8px",borderColor:"green",background:"transparent" }} prefix={<IconInfoCircle />}/>
+          </div>
           <div className="heading" onClick={downloadCsv}>
             <Btn >
               <small> 

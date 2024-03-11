@@ -33,8 +33,11 @@ import { ProtectedRoute } from "./hooks";
 import "@arco-design/web-react/dist/css/arco.css";
 import Beneficiary from "./Pages/Beneficiary/Beneficairy";
 import { Toaster } from "react-hot-toast";
+
+
 function App() {
   const [count, setCount] = useState(0);
+
   return (
     <Router>
          <Toaster

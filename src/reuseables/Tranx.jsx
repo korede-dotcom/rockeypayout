@@ -876,10 +876,7 @@ const columns = [
 
 
 
-// useEffect(() => {
-  const sendQuery = async () {
-
-  
+useEffect(() => {
   if (dateQuery.length > 0) {
     setLoading(true)
     const fecther = async () => {
@@ -904,8 +901,8 @@ const columns = [
     }
     fecther()
   }
-  }
-// },[dateQuery.length > 0])
+
+},[dateQuery.length > 0])
 
 
 
@@ -915,22 +912,13 @@ const columns = [
       {loading && <Loader/>}
       <div className="tablecontent">
         <div className="content" style={{display:"flex",justifyContent:"space-between"}}>
-          <div className="heading">
-            <p>Payout Transactions List</p>
-            <div >
+          <div className="heading">Payout Transactions List </div>
+          <div >
           <DatePicker.RangePicker onClear={() => {
             settrx(userDetails?.data?.payOutTransactions), setdateQuery("")
 
           }} onChange={(e) => setdateQuery(e)} placeholder="filter by date" style={{ width: 350,padding:"20px",borderRadius:"8px",borderColor:"green",background:"transparent" }} prefix={<IconInfoCircle />}/>
-           <Btn clicking={sendQuery}  >
-              <small> 
-                
-                <IconDownload/>
-                transaction</small>
-            </Btn>
           </div>
-             </div>
-      
           <div className="heading" onClick={downloadCsv}>
             <Btn >
               <small> 

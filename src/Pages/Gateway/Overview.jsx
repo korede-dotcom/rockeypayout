@@ -89,6 +89,15 @@ const Overview = () => {
       padding: "padding",
     },
     {
+      Image: pending,
+      name: "initializedAmount",
+      downImg: down,
+      count:sorted?.initializedAmount,
+      day: "count",
+      border: "border",
+      padding: "padding",
+    },
+    {
       Image: cancelled,
       name: "failed",
       downImg: down,
@@ -103,6 +112,7 @@ const Overview = () => {
     { number: formatter.format(sorted?.totalAmount || 0) || 0 },
     { number: formatter.format(sorted?.successfulAmount || 0) || 0},
     { number: formatter.format(sorted?.pendingAmount || 0) || 0},
+    { number: formatter.format(sorted?.initializedAmount || 0) || 0},
     { number: formatter.format(sorted?.failedAmount || 0) || 0},
   ];
   useEffect(() => {
@@ -1271,6 +1281,9 @@ const CardContainer = styled.div`
   align-items: center;
   flex-wrap: wrap;
   padding: 30px 25px;
+  /* border: 1px solid green; */
+  width: 99%;
+  overflow: scroll;
 `;
 const TableWrap = styled.div`
   width: 100%;

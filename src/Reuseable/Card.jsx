@@ -79,7 +79,7 @@ const Card = ({cardbody, figure, padding, width}) => {
             <span>
               {/* <img src={m.downImg} alt="" />
               12%{" "} */}
-            <span className="same">{m?.count}</span>
+            <span className="same">{m?.count ? m?.count : 0}</span>
 
             </span>
             {/* <span className="same">vs</span> */}
@@ -98,13 +98,27 @@ const Cardbx = styled.div`
   align-items: center;
   justify-content: center;
   gap: 5px;
-  flex: 1 1 220px;
+  /* flex: 1 1 220px; */
   .bx {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    row-gap: 10px;
+    &:not(:nth-of-type(1)) {
+        .center{
+          margin-left: -30px;
+        }
+        .top{
+          margin-left: -30px;
+        }
+        .bottom{
+          margin-left: -30px;
+        }
+      }
+     
+    
+
+    /* row-gap: 10px; */
 
     .top {
       display: flex;
@@ -126,9 +140,12 @@ const Cardbx = styled.div`
     .center {
       p {
         color: #333b4a;
-        font-size: 24px;
-        font-weight: 600;
+        font-size: 20px;
+        font-weight: 300;
+        font-weight: bolder;
+        padding: 2.5px;
       }
+      
     }
     .bottom {
       display: flex;

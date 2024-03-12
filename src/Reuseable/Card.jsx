@@ -79,7 +79,7 @@ const Card = ({cardbody, figure, padding, width}) => {
             <span>
               {/* <img src={m.downImg} alt="" />
               12%{" "} */}
-            <span className="same">{m?.count ? m?.count : 0}</span>
+            <span className="same">{m?.name === "initializedAmount" ? 0 : m?.count}</span>
 
             </span>
             {/* <span className="same">vs</span> */}

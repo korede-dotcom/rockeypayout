@@ -870,14 +870,9 @@ const columns = [
   }
  
   const queryDate = (e) => {
-
-  }
-
-
-
-
-useEffect(() => {
-  if (dateQuery.length > 0) {
+    if (!dateQuery.length > 0) {
+    return toast.error("please input date range") 
+    }
     setLoading(true)
     const fecther = async () => {
       const userId = JSON.parse(localStorage.getItem("userDetails"))
@@ -902,7 +897,36 @@ useEffect(() => {
     fecther()
   }
 
-},[dateQuery.length > 0])
+
+
+
+// useEffect(() => {
+//   if (dateQuery.length > 0) {
+//     setLoading(true)
+//     const fecther = async () => {
+//       const userId = JSON.parse(localStorage.getItem("userDetails"))
+//       const requestOptions = {
+//         method: 'GET',
+//         redirect: 'follow'
+//       };
+  
+//       // Filter Payout Transaction By Date…. getpayouttransactionbydate?startDate=2024-01-02&endDate=2024-01-02
+  
+//       const response = await fetch(`https://apidoc.transferrocket.co.uk/getpayouttransactionbydate?startDate=${dateQuery && dateQuery[0]}&endDate=${dateQuery && dateQuery[1]}`, requestOptions);
+//       const result = await response.json();
+//       if (!result.status) {
+//         return toast.error(result.message)
+//       }
+//       console.log("🚀 ~ fecther ~ result:", result)
+//       settrx(result.data)
+//       setLoading(false)
+//       // location.setItem("test",JSON.stringify(result))
+      
+//     }
+//     fecther()
+//   }
+
+// },[dateQuery.length > 0])
 
 
 
@@ -912,12 +936,18 @@ useEffect(() => {
       {loading && <Loader/>}
       <div className="tablecontent">
         <div className="content" style={{display:"flex",justifyContent:"space-between"}}>
-          <div className="heading">Payout Transactions List </div>
+          <div className="heading flex">
+            <p>Payout Transactions List </p>
           <div >
-          <DatePicker.RangePicker onClear={() => {
-            settrx(userDetails?.data?.payOutTransactions), setdateQuery("")
-
-          }} onChange={(e) => setdateQuery(e)} placeholder="filter by date" style={{ width: 350,padding:"20px",borderRadius:"8px",borderColor:"green",background:"transparent" }} prefix={<IconInfoCircle />}/>
+          <div className="smallflex">
+            <DatePicker.RangePicker onClear={() => {
+              settrx(userDetails?.data?.payOutTransactions), setdateQuery("")
+            }} onChange={(e) => setdateQuery(e)} placeholder="filter by date" style={{ width: 270,padding:"18px",borderRadius:"8px",borderColor:"green",background:"transparent" }} prefix={<IconInfoCircle/>}/>
+            <Btn clicking={queryDate}>
+              <small>Submit</small>
+            </Btn>
+          </div>
+          </div>
           </div>
           <div className="heading" onClick={downloadCsv}>
             <Btn >
@@ -1145,6 +1175,16 @@ const Content = styled.div`
       font-weight: light;
     }
   }
+}
+.smallflex{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.flex{
+  display: flex;
+  gap: 30px;
+  align-items: center;
 }
 
 small {

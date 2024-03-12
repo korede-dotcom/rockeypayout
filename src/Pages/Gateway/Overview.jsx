@@ -40,6 +40,9 @@ import Pdf from "../../Reuseable/Pdf";
 import ngFlag from "../../assets/ngn.svg"
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { DatePicker, Space } from '@arco-design/web-react';
+import { IconInfoCircle } from '@arco-design/web-react/icon';
+import toast from "react-hot-toast";
 
 const Overview = () => {
   const navigate = useNavigate();
@@ -52,6 +55,8 @@ const Overview = () => {
   const [show, setShow] = useState(false);
   const [downloadPdf, setdownloadPdf] = useState(false);
   const [TransactionDetails, setTransactionDetails] = useState("");
+  const [dateQuery, setdateQuery] = useState("");
+  
 
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -240,7 +245,7 @@ const Overview = () => {
    
   ]
 
-  const TheadBodys = trx?.map((d) => {
+  const TheadBodys = trx && trx?.map((d) => {
     return {
       ID: d.id, // Assuming d.id is the corresponding ID in your data
       Amount: d?.Amount,
@@ -849,6 +854,34 @@ const data = await response.json()
     URL.revokeObjectURL(blob);
   };
 
+  const queryDate = (e) => {
+    if (!dateQuery.length > 0) {
+    return toast.error("please input date range") 
+    }
+    setLoading(true)
+    const fecther = async () => {
+      const userId = JSON.parse(localStorage.getItem("userDetails"))
+      const requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+      };
+  
+   
+  
+      const response = await fetch(`https://apidoc.transferrocket.co.uk/getpayoutfundrequestbydate?startDate=${dateQuery && dateQuery[0]}&endDate=${dateQuery && dateQuery[1]}`, requestOptions);
+      const result = await response.json();
+      if (!result.status) {
+        return toast.error(result.message)
+      }
+      console.log("🚀 ~ fecther ~ result:", result)
+      settrx(result.data)
+      setLoading(false)
+      // location.setItem("test",JSON.stringify(result))
+      
+    }
+    fecther()
+  }
+
   return (
     <Layout>
       <OverviewContainer>
@@ -881,7 +914,17 @@ const data = await response.json()
         <Content>
         <div className="tablecontent">
         <div className="content" style={{display:"flex",justifyContent:"space-between"}}>
-          <div className="heading">Client Fund Request Log </div>
+          <div className="heading flex">
+            <p>Client Fund Request Log </p>
+            <div className="smallflex">
+            <DatePicker.RangePicker onClear={() => {
+              settrx(userDetails?.data?.payOutTransactions), setdateQuery("")
+            }} onChange={(e) => setdateQuery(e)} placeholder="filter by date" style={{ width: 270,padding:"18px",borderRadius:"8px",borderColor:"green",background:"transparent" }} prefix={<IconInfoCircle/>}/>
+            <Btn clicking={queryDate}>
+              <small>Submit</small>
+            </Btn>
+          </div>
+          </div>
           <div className="heading" onClick={downloadCsv}>
            <Btn>
               <small> 
@@ -1030,7 +1073,7 @@ const data = await response.json()
       }
 
         <CustomTable
-          noData={data2?.data?.length}
+          noData={"No logs found"}
           // loading={isLoading || isFetching}
           Apidata={newData}
           tableColumns={columns}
@@ -1090,6 +1133,18 @@ const Content = styled.div`
     }
   }
 }
+
+.smallflex{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.flex{
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
 
 small {
     font-size: 60%;

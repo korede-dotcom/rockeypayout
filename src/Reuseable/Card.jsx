@@ -98,6 +98,10 @@ const Cardbx = styled.div`
   align-items: center;
   justify-content: center;
   gap: 5px;
+
+  @media screen and (min-width:1100px) {
+    width: 100% ;
+  }
   /* flex: 1 1 220px; */
   .bx {
     width: 100%;

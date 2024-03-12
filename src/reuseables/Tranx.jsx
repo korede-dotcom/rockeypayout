@@ -880,10 +880,12 @@ const columns = [
         method: 'GET',
         redirect: 'follow'
       };
+
+      // getpayoutfundrequestbydate?startDate=2024-01-01&endDate=2024-03-10
   
       // Filter Payout Transaction By Date…. getpayouttransactionbydate?startDate=2024-01-02&endDate=2024-01-02
   
-      const response = await fetch(`https://apidoc.transferrocket.co.uk/getpayouttransactionbydate?startDate=${dateQuery && dateQuery[0]}&endDate=${dateQuery && dateQuery[1]}`, requestOptions);
+      const response = await fetch(`https://apidoc.transferrocket.co.uk/getpayoutfundrequestbydate?startDate=${dateQuery && dateQuery[0]}&endDate=${dateQuery && dateQuery[1]}`, requestOptions);
       const result = await response.json();
       if (!result.status) {
         return toast.error(result.message)

@@ -53,41 +53,86 @@ const Card = ({cardbody, figure, padding, width}) => {
   };
 
   return (
-    <Cardbx>
-      {cardbody?.map((m, i) => (
-        // <div className="bx" style={{borderLeft: ${border} && "2px solid red"}>
-        <div
-          key={i}
-          className="bx"
-          style={{
-            borderLeft: m.border ? "1px solid #D5DBE5" : "none",
-            padding: m.padding && padding
-          }}
-        >
-          <div className="top">
-            <img src={m?.Image} alt="" />
-            <span style={{width: width ? width : "100px"}}>{m?.name}</span>
-          </div>
-          <div className="center">{figures?.numbers[i]}</div>
-          {/* {figure.map((item, i) => (
-              <FigureList key={i} figures={item} index={i} />
-            )} */}
+    <>
+    {
+      window.location.pathname === "/overview" ? (
+        <Cardbx>
+   
+        {cardbody?.map((m, i) => (
+          // <div className="bx" style={{borderLeft: ${border} && "2px solid red"}>
+          <div
+            key={i}
+            className="bx"
+            style={{
+              borderLeft: m.border ? "1px solid #D5DBE5" : "none",
+              padding: m.padding && padding
+            }}
+          >
+            <div className="top">
+              <img src={m?.Image} alt="" />
+              <span style={{width: width ? width : "100px"}}>{m?.name}</span>
+            </div>
+            <div className="center" >{figures?.numbers[i]}</div>
             {/* {figure.map((item, i) => (
                 <FigureList key={i} figures={item} index={i} />
-            ))} */}
-          <div className="bottom">
-            <span>
-              {/* <img src={m.downImg} alt="" />
-              12%{" "} */}
-            <span className="same">{m?.name === "initializedAmount" ? 0 : m?.count}</span>
-
-            </span>
-            {/* <span className="same">vs</span> */}
-            <span className="same">{m?.day}</span>
+              )} */}
+              {/* {figure.map((item, i) => (
+                  <FigureList key={i} figures={item} index={i} />
+              ))} */}
+            <div className="bottom">
+              <span>
+                {/* <img src={m.downImg} alt="" />
+                12%{" "} */}
+              <span className="same">{m?.count}</span>
+  
+              </span>
+              {/* <span className="same">vs</span> */}
+              <span className="same">{m?.day}</span>
+            </div>
           </div>
-        </div>
-      ))}
-    </Cardbx>
+        ))}
+      </Cardbx>
+      ) : (
+        <Cardbx>
+   
+        {cardbody?.map((m, i) => (
+          // <div className="bx" style={{borderLeft: ${border} && "2px solid red"}>
+          <div
+            key={i}
+            className="bx"
+            style={{
+              borderLeft: m.border ? "1px solid #D5DBE5" : "none",
+              padding: m.padding && padding
+            }}
+          >
+            <div className="top" style={{marginLeft:"30px"}}>
+              <img src={m?.Image} alt="" />
+              <span style={{width: width ? width : "100px"}}>{m?.name}</span>
+            </div>
+            <div className="center" style={{marginLeft:"30px"}} >{figures?.numbers[i]}</div>
+            {/* {figure.map((item, i) => (
+                <FigureList key={i} figures={item} index={i} />
+              )} */}
+              {/* {figure.map((item, i) => (
+                  <FigureList key={i} figures={item} index={i} />
+              ))} */}
+            <div className="bottom" style={{marginLeft:"30px"}}>
+              <span>
+                {/* <img src={m.downImg} alt="" />
+                12%{" "} */}
+              <span className="same">{m?.count}</span>
+  
+              </span>
+              {/* <span className="same">vs</span> */}
+              <span className="same">{m?.day}</span>
+            </div>
+          </div>
+        ))}
+      </Cardbx>
+      )
+    }
+    </>
+  
   );
 };
 
@@ -108,15 +153,19 @@ const Cardbx = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+ 
     &:not(:nth-of-type(1)) {
         .center{
           margin-left: -30px;
         }
         .top{
+          /* margin-left: -30px; */
           margin-left: -30px;
         }
         .bottom{
           margin-left: -30px;
+          
+          /* margin-left: -30px; */
         }
       }
      

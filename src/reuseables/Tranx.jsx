@@ -34,21 +34,22 @@ function TransactionList({ type }) {
   const [sortdate, setSortDate] = useState(0);
   const [datar, setData] = useState(null);
   const [data2, setData2] = useState(null);
-  const [trx, settrx] = useState(null);
-  const [trxsort, settrxsort] = useState(null);
-  const [trxsort2, settrxsort2] = useState(null);
+  const [trx, settrx] = useState([]);
+  const [trxsort, settrxsort] = useState([]);
+  const [trxsort2, settrxsort2] = useState([]);
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
   const [showDate, setshowDate] = useState(false);
   const [dateQuery, setdateQuery] = useState("");
   const [downloadPdf, setdownloadPdf] = useState(false);
   const [TransactionDetails, setTransactionDetails] = useState("");
-
-
+  
+  
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   console.log("🚀 ~ file: Tranx.jsx:20 ~ TransactionList ~ userDetails:", userDetails)
   const location = useLocation();
-
+  console.log("🚀 ~ TransactionList ~ trxsort:", trxsort)
+  
   // Access the query parameters from the location object
   const queryParams = new URLSearchParams(location.search);
 
@@ -75,7 +76,6 @@ function TransactionList({ type }) {
 
     const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userId?.data?.userId}`, requestOptions);
     const result = await response.json();
-    location.setItem("test",JSON.stringify(result))
     
   }
   
@@ -591,7 +591,7 @@ const columns = [
               marginRight: "10px",
               objectFit: "cover",
             }}
-            src={item?.payOutProvider["logo"]}
+            src={item?.payOutProvider["logo"] || null}
             alt=""
           />
           {item?.payOutProvider["name"]}
@@ -625,7 +625,7 @@ const columns = [
         </>
       ),
     };
-  });
+  }) || [];
 
   const newData2 = trxsort?.filter((item) =>
   Object.values(item).some((value) =>
@@ -649,7 +649,7 @@ const columns = [
               marginRight: "10px",
               objectFit: "cover",
             }}
-            src={item?.payOutProvider["logo"]}
+            src={item?.payOutProvider["logo"] || null}
             alt=""
           />
           {item?.payOutProvider["name"]}
@@ -683,7 +683,7 @@ const columns = [
         </>
       ),
     };
-  });
+  }) || [];
 
   const newData3 = trxsort2?.filter((item) =>
   Object.values(item).some((value) =>
@@ -707,7 +707,7 @@ const columns = [
               marginRight: "10px",
               objectFit: "cover",
             }}
-            src={item?.payOutProvider["logo"]}
+            src={item?.payOutProvider["logo"] || null}
             alt=""
           />
           {item?.payOutProvider["name"]}
@@ -741,7 +741,7 @@ const columns = [
         </>
       ),
     };
-  });
+  }) || [];
 
 
 //  const filteredData = newData?.filter((item) =>
@@ -885,13 +885,18 @@ const columns = [
   
       // Filter Payout Transaction By Date…. getpayouttransactionbydate?startDate=2024-01-02&endDate=2024-01-02
   
-      const response = await fetch(`https://apidoc.transferrocket.co.uk/getpayoutfundrequestbydate?startDate=${dateQuery && dateQuery[0]}&endDate=${dateQuery && dateQuery[1]}`, requestOptions);
-      const result = await response.json();
-      if (!result.status) {
-        return toast.error(result.message)
+      const response = await fetch(`https://apidoc.transferrocket.co.uk/getpayouttransactionbydate?startDate=${dateQuery && dateQuery[0]}&endDate=${dateQuery && dateQuery[1]}`, requestOptions);
+      const result = await response?.json();
+      if (!result?.status) {
+        return toast.error(result?.message)
       }
-      console.log("🚀 ~ fecther ~ result:", result)
-      settrx(result.data)
+      console.log("🚀 ~ fecther ~ result:", result.data)
+
+      if (!result.data.length) {
+        settrxsort([])
+      }
+    
+      settrxsort(result?.data)
       setLoading(false)
       // location.setItem("test",JSON.stringify(result))
       
@@ -1113,7 +1118,7 @@ const columns = [
           //  dataForModal={dataForModal}
           //  columnsForModal = {modalColumn}
         //   loading={isLoading || isFetching}
-          Apidata={newData}
+          Apidata={newData || []}
           tableColumns={columns}
         />
         )

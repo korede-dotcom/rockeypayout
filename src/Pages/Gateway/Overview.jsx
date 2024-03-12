@@ -48,7 +48,7 @@ const Overview = () => {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [data2, setData2] = useState(null);
-  const [trx, settrx] = useState(null);
+  const [trx, settrx] = useState([]);
   const [loading, setLoading] = useState(false);
   const [userDetails, setuserDetails] = useState(null);
   const inputRef = useRef(null);
@@ -95,9 +95,9 @@ const Overview = () => {
     },
     {
       Image: pending,
-      name: "initializedAmount",
+      name: "Initialized",
       downImg: down,
-      count:sorted?.initializedAmount,
+      count:sorted?.initialized,
       day: "count",
       border: "border",
       padding: "padding",
@@ -117,7 +117,7 @@ const Overview = () => {
     { number: formatter.format(sorted?.totalAmount || 0) || 0 },
     { number: formatter.format(sorted?.successfulAmount || 0) || 0},
     { number: formatter.format(sorted?.pendingAmount || 0) || 0},
-    { number: formatter.format(sorted?.initializedAmount || 0) || 0},
+    { number: formatter.format(sorted?.initialized || 0) || 0},
     { number: formatter.format(sorted?.failedAmount || 0) || 0},
   ];
   useEffect(() => {
@@ -177,7 +177,7 @@ const Overview = () => {
         console.log("🚀 ~ file: Hopeps.jsx:39 ~ fetchData ~ result:", result)
         
         // Set the fetched data to state
-        setData2(result);
+        setData2(result.data);
         setLoading(false)
         // settrx(result?.data?.payOutTransactions);
         console.log("Fetched data:", result);
@@ -614,7 +614,7 @@ const Overview = () => {
 
   const [active, setActive] = useState();
 
-    const newData = data2?.data?.map((item, index) => {
+    const newData = data2?.map((item, index) => {
     return {
       ...item,
       action: (
@@ -873,8 +873,10 @@ const data = await response.json()
       if (!result.status) {
         return toast.error(result.message)
       }
-      console.log("🚀 ~ fecther ~ result:", result)
-      settrx(result.data)
+      if (!result.data) {
+        setData2([])
+      }
+      setData2(result.data)
       setLoading(false)
       // location.setItem("test",JSON.stringify(result))
       
@@ -1075,7 +1077,7 @@ const data = await response.json()
         <CustomTable
           noData={"No logs found"}
           // loading={isLoading || isFetching}
-          Apidata={newData}
+          Apidata={newData }
           tableColumns={columns}
           showTheModal={(e) => {
             setShow(!show)

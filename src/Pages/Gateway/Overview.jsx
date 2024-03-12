@@ -40,7 +40,7 @@ import Pdf from "../../Reuseable/Pdf";
 import ngFlag from "../../assets/ngn.svg"
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { DatePicker, Space } from '@arco-design/web-react';
+import { DatePicker, Space} from '@arco-design/web-react';
 import { IconInfoCircle } from '@arco-design/web-react/icon';
 import toast from "react-hot-toast";
 
@@ -48,6 +48,7 @@ const Overview = () => {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [data2, setData2] = useState(null);
+  const [fallBackdata2, fallBacksetData2] = useState(null);
   const [trx, settrx] = useState([]);
   const [loading, setLoading] = useState(false);
   const [userDetails, setuserDetails] = useState(null);
@@ -56,7 +57,12 @@ const Overview = () => {
   const [downloadPdf, setdownloadPdf] = useState(false);
   const [TransactionDetails, setTransactionDetails] = useState("");
   const [dateQuery, setdateQuery] = useState("");
-  
+  const [dateQuery2, setdateQuery2] = useState("");
+  console.log("🚀 ~ Overview ~ dateQuery:", dateQuery)
+  const [showDate, setShowDate] = useState(false);
+  const [showRef, setShowRef] = useState(false);
+  const [refQuery, setRefQuery] = useState("");
+  const InputSearch = Input.Search;
 
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -178,6 +184,7 @@ const Overview = () => {
         
         // Set the fetched data to state
         setData2(result.data);
+        fallBacksetData2(result.data);
         setLoading(false)
         // settrx(result?.data?.payOutTransactions);
         console.log("Fetched data:", result);
@@ -855,7 +862,7 @@ const data = await response.json()
   };
 
   const queryDate = (e) => {
-    if (!dateQuery.length > 0) {
+    if (!dateQuery.length > 0 || !dateQuery2.length > 0  ) {
     return toast.error("please input date range") 
     }
     setLoading(true)
@@ -868,7 +875,7 @@ const data = await response.json()
   
    
   
-      const response = await fetch(`https://apidoc.transferrocket.co.uk/getpayoutfundrequestbydate?startDate=${dateQuery && dateQuery[0]}&endDate=${dateQuery && dateQuery[1]}`, requestOptions);
+      const response = await fetch(`https://apidoc.transferrocket.co.uk/getpayoutfundrequestbydate?startDate=${dateQuery && dateQuery}&endDate=${dateQuery2 && dateQuery2}`, requestOptions);
       const result = await response.json();
       if (!result.status) {
         return toast.error(result.message)
@@ -883,6 +890,37 @@ const data = await response.json()
     }
     fecther()
   }
+  const queryRef = (e) => {
+    if (!refQuery.length > 0) {
+    return toast.error("please input Ref") 
+    }
+    setLoading(true)
+    const fecther = async () => {
+      const userId = JSON.parse(localStorage.getItem("userDetails"))
+      const requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+      };
+  
+   
+  
+      const response = await fetch(`https://apidoc.transferrocket.co.uk/getpayoutfundrequestbyref?trxRef=${refQuery}`, requestOptions);
+      const result = await response.json();
+      if (!result.status) {
+        return toast.error(result.message)
+      }
+      if (!result.data) {
+        setData2([])
+      }
+      setData2(result.data)
+      setLoading(false)
+      // location.setItem("test",JSON.stringify(result))
+      
+    }
+    fecther()
+  }
+
+  
 
   return (
     <Layout>
@@ -916,15 +954,61 @@ const data = await response.json()
         <Content>
         <div className="tablecontent">
         <div className="content" style={{display:"flex",justifyContent:"space-between"}}>
-          <div className="heading flex">
+          <div className="heading">
             <p>Client Fund Request Log </p>
+        
+              <div style={{display:"flex",gap:"20px"}} >
+              <Btn clicking={() => {setShowDate(!showDate),setShowRef(false)}} styles={{}}>
+                <small>Filter by Date</small>
+              </Btn >
+
+              <Btn clicking={() => {setShowRef(!showRef),setShowDate(false)}} styles={{}}>
+                <small>Filter by Ref</small>
+                
+              </Btn>
+    
+           
+
+              </div>
+   
             <div className="smallflex">
-            <DatePicker.RangePicker onClear={() => {
-              settrx(userDetails?.data?.payOutTransactions), setdateQuery("")
-            }} onChange={(e) => setdateQuery(e)} placeholder="filter by date" style={{ width: 270,padding:"18px",borderRadius:"8px",borderColor:"green",background:"transparent" }} prefix={<IconInfoCircle/>}/>
-            <Btn clicking={queryDate}>
-              <small>Submit</small>
-            </Btn>
+              <div className="flexi">
+
+                {showRef &&   (
+                  <>
+                  <InputSearch  allowClear onClear={() => {
+                        setData2(fallBackdata2)
+                      } }  onChange={(e) => setRefQuery(e.toLocaleUpperCase()) } placeholder='Enter keyword to search' style={{ width: 350,border:"1px solid #dede" }} /> 
+                  <Btn clicking={queryRef} >
+                <small>Submit</small>
+              </Btn>
+                  <br/>
+                  </>
+                ) }
+           
+              {showDate  && (<>
+            <DatePicker  allowClear onClear={() => {
+                        setData2(fallBackdata2)
+                      } } onChange={e => setdateQuery(e)} style={{ width: 200 }} placeholder="start date"/>
+            <DatePicker
+               allowClear onClear={() => {
+                setData2(fallBackdata2)
+              } }
+              onChange={e => setdateQuery2(e)}
+              style={{ width: 200 }}
+              placeholder="end date"
+            />
+              </>)}
+              </div>
+      
+            {
+              showDate && (
+                <Btn clicking={queryDate} className="bttn">
+                <small>Submit</small>
+              </Btn>
+              )
+            }
+           
           </div>
           </div>
           <div className="heading" onClick={downloadCsv}>
@@ -1135,11 +1219,18 @@ const Content = styled.div`
     }
   }
 }
+.bttn{
+  height: 33px !important;
+}
 
 .smallflex{
   display: flex;
   gap: 10px;
   align-items: center;
+}
+.flexi{
+  display: flex;
+  gap: 10px;
 }
 .flex{
   display: flex;
@@ -1168,6 +1259,9 @@ small {
     font-weight: 500;
     font-size: 24px;
     margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
   .content .sub {
     font-size: 14px;

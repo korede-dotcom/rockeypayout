@@ -900,7 +900,9 @@ const columns = [
       console.log("🚀 ~ fecther ~ result:", result.data)
 
       if (!result.data.length) {
-        settrxsort([])
+        toast.error(result.message)
+        setLoading(false)
+        return settrxsort(userId?.data?.payOutTransactions)
       }
     
       settrxsort(result?.data)

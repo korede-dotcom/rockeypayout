@@ -104,7 +104,7 @@ const Hopeps = () => {
       { number: formatter(sorted?.successfulAmount) },
       { number: formatter(sorted?.pendingAmount) },
       { number: formatter(sorted?.initializedAmount) },
-      { number: formatter(sorted?.cancelledAmount) },
+      { number: formatter(sorted?.failedAmount) },
       // { number: 18 },
     ]);
     setWBalance(formatter(findCurrency?.wallet?.balance))
@@ -246,7 +246,7 @@ const Hopeps = () => {
       Image: cancelled,
       name: "Failed",
       downImg: down,
-      count:formatted.format(sorted?.cancelled || 0),
+      count:formatted.format(sorted?.failed || 0),
       day: "count",
       border: "border",
       padding: "padding",

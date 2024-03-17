@@ -64,6 +64,8 @@ const Hopeps = () => {
     
   }
 
+  const formatted = new Intl.NumberFormat()
+
   
   useEffect(() => {
     setLoading(true);
@@ -210,14 +212,14 @@ const Hopeps = () => {
       Image: contact,
       name: "Total Transaction Count",
       downImg: down,
-      count:sorted?.total,
+      count:formatted.format(sorted?.total || 0),
       day: "count",
     },
     {
       Image: successful,
       name: `Successful`,
       downImg: down,
-      count:sorted?.successful,
+      count:formatted.format(sorted?.successful || 0),
       day: "count",
       border: "border",
       padding: "padding",
@@ -226,7 +228,7 @@ const Hopeps = () => {
       Image: pending,
       name: "Pending",
       downImg: down,
-      count:sorted?.pending,
+      count:formatted.format(sorted?.pending || 0),
       day: "count",
       border: "border",
       padding: "padding",
@@ -235,16 +237,16 @@ const Hopeps = () => {
       Image: cancelled,
       name: "Not Submitted",
       downImg: down,
-      count:sorted?.initialized,
+      count:formatted.format(sorted?.initialized || 0),
       day: "count",
       border: "border",
       padding: "padding",
     },
     {
       Image: cancelled,
-      name: "Cancelled",
+      name: "Failed",
       downImg: down,
-      count:sorted?.cancelled,
+      count:formatted.format(sorted?.cancelled || 0),
       day: "count",
       border: "border",
       padding: "padding",

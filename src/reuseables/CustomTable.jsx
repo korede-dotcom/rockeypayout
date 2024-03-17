@@ -83,16 +83,19 @@ const CustomTable = ({ Apidata, tableColumns, loading, noData,showTheModal,close
   return (
     <Content>
       <Table
+      hover
        onRow={(record, index) => {
 
          return {
-          onClick:(e) => showTheModal({...e,trnx:record}),
-          // onClick: (event) => {
-           
-          //   // Disable text selection on single click
-          //   console.log("🚀 ~ file: CustomTable.jsx:91 ~ CustomTable ~ event.currentTarget:", event.target.innerText)
-          //   event.target.style.userSelect = 'text';
-          // },
+          onClick:(e) => {
+            if(e.target.innerText === "View receipt"){
+
+              showTheModal({...e,trnx:record})
+            } else {
+              e.target.style.userSelect = 'text';
+            }
+           },
+          
           onDoubleClick: (event) => {
             // Enable text selection on double click
             event.target.style.userSelect = 'text';

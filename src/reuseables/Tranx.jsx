@@ -580,6 +580,17 @@ const columns = [
       },
       // width: 120,
     },
+    {
+      title: "VIEW RECEIPT",
+      render:() => {
+        return (
+          <p style={{color:"blue"}}>View receipt</p>
+        );
+      } ,
+      width: 130,
+      // font size
+      
+      },
   ];
 
 

@@ -618,6 +618,17 @@ const Overview = () => {
       },
       width: 220,
     },
+    {
+      title: "VIEW RECEIPT",
+      render:() => {
+        return (
+          <p style={{color:"blue"}}>View receipt</p>
+        );
+      } ,
+      width: 200,
+      // font size
+      
+      },
   ];
 
   const [active, setActive] = useState();

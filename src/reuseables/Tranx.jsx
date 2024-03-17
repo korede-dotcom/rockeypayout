@@ -29,7 +29,8 @@ import toast from "react-hot-toast";
 import { DatePicker, Space} from '@arco-design/web-react';
 import { IconInfoCircle } from '@arco-design/web-react/icon';
 
-function TransactionList({ type }) {
+function TransactionList({ type,clicked }) {
+  console.log("🚀 ~ TransactionList ~ clicked:", clicked)
   const inputRef = useRef(null);
   const [sortdate, setSortDate] = useState(0);
   const [datar, setData] = useState(null);
@@ -69,7 +70,13 @@ function TransactionList({ type }) {
     setSearchQuery(event.target.value);
   };
 
- 
+useEffect( ()=>{
+  if (clicked) {
+    settrx(clicked);
+    settrxsort(clicked)
+  }
+
+},[clicked])
 
 
   // const formattedValue = formatter.format(123456.78);
@@ -542,6 +549,7 @@ const columns = [
         return 0;
       },
       width: 120,
+      render: (item) => formatter.format(item) ,
     },
     {
       title: "PAYOUT PROVIDER STATUS",
@@ -956,6 +964,49 @@ const columns = [
     fecther()
   }
 
+
+  const handleCardClicks = (e) => {
+
+    setLoading(true)
+    const fecther = async () => {
+      const userId = JSON.parse(localStorage.getItem("userDetails"))
+      const requestOptions = {
+        method: 'GET',
+        headers: {
+          clientId:userDetails?.data?.userId
+        },
+      };
+
+
+      // const options = {method: 'GET', headers: {clientId: '59105694'}};
+
+
+      // getpayoutfundrequestbydate?startDate=2024-01-01&endDate=2024-03-10
+  
+      // Filter Payout Transaction By Date…. getpayouttransactionbydate?startDate=2024-01-02&endDate=2024-01-02
+  
+      const response = await fetch(`https://apidoc.transferrocket.co.uk/getpayouttransactioncategory?category=${e?.name === "Not Submitted" ? "NOT_SUBMITTED" : e?.name?.toLocaleUpperCase()}`, requestOptions);
+      const result = await response?.json();
+      if (!result?.status) {
+        return toast.error(result?.message)
+      }
+      console.log("🚀 ~ fecther ~ result:", result.data)
+      setLoading(false)
+      if (!result.data.length) {
+        settrx(userId?.data?.payOutTransactions)
+       settrxsort(userId?.data?.payOutTransactions)
+        toast.error(result.message)
+        return
+      }
+      settrx(result?.data)
+      settrxsort(result?.data)
+      setLoading(false)
+      // location.setItem("test",JSON.stringify(result))
+      
+    }
+    fecther()
+  }
+  
 
 
 

@@ -62,6 +62,7 @@ const Overview = () => {
   const [showDate, setShowDate] = useState(false);
   const [showRef, setShowRef] = useState(false);
   const [refQuery, setRefQuery] = useState("");
+  const [clickName, setclickName] = useState([]);
   const InputSearch = Input.Search;
 
   const formatter = new Intl.NumberFormat('en-US', {
@@ -100,7 +101,7 @@ const Overview = () => {
       padding: "padding",
     },
     {
-      Image: pending,
+      Image: cancelled,
       name: "Not Submitted",
       downImg: down,
       count:sorted?.initialized,
@@ -919,6 +920,47 @@ const data = await response.json()
     }
     fecther()
   }
+  const handleCardClicks = (e) => {
+
+    setLoading(true)
+    const fecther = async () => {
+      const userId = JSON.parse(localStorage.getItem("userDetails"))
+      const requestOptions = {
+        method: 'GET',
+        headers: {
+          clientId:userDetails?.data?.userId
+        },
+      };
+
+
+      // const options = {method: 'GET', headers: {clientId: '59105694'}};
+
+
+      // getpayoutfundrequestbydate?startDate=2024-01-01&endDate=2024-03-10
+  
+      // Filter Payout Transaction By Date…. getpayouttransactionbydate?startDate=2024-01-02&endDate=2024-01-02
+  
+      const response = await fetch(`https://apidoc.transferrocket.co.uk/getpayouttransactioncategory?category=${e?.name === "Not Submitted" ? "NOT_SUBMITTED" : e?.name?.toLocaleUpperCase()}`, requestOptions);
+      const result = await response?.json();
+      if (!result?.status) {
+        return toast.error(result?.message)
+      }
+      console.log("🚀 ~ fecther ~ result:", result.data)
+
+      setLoading(false)
+      if (!result.data.length) {
+        settrx(userId?.data?.payOutTransactions)
+        toast.error(result.message)
+        return
+      }
+      setclickName(result?.data)
+      settrx(result?.data)
+      setLoading(false)
+      // location.setItem("test",JSON.stringify(result))
+      
+    }
+    fecther()
+  }
 
   
 
@@ -949,10 +991,11 @@ const data = await response.json()
           </div>
         </PageWord>
         <CardContainer>
-          <Card  cardbody={cardbodys} figure={figures} padding="0 0 0 70px" />
+          <Card cardClick={(e) => handleCardClicks(e)}  cardbody={cardbodys} figure={figures} padding="0 0 0 70px" />
         </CardContainer>
         <Content>
         <div className="tablecontent">
+        <Tranx type="overview" clicked={clickName}  />
         <div className="content" style={{display:"flex",justifyContent:"space-between"}}>
           <div className="heading">
             <p>Client Fund Request Log </p>
@@ -1171,7 +1214,7 @@ const data = await response.json()
         </div>
 
         </Content>
-       <Tranx type="overview"/>
+ 
       
       
       </OverviewContainer>

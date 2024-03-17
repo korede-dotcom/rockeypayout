@@ -9,45 +9,8 @@ import down from "../assets/down.svg";
 // import pending from "../assets/pending.png";
 // import cancelled from "../assets/cancelled.png";
 
-const Card = ({cardbody, figure, padding, width}) => {
-  // const cardbody = [
-  //   {
-  //     Image: contact,
-  //     name: "Total Transaction Count",
-  //     downImg: down,
-  //     day: "yesterday",
-  //   },
-  //   {
-  //     Image: successful,
-  //     name: `Successful`,
-  //     downImg: down,
-  //     day: "yesterday",
-  //     border: "border",
-  //     padding: "padding",
-  //   },
-  //   {
-  //     Image: pending,
-  //     name: "Pending",
-  //     downImg: down,
-  //     day: "yesterday",
-  //     border: "border",
-  //     padding: "padding",
-  //   },
-  //   {
-  //     Image: cancelled,
-  //     name: "Cancelled",
-  //     downImg: down,
-  //     day: "yesterday",
-  //     border: "border",
-  //     padding: "padding",
-  //   },
-  // ];
-  // const figure = [
-  //   { number: 200 },
-  //   { number: 191 },
-  //   { number: 1 },
-  //   { number: 18 },
-  // ];
+const Card = ({cardbody, figure, padding, width,cardClick}) => {
+
   const figures = {
     numbers: figure?.map((m, i) => <p key={i}>{m?.number}</p>),
   };
@@ -67,6 +30,7 @@ const Card = ({cardbody, figure, padding, width}) => {
               borderLeft: m.border ? "1px solid #D5DBE5" : "none",
               padding: m.padding && padding
             }}
+            onClick={() => cardClick(m)}
           >
             <div className="top">
               <img src={m?.Image} alt="" />
@@ -153,6 +117,7 @@ const Cardbx = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    cursor: pointer;
  
     &:not(:nth-of-type(1)) {
         .center{

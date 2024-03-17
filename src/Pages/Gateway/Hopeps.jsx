@@ -232,7 +232,7 @@ const Hopeps = () => {
       padding: "padding",
     },
     {
-      Image: pending,
+      Image: cancelled,
       name: "Not Submitted",
       downImg: down,
       count:sorted?.initialized,

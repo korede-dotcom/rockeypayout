@@ -899,12 +899,14 @@ const columns = [
       }
       console.log("🚀 ~ fecther ~ result:", result.data)
 
+      setLoading(false)
       if (!result.data.length) {
+        settrx(userId?.data?.payOutTransactions)
+       settrxsort(userId?.data?.payOutTransactions)
         toast.error(result.message)
-        setLoading(false)
-        return settrxsort(userId?.data?.payOutTransactions)
+        return
       }
-    
+      settrx(result?.data)
       settrxsort(result?.data)
       setLoading(false)
       // location.setItem("test",JSON.stringify(result))

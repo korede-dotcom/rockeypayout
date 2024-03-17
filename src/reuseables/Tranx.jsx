@@ -144,7 +144,7 @@ useEffect( ()=>{
             // // Set the fetched data to state
             // setData(result);
             // setLoading(false)
-            const filterTrnx = userId?.data?.payOutTransactions?.sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated)).slice(0, 20) // Sort in descending order.slice(0, 20); // Get the first 20 transactions
+            const filterTrnx = userId?.data?.payOutTransactions?.sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated)) // Sort in descending order.slice(0, 20); // Get the first 20 transactions
            switch (type) {
             case "overview":
               settrxsort(filterTrnx);

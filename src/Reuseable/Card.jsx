@@ -70,7 +70,7 @@ const Card = ({cardbody, figure, padding, width}) => {
           >
             <div className="top">
               <img src={m?.Image} alt="" />
-              <span style={{width: width ? width : "100px"}}>{m?.name}</span>
+              <span style={{width: width ? width : "100px",color : m?.name === "Not Submitted" && "red"}}>{m?.name}</span>
             </div>
             <div className="center" >{figures?.numbers[i]}</div>
             {/* {figure.map((item, i) => (
@@ -107,7 +107,7 @@ const Card = ({cardbody, figure, padding, width}) => {
           >
             <div className="top" style={{marginLeft:"30px"}}>
               <img src={m?.Image} alt="" />
-              <span style={{width: width ? width : "100px"}}>{m?.name}</span>
+              <span style={{width: width ? width : "100px",color : m?.name === "Not Submitted" && "red"}}>{m?.name}</span>
             </div>
             <div className="center" style={{marginLeft:"30px"}} >{figures?.numbers[i]}</div>
             {/* {figure.map((item, i) => (

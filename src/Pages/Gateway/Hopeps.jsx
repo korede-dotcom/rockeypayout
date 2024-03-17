@@ -101,6 +101,7 @@ const Hopeps = () => {
       { number: formatter(sorted?.totalAmount) },
       { number: formatter(sorted?.successfulAmount) },
       { number: formatter(sorted?.pendingAmount) },
+      { number: formatter(sorted?.initializedAmount) },
       { number: formatter(sorted?.cancelledAmount) },
       // { number: 18 },
     ]);
@@ -226,6 +227,15 @@ const Hopeps = () => {
       name: "Pending",
       downImg: down,
       count:sorted?.pending,
+      day: "count",
+      border: "border",
+      padding: "padding",
+    },
+    {
+      Image: pending,
+      name: "Not Submitted",
+      downImg: down,
+      count:sorted?.initialized,
       day: "count",
       border: "border",
       padding: "padding",

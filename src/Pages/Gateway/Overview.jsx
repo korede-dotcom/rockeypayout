@@ -101,7 +101,7 @@ const Overview = () => {
     },
     {
       Image: pending,
-      name: "Initialized",
+      name: "Not Submitted",
       downImg: down,
       count:sorted?.initialized,
       day: "count",

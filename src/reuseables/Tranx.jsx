@@ -876,7 +876,7 @@ const columns = [
     downloadCsv();
   }
  
-  const queryDate = (e) => {
+  const queryDate = () => {
     if (!dateQuery.length > 0 || !dateQuery2.length > 0 ) {
     return toast.error("please input date range") 
     }
@@ -885,8 +885,14 @@ const columns = [
       const userId = JSON.parse(localStorage.getItem("userDetails"))
       const requestOptions = {
         method: 'GET',
-        redirect: 'follow'
+        headers: {
+          clientId:userDetails?.data?.userId
+        },
       };
+
+
+      // const options = {method: 'GET', headers: {clientId: '59105694'}};
+
 
       // getpayoutfundrequestbydate?startDate=2024-01-01&endDate=2024-03-10
   

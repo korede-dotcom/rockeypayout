@@ -28,6 +28,7 @@ import jsPDF from 'jspdf';
 import toast from "react-hot-toast";
 import { DatePicker, Space} from '@arco-design/web-react';
 import { IconInfoCircle } from '@arco-design/web-react/icon';
+import { Select, Message, } from '@arco-design/web-react';
 
 function TransactionList({ type,clicked }) {
   console.log("🚀 ~ TransactionList ~ clicked:", clicked)
@@ -49,8 +50,11 @@ function TransactionList({ type,clicked }) {
   const [refQuery, setRefQuery] = useState("");
   console.log("🚀 ~ Overview ~ dateQuery:", dateQuery)
   const [showDate, setShowDate] = useState(false);
+  const [showStatus, setShowStatus] = useState(false);
   const [showRef, setShowRef] = useState(false);
   const InputSearch = Input.Search;
+  const Option = Select.Option;
+const options = ['NOT_SUBMITTED', 'Pending', 'Failed', 'Successful'].reverse();
   
   
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
@@ -975,6 +979,41 @@ const columns = [
     fecther()
   }
 
+  const queryStatus = (e) => {
+    if (!e.length > 0) {
+    return toast.error("please input Ref") 
+    }
+    setLoading(true)
+    const fecther = async () => {
+      const userId = JSON.parse(localStorage.getItem("userDetails"))
+      const requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+      };
+
+      // getpayoutfundrequestbydate?startDate=2024-01-01&endDate=2024-03-10
+  
+      // Filter Payout Transaction By Date…. getpayouttransactionbydate?startDate=2024-01-02&endDate=2024-01-02
+  
+      const response = await fetch(`https://apidoc.transferrocket.co.uk/getpayouttransactioncategory?category=${e.toLocaleUpperCase()}`, requestOptions);
+      const result = await response?.json();
+      if (!result?.status) {
+        return toast.error(result?.message)
+      }
+
+      if (!result.data.length) {
+        settrxsort([])
+      }
+      
+      settrx(result?.data)
+      settrxsort(result?.data)
+      setLoading(false)
+      // location.setItem("test",JSON.stringify(result))
+      
+    }
+    fecther()
+  }
+
 
   const handleCardClicks = (e) => {
 
@@ -1075,12 +1114,16 @@ const columns = [
             <p>Payout Transactions List </p>
         
               <div style={{display:"flex",gap:"20px"}} >
-              <Btn clicking={() => {setShowDate(!showDate),setShowRef(false)}} styles={{}}>
+              <Btn clicking={() => {setShowDate(!showDate),setShowRef(false),setShowStatus(false)}} styles={{}}>
                 <small>Filter by Date</small>
               </Btn >
 
-              <Btn clicking={() => {setShowRef(!showRef),setShowDate(false)}} styles={{}}>
+              <Btn clicking={() => {setShowRef(!showRef),setShowDate(false),setShowStatus(false)}} styles={{}}>
                 <small>Filter by Ref</small>
+                
+              </Btn>
+              <Btn clicking={() => {setShowStatus(!showStatus),setShowRef(false),setShowDate(false)}} styles={{}}>
+                <small>Filter by status</small>
                 
               </Btn>
     
@@ -1100,6 +1143,39 @@ const columns = [
                       <Btn clicking={queryRef} >
                         <small>Submit</small>
                       </Btn>
+                  </div>
+                ) 
+                }
+                {showStatus &&   (
+                  <div style={{display:"flex",gap:"10px",alignItems:"flex-start",height:"35px"}}>
+              
+                    <Select
+                      placeholder='Please select'
+                      style={{ width: 154,background:"transparent" }}
+                      onChange={(value) => {
+
+                        Message.success({
+                          content: `You select ${value}.`,
+                          showIcon: true,
+                        }),
+                        queryStatus(value)
+                      }
+                      }
+                    >
+                      {options.map((option, index) => (
+                        <Option key={option} value={option}>
+                          {option}
+                        </Option>
+                      ))}
+                    </Select>
+  
+                      {/* <InputSearch allowClear onClear={() => {
+                        settrx(userDetails?.data?.payOutTransactions)
+                        settrxsort(userDetails?.data?.payOutTransactions)
+                      } } onChange={(e) => setRefQuery(e.toLocaleUpperCase()) } placeholder='Enter keyword to search' style={{ width: 350,border:"1px solid #dede" }} />  */}
+                      {/* <Btn clicking={queryRef} >
+                        <small>Submit</small>
+                      </Btn> */}
                   </div>
                 ) 
                 }

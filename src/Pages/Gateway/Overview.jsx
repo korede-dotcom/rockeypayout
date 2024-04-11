@@ -43,6 +43,7 @@ import jsPDF from 'jspdf';
 import { DatePicker, Space} from '@arco-design/web-react';
 import { IconInfoCircle } from '@arco-design/web-react/icon';
 import toast from "react-hot-toast";
+import { Select, Message, } from '@arco-design/web-react';
 
 const Overview = () => {
   const navigate = useNavigate();
@@ -58,21 +59,23 @@ const Overview = () => {
   const [TransactionDetails, setTransactionDetails] = useState("");
   const [dateQuery, setdateQuery] = useState("");
   const [dateQuery2, setdateQuery2] = useState("");
-  console.log("🚀 ~ Overview ~ dateQuery:", dateQuery)
   const [showDate, setShowDate] = useState(false);
   const [showRef, setShowRef] = useState(false);
+  const [showStatus, setshowStatus] = useState(false);
   const [refQuery, setRefQuery] = useState("");
   const [clickName, setclickName] = useState([]);
   const InputSearch = Input.Search;
+  const Option = Select.Option;
 
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: "NGN",
   });
   const formatters = new Intl.NumberFormat();
+
+  const options = ['NOT_SUBMITTED', 'Pending', 'Failed', 'Successful'].reverse();
   
   const sorted = data?.data?.transactionVolume[0]
-  console.log("🚀 ~ file: Overview.jsx:39 ~ Overview ~ sorted:", data2)
 
    const cardbodys = [
     {
@@ -145,8 +148,8 @@ const Overview = () => {
           redirect: 'follow'
         };
 
-        // const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userId?.data?.userId}`, requestOptions);
-        // const result = await response.json();
+        const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userId?.data?.userId}`, requestOptions);
+        const result = await response.json();
         
         // Set the fetched data to state
         setData(userId);
@@ -194,9 +197,27 @@ const Overview = () => {
         // Handle errors here
       }
     };
+    fetchData();
+
+    // const fecther = async () => {
+    //   const requestOptions = {
+    //     method: 'GET',
+    //     redirect: 'follow'
+    //   };
+  
+    //   const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userId?.data?.userId}`, requestOptions);
+    //   const result = await response.json();
+    //   console.log("🚀 ~ file: Hopeps.jsx:241 ~ fecther ~ result:", result)
+    //   location.setItem("userDetails",JSON.stringify(result))
+    //   location.setItem("userDetails",JSON.stringify(result))
+      
+    // }
+    // fecther()
+    // setTimeout(() => {
+    // },5000)
 
     // Call the fetch function
-    fetchData();
+ 
   }, []);
 
   const OverviewHeaders = [
@@ -260,7 +281,6 @@ const Overview = () => {
     
     };
   });
-  console.log("🚀 ~ file: Overview.jsx:161 ~ TheadBodys ~ TheadBodys:", TheadBodys)
   const columns = [
     {
       title: "ACTIONS",
@@ -931,7 +951,37 @@ const data = await response.json()
     }
     fecther()
   }
+  const queryStatus = (e) => {
+    if (!e.length > 0) {
+    return toast.error("please input Ref") 
+    }
+    setLoading(true)
+    const fecther = async () => {
+      // const userId = JSON.parse(localStorage.getItem("userDetails"))
+      const requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+      };
+  
+   
+  
+      const response = await fetch(`https://apidoc.transferrocket.co.uk/getpayoutfundrequestbyref?category=${e.toLocaleUpperCase()}`, requestOptions);
+      const result = await response.json();
+      if (!result.status) {
+        return toast.error(result.message)
+      }
+      if (!result.data) {
+        setData2([])
+      }
+      setData2(result.data)
+      setLoading(false)
+      // location.setItem("test",JSON.stringify(result))
+      
+    }
+    fecther()
+  }
   const handleCardClicks = (e) => {
+  console.log("🚀 ~ handleCardClicks ~ e:", e.name)
 
     setLoading(true)
     const fecther = async () => {
@@ -1012,14 +1062,16 @@ const data = await response.json()
             <p>Client Fund Request Log </p>
         
               <div style={{display:"flex",gap:"20px"}} >
-              <Btn clicking={() => {setShowDate(!showDate),setShowRef(false)}} styles={{}}>
+              <Btn clicking={() => {setShowDate(!showDate),setShowRef(false),showStatus(false)}} styles={{}}>
                 <small>Filter by Date</small>
               </Btn >
 
-              <Btn clicking={() => {setShowRef(!showRef),setShowDate(false)}} styles={{}}>
+              <Btn clicking={() => {setShowRef(!showRef),setShowDate(false),showStatus(false)}} styles={{}}>
                 <small>Filter by Ref</small>
-                
               </Btn>
+              {/* <Btn clicking={() => {setshowStatus(!showStatus),setShowDate(false),setShowRef(false)}} styles={{}}>
+                <small>Filter by status</small>
+              </Btn> */}
     
            
 
@@ -1062,6 +1114,32 @@ const data = await response.json()
               </Btn>
               )
             }
+{/* 
+            {showStatus &&   (
+                  <div style={{display:"flex",gap:"10px",alignItems:"flex-start",height:"35px"}}>
+              
+                    <Select
+                      placeholder='Please select'
+                      style={{ width: 154,background:"transparent" }}
+                      onChange={(value) => {
+
+                        Message.success({
+                          content: `You select ${value}.`,
+                          showIcon: true,
+                        }),
+                        queryStatus(value)
+                      }
+                      }
+                    >
+                      {options.map((option, index) => (
+                        <Option key={option} value={option}>
+                          {option}
+                        </Option>
+                      ))}
+                    </Select>
+                  </div>
+                ) 
+                } */}
            
           </div>
           </div>

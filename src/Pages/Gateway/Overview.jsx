@@ -332,6 +332,45 @@ const Overview = () => {
       width: 140,
     },
     {
+      title: "DATE ADDED",
+      dataIndex: "dateCreated",
+      filterIcon: <IconSearch />,
+      filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
+        return (
+          <div className='arco-table-custom-filter'>
+            <Input.Search
+              ref={inputRef}
+              searchButton
+              placeholder='Please enter dateCreated'
+              value={filterKeys[0] || ''}
+              onChange={(value) => {
+                setFilterKeys(value ? [value] : []);
+              }}
+              onSearch={() => {
+                confirm();
+              }}
+            />
+          </div>
+        );
+      },
+      onFilter: (value, row) => (value ? row?.dateCreated?.toString().indexOf(value) !== -1 : true),
+      onFilterDropdownVisibleChange: (visible) => {
+        if (visible) {
+          setTimeout(() => inputRef.current.focus(), 150);
+        }
+      },
+      sorter: (a, b) => {
+        if (a.id > b.id) {
+          return 1;
+        }
+        if (a.id < b.id) {
+          return -1;
+        }
+        return 0;
+      },
+      width: 220,
+    },
+    {
         title: "REQUEST STATUS",
         dataIndex: "statusNew",
         width: 160,
@@ -599,45 +638,7 @@ const Overview = () => {
     //   dataIndex: "phone",
     //   width: 150,
     // },
-    {
-      title: "DATE ADDED",
-      dataIndex: "dateCreated",
-      filterIcon: <IconSearch />,
-      filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
-        return (
-          <div className='arco-table-custom-filter'>
-            <Input.Search
-              ref={inputRef}
-              searchButton
-              placeholder='Please enter dateCreated'
-              value={filterKeys[0] || ''}
-              onChange={(value) => {
-                setFilterKeys(value ? [value] : []);
-              }}
-              onSearch={() => {
-                confirm();
-              }}
-            />
-          </div>
-        );
-      },
-      onFilter: (value, row) => (value ? row?.dateCreated?.toString().indexOf(value) !== -1 : true),
-      onFilterDropdownVisibleChange: (visible) => {
-        if (visible) {
-          setTimeout(() => inputRef.current.focus(), 150);
-        }
-      },
-      sorter: (a, b) => {
-        if (a.id > b.id) {
-          return 1;
-        }
-        if (a.id < b.id) {
-          return -1;
-        }
-        return 0;
-      },
-      width: 220,
-    },
+   
     {
       title: "VIEW RECEIPT",
       render:() => {

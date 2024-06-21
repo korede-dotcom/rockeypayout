@@ -60,7 +60,7 @@ const Hopeps = () => {
     const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userId?.data?.userId}`, requestOptions);
     const result = await response.json();
     console.log("🚀 ~ file: Hopeps.jsx:241 ~ fecther ~ result:", result)
-    location.setItem("userDetails",JSON.stringify(result))
+    localStorage.setItem("userDetails",JSON.stringify(result))
     
   }
 

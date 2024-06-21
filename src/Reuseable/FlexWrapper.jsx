@@ -47,6 +47,7 @@ const FlexWrapper = ({
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedOption2, setSelectedOption2] = useState(null);
   const [selectedOption3, setSelectedOption3] = useState(null);
+  const [beneficiaries, setbeneficiaries] = useState(null);
   const [selectedBank, setSelectedBank] = useState(null);
   const [beneArr, setBeneArr] = useState([]);
   console.log("🚀 ~ file: FlexWrapper.jsx:52 ~ beneArr:", beneArr)
@@ -86,6 +87,8 @@ const FlexWrapper = ({
 
   // Access the query parameters from the location object
   const queryParams = new URLSearchParams(location.search);
+  const userId = JSON.parse(localStorage.getItem("userDetails"));
+  console.log("🚀 ~ userId:", userId)
 
   const fecther = async () => {
     const requestOptions = {
@@ -95,16 +98,33 @@ const FlexWrapper = ({
 
     const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userId?.data?.userId}`, requestOptions);
     const result = await response.json();
-    location.setItem("test",JSON.stringify(result))
+    // location.setItem("test",JSON.stringify(result))
     
+  }
+  const fectherBeneficiary = async () => {
+    const requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+    };
+
+    // const response = await fetch(`https://apidoc.transferrocket.co.uk//getuserbeneficiaries?userId=CLIENT_ID&beneficiaryId=0`, requestOptions);
+    const response = await fetch(`https://apidoc.transferrocket.co.uk//getuserbeneficiaries?userId=${userId?.data?.userId}&beneficiaryId=0`, requestOptions);
+    const result = await response.json();
+    setbeneficiaries(result)
+
+
+    // location.setItem("test",JSON.stringify(result))
+    
+  console.log("🚀 ~ fectherBeneficiary ~ beneficiaries:", beneficiaries)
   }
   
 
   useEffect(() => {
     fecther();
+    fectherBeneficiary()
   },[])
   
-  const beneoptions = user?.data?.beneficiaries.map(option => ({
+  const beneoptions = beneficiaries?.data?.map(option => ({
   label: `${option.beneficiaryName}\n[${option?.beneficiaryBank?.accountNumber} - ${option?.beneficiaryBank?.bankName}]`,
 
     // label: option.beneficiaryName,
@@ -112,12 +132,12 @@ const FlexWrapper = ({
    
   }))
   useEffect(() => {
-    const beneoptions = user?.data?.beneficiaries.map(option => ({
+    const beneoptions = beneficiaries?.data?.map(option => ({
       label: `${option.beneficiaryName}\n[${option?.beneficiaryBank?.accountNumber} - ${option?.beneficiaryBank?.bankName}]`,
       value: option.id
     }))
 
-    setBeneArr(beneoptions)
+    setBeneArr( beneoptions)
   },[])
 
   useEffect(() => {

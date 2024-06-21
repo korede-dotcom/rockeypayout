@@ -20,6 +20,7 @@ import SelectComponent from "@arco-design/web-react/es/Select/select";
 // import { Select, Space } from '@arco-design/web-react';
 // const Option = Select.Option;
 import Select from 'react-select';
+import Loader from "../../Reuseable/Loader";
 const Beneficiary = () => {
 
   const [selectedOption, setSelectedOption] = useState(null);
@@ -45,6 +46,7 @@ const Beneficiary = () => {
   const [userDetailsData, setUserDetailsData] = useState();
   const [trx, settrx] = useState(null);
   const [newBeneficiary, setNewBeneficiary] = useState(false);
+  const [loading, setLoading] = useState(false);
   
 
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
@@ -93,9 +95,29 @@ const Beneficiary = () => {
     //   })
     //   .catch((error) => console.log("error", error));
   }, []);
+  const fectherBeneficiary = async () => {
+    const requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+    };
+    setLoading(true)
+
+    // const response = await fetch(`https://apidoc.transferrocket.co.uk//getuserbeneficiaries?userId=CLIENT_ID&beneficiaryId=0`, requestOptions);
+    const response = await fetch(`https://apidoc.transferrocket.co.uk//getuserbeneficiaries?userId=${userDetails?.data?.userId}&beneficiaryId=0`, requestOptions);
+    const result = await response.json();
+    setBeneficiaryDetail(result?.data);
+    setLoading(false)
+
+
+    // location.setItem("test",JSON.stringify(result))
+    
+  // console.log("🚀 ~ fectherBeneficiary ~ beneficiaries:", beneficiaries)
+  }
+  
 
   useEffect(() => {
-    setBeneficiaryDetail(userDetails?.data?.beneficiaries);
+    // setBeneficiaryDetail(userDetails?.data?.beneficiaries);
+    fectherBeneficiary()
     setUserDetailsData(userDetails?.data);
   }, []);
   console.log(userDetailsData);
@@ -425,6 +447,8 @@ const Beneficiary = () => {
 
   return (
     <>
+    
+    {loading && <Loader/>}
       {show && (
         <OverlayModal 
           title="Add New Beneficiary"

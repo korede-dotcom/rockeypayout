@@ -553,10 +553,10 @@ try {
     }
 
     } catch (error) {
-      setShow(!show);
-      console.error('Error in creating beneficiary:', error);
+      // setShow(!show);
+      // console.error('Error in creating beneficiary:', error);
       setLoading(false);
-      toast.error('An error occurred while creating beneficiary.');
+      // toast.error('An error occurred while creating beneficiary.');
     }
   }
 

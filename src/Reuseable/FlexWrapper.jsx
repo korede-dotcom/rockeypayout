@@ -51,6 +51,12 @@ const FlexWrapper = ({
   const [selectedBank, setSelectedBank] = useState(null);
   const [beneArr, setBeneArr] = useState([]);
   console.log("🚀 ~ file: FlexWrapper.jsx:52 ~ beneArr:", beneArr)
+
+  const location = useLocation();
+
+
+  // Access the query parameters from the location object
+  const queryParams = new URLSearchParams(location.search);
   const [payoutParam, setpayoutParam] = useState(
     {
       "refrenceId": "",
@@ -63,30 +69,74 @@ const FlexWrapper = ({
       // "beneficiaryId" : undefined
   }
   );
+  // const [createBene,setCreateBene] = useState(
+  //   {
+  //     "userId": undefined,
+  //     "currency": {
+  //           "code": "USD"
+  //       },
+  //     "userBeneficiary": {
+  //         "beneficiaryCountry": {
+  //             "id": undefined
+  //         },
+  //         "beneficiaryName": "",
+  //         "beneficiaryPhoneNumber": "",
+  //         "beneficiaryBank": {
+  //             "accountNumber": "",
+  //             "bankId": undefined
+  //         }
+  //     }
+  // }
+  // )
   const [createBene,setCreateBene] = useState(
-    {
-      "userId": undefined,
-      "userBeneficiary": {
-          // "beneficiaryCountry": {
-          //     "id": undefined
-          // },
-          "beneficiaryName": "",
-          "beneficiaryPhoneNumber": "",
-          "beneficiaryBank": {
-              "accountNumber": "",
-              "bankId": undefined
-          }
-      }
-  }
+    
+  {
+    "userId": undefined,
+    "userBeneficiary": {
+        "beneficiaryCountry": {
+            "id": undefined
+        },
+        "currency": {
+        "code": "NGN"
+      },
+        "beneficiaryName": "",
+        "beneficiaryPhoneNumber": "",
+        "beneficiaryBank": {
+            "accountNumber": "",
+            "bankId": undefined
+        }
+    }
+}
   )
+
+
+
+  // const [createBene,setCreateBene] = useState(
+  //   {
+  //     "userId": 45586980,
+  //     "userBeneficiary": {
+  //         "beneficiaryCountry": {
+  //             "id": 1
+  //         },
+  //         "beneficiaryName": "Advanced Technology",
+  //         "beneficiaryPhoneNumber": "Park",
+  //         "beneficiaryBank": {
+  //             "accountNumber": "1017741913",
+  //             "bankId": 17
+  //         }
+  //     }
+  // }
+  // )
+
+
   console.log("🚀 ~ file: FlexWrapper.jsx:75 ~ createBene:", createBene)
   console.log("🚀 ~ file: FlexWrapper.jsx:50 ~ payoutParam:", payoutParam)
 
-  const location = useLocation();
+  // const location = useLocation();
 
 
-  // Access the query parameters from the location object
-  const queryParams = new URLSearchParams(location.search);
+  // // Access the query parameters from the location object
+  // const queryParams = new URLSearchParams(location.search);
   const userId = JSON.parse(localStorage.getItem("userDetails"));
   console.log("🚀 ~ userId:", userId)
 
@@ -442,6 +492,7 @@ try {
   const createNewBene = async () => {
     setLoading(true);
     const getDetails = JSON.parse(localStorage.getItem("details"));
+    console.log("🚀 ~ createNewBene ~ getDetails:", getDetails)
     try {
       const credentials = `${user?.data?.clientKeys?.clientId}:${user?.data?.clientKeys?.liveKey}`;
 
@@ -454,6 +505,7 @@ try {
       // myHeaders.append("clientId", user?.data?.clientKeys?.clientId);
       myHeaders.set('Content-Type', 'application/json');
 
+      console.log("🚀 ~ createNewBene ~ raw:", createBene)
 
     var raw = JSON.stringify(createBene);
 
@@ -465,6 +517,7 @@ try {
       redirect: 'follow'
     };
 
+    // return;
     const response = await fetch("https://apidoc.transferrocket.co.uk/adduserbeneficiary", requestOptions);
     // const response = await fetch("https://apidoc.transferrocket.co.uk//creatpayoutbeneficiary.io", requestOptions);
     // 188.212.124.39
@@ -478,7 +531,8 @@ try {
       setLoading(false);
       const userDetails = JSON.parse(localStorage.getItem("userDetails"));
 
-      const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userDetails.data.userId}`);
+      // const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userDetails.data.userId}`);
+      const response = await fetch(`https://apidoc.transferrocket.co.uk//getuserbeneficiaries?userId=${userDetails.data.userId}&beneficiaryId=0`);
       const gateData = await response.json();
       localStorage.setItem("userDetails",JSON.stringify(gateData))
       console.log("🚀 ~ file: FlexWrapper.jsx:404 ~ createNewBene ~ gateData:", gateData)

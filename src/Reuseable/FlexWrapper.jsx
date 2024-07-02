@@ -175,12 +175,13 @@ const FlexWrapper = ({
   },[])
   
   const beneoptions = beneficiaries?.data?.map(option => ({
-  label: `${option.beneficiaryName}\n[${option?.beneficiaryBank?.accountNumber} - ${option?.beneficiaryBank?.bankName}]`,
-
+    label: `${option.beneficiaryName}\n[${option?.beneficiaryBank?.accountNumber} - ${option?.beneficiaryBank?.bankName}]`,
+    
     // label: option.beneficiaryName,
     value: option.id,
-   
+    
   }))
+  console.log("🚀 ~ beneoptions ~ beneficiaries:", beneficiaries)
   useEffect(() => {
     const beneoptions = beneficiaries?.data?.map(option => ({
       label: `${option.beneficiaryName}\n[${option?.beneficiaryBank?.accountNumber} - ${option?.beneficiaryBank?.bankName}]`,
@@ -534,7 +535,7 @@ try {
       // const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userDetails.data.userId}`);
       const response = await fetch(`https://apidoc.transferrocket.co.uk//getuserbeneficiaries?userId=${userDetails.data.userId}&beneficiaryId=0`);
       const gateData = await response.json();
-      localStorage.setItem("userDetails",JSON.stringify(gateData))
+      // localStorage.setItem("userDetails",JSON.stringify(gateData))
       console.log("🚀 ~ file: FlexWrapper.jsx:404 ~ createNewBene ~ gateData:", gateData)
       const beneoptions = gateData?.data?.beneficiaries.map(option => ({
         label: `${option.beneficiaryName}\n[${option?.beneficiaryBank?.accountNumber} - ${option?.beneficiaryBank?.bankName}]`,

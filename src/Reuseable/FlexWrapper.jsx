@@ -47,9 +47,11 @@ const FlexWrapper = ({
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedOption2, setSelectedOption2] = useState(null);
   const [selectedOption3, setSelectedOption3] = useState(null);
+  const [selectedOption4, setSelectedOption4] = useState(null);
   const [beneficiaries, setbeneficiaries] = useState(null);
   const [selectedBank, setSelectedBank] = useState(null);
   const [beneArr, setBeneArr] = useState([]);
+    const [country, setCountry] = useState([]);
   console.log("🚀 ~ file: FlexWrapper.jsx:52 ~ beneArr:", beneArr)
 
   const location = useLocation();
@@ -88,6 +90,7 @@ const FlexWrapper = ({
   //     }
   // }
   // )
+
   const [createBene,setCreateBene] = useState(
     
   {
@@ -167,12 +170,35 @@ const FlexWrapper = ({
     
   console.log("🚀 ~ fectherBeneficiary ~ beneficiaries:", beneficiaries)
   }
-  
+const fetchCountries = async () => {
+  const requestOptions = {
+      method: "GET",
+      // redirect: "follow",
+    };
+
+    const response = await fetch("https://apidoc.transferrocket.co.uk/getcountries", requestOptions);
+    const result = await response.json();
+    console.log("🚀 ~ fetchCountries ~ result:", result.data)
+    const filterNigeria = result.data.filter(country => country.countryName === "Nigeria");
+    setSelectedOption4({
+      label: filterNigeria[0].countryName,
+      value: filterNigeria[0].id,
+      currencyCode: filterNigeria[0].currencyCode
+    });
+    const sanitizeCountry = result.data.map(country => ({
+      label: country.countryName,
+      value: country.id,
+      currencyCode: country.currencyCode
+    }));
+    console.log("🚀 ~ fetchCountries ~ sanitizeCountry:", sanitizeCountry)
+    setCountry(sanitizeCountry);
+  };
 
   useEffect(() => {
     fecther();
-    fectherBeneficiary()
-  },[])
+    fectherBeneficiary();
+    fetchCountries();
+  }, []);
   
   const beneoptions = beneficiaries?.data?.map(option => ({
     label: `${option.beneficiaryName}\n[${option?.beneficiaryBank?.accountNumber} - ${option?.beneficiaryBank?.bankName}]`,
@@ -234,6 +260,28 @@ const FlexWrapper = ({
     // Do something with selected option if needed
   };
 
+  const handleSelectChangecountry = selectedOption4 => {
+    console.log("🚀 ~ file: FlexWrapper.jsx:116 ~ hansdleSelectChangecountry ~ selectedOption4:", selectedOption4)
+    setSelectedOption4(selectedOption4);
+
+    setCreateBene(prevState => ({
+      ...prevState,
+      userBeneficiary: {
+        beneficiaryCountry: {
+          id: selectedOption4.id
+        },
+        currency: {
+          code: selectedOption4.currencyCode
+        },
+        ...prevState.userBeneficiary,
+        beneficiaryBank: {
+          ...prevState.userBeneficiary.beneficiaryBank,
+          bankId: selectedOption3.value,
+        }
+      }
+    }));
+    // Do something with selected option if needed
+  };
   const handleSelectChangebank = selectedOption3 => {
     console.log("🚀 ~ file: FlexWrapper.jsx:116 ~ hansdleSelectChangebank ~ selectedOption3:", selectedOption3)
     setSelectedOption3(selectedOption3);
@@ -761,7 +809,7 @@ const lookup = async (e) => {
                               handleSubmit={createNewBene}
                             
                             >
-                             <TextInput change={(e) => {
+                             {/* <TextInput change={(e) => {
                               setCreateBene(prevState => ({
                                 ...prevState,
                                 userBeneficiary:{
@@ -770,39 +818,73 @@ const lookup = async (e) => {
                                 }
                           
                               }))
-                             }}  label="Beneficiary Phonenumber" />
+                             }}  label="Beneficiary Phonenumber" /> */}
+                             <p>Select Country</p>
+                             <Selects
+                              placeholder="Select Country"
+                              styles={{
+                                control: styles => ({
+                                  ...styles,
+                                  backgroundColor: 'white',
+                                  padding:"5px",
+                                  // width: 554,
+                                  borderRadius:"8px",
+                                  border: "1px solid #d0d5dd",
+                                  boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)",
+                                  // border: 'none', // Remove the border
+                                  // boxShadow: 'none', // Remove the box shadow
+                                }),
+                                singleValue: styles => ({
+                                  ...styles,
+                                  color: '#000'
+                                }),
+                                option: (styles, { isFocused }) => ({
+                                  ...styles,
+                                  backgroundColor: isFocused ? 'rgb(0, 168, 90)' : '#ededed',
+                                  color: isFocused ? 'white' : 'black'
+                                })
+                            
+                                // Custom styles if needed
+                              }}
+                              value={selectedOption4}
+                              onChange={handleSelectChangecountry}
+                              options={country}
+
+                              />
+                              <br />
                              <p>Select Bank</p>
                              <Selects
-                        placeholder="Select Bank"
-                        styles={{
-                          control: styles => ({
-                            ...styles,
-                            backgroundColor: 'white',
-                            padding:"5px",
-                            // width: 554,
-                            borderRadius:"8px",
-                            border: "1px solid #d0d5dd",
-                            boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)",
-                            // border: 'none', // Remove the border
-                            // boxShadow: 'none', // Remove the box shadow
-                          }),
-                          singleValue: styles => ({
-                            ...styles,
-                            color: '#000'
-                          }),
-                          option: (styles, { isFocused }) => ({
-                            ...styles,
-                            backgroundColor: isFocused ? 'rgb(0, 168, 90)' : '#ededed',
-                            color: isFocused ? 'white' : 'black'
-                          })
-                      
-                          // Custom styles if needed
-                        }}
-                        value={selectedOption3}
-                        onChange={handleSelectChangebank}
-                        options={bankoptions}
+                              placeholder="Select Bank"
+                              styles={{
+                                control: styles => ({
+                                  ...styles,
+                                  backgroundColor: 'white',
+                                  padding:"5px",
+                                  // width: 554,
+                                  borderRadius:"8px",
+                                  border: "1px solid #d0d5dd",
+                                  boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)",
+                                  // border: 'none', // Remove the border
+                                  // boxShadow: 'none', // Remove the box shadow
+                                }),
+                                singleValue: styles => ({
+                                  ...styles,
+                                  color: '#000'
+                                }),
+                                option: (styles, { isFocused }) => ({
+                                  ...styles,
+                                  backgroundColor: isFocused ? 'rgb(0, 168, 90)' : '#ededed',
+                                  color: isFocused ? 'white' : 'black'
+                                })
+                            
+                                // Custom styles if needed
+                              }}
+                              value={selectedOption3}
+                              onChange={handleSelectChangebank}
+                              options={bankoptions}
 
-                    />
+                              />
+                              <br />
                               <TextInput change={(e) => lookup(e)} label="Beneficiary Account Number" />
                               <br/>
                               {

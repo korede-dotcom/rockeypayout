@@ -663,7 +663,7 @@ try {
     const data = await response.json();
     console.log("🚀 ~ file: FlexWrapper.jsx:378 ~ createNewBene ~ data:", data)
     if (data.status) {
-      setShow(!show)
+      // setShow(!show)
       setName(" ")
       toast.success(data.message)
       setshowBene(!showBene);
@@ -673,6 +673,7 @@ try {
       // const response = await fetch(`https://apidoc.transferrocket.co.uk//getpayoutclientdashboard/${userDetails.data.userId}`);
       const response = await fetch(`https://apidoc.transferrocket.co.uk//getuserbeneficiaries?userId=${userDetails.data.userId}&beneficiaryId=0`);
       const gateData = await response.json();
+      console.log("🚀 ~ createNewBene ~ response:", response)
       // localStorage.setItem("userDetails",JSON.stringify(gateData))
       console.log("🚀 ~ file: FlexWrapper.jsx:404 ~ createNewBene ~ gateData:", gateData)
       const beneoptions = gateData?.data?.beneficiaries.map(option => ({
@@ -681,11 +682,12 @@ try {
       }))
   
       setBeneArr(beneoptions)
+      // setBeneArr(prev => [newBeneOption, ...prev]);
   
       // console.log("🚀 ~ file: FlexWrapper.jsx:403 ~ createNewBene ~ gateData:", gateData)
       
     }else{
-      setShow(!show)
+      // setShow(!show)
       setName(" ")
       toast.error(data.message)
       setshowBene(!showBene);
@@ -693,7 +695,7 @@ try {
     }
 
     } catch (error) {
-      setShow(!show);
+      // setShow(!show);
       // console.error('Error in creating beneficiary:', error);
       setLoading(false);
       // toast.error('An error occurred while creating beneficiary.');

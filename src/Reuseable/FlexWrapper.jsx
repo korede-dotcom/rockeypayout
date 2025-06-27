@@ -663,6 +663,7 @@ try {
     const data = await response.json();
     console.log("🚀 ~ file: FlexWrapper.jsx:378 ~ createNewBene ~ data:", data)
     if (data.status) {
+      setShow(!show)
       setName(" ")
       toast.success(data.message)
       setshowBene(!showBene);
@@ -684,6 +685,7 @@ try {
       // console.log("🚀 ~ file: FlexWrapper.jsx:403 ~ createNewBene ~ gateData:", gateData)
       
     }else{
+      setShow(!show)
       setName(" ")
       toast.error(data.message)
       setshowBene(!showBene);
@@ -691,7 +693,7 @@ try {
     }
 
     } catch (error) {
-      // setShow(!show);
+      setShow(!show);
       // console.error('Error in creating beneficiary:', error);
       setLoading(false);
       // toast.error('An error occurred while creating beneficiary.');

@@ -663,7 +663,7 @@ try {
     const data = await response.json();
     console.log("🚀 ~ file: FlexWrapper.jsx:378 ~ createNewBene ~ data:", data)
     if (data.status) {
-      // setShow(!show)
+      setShow(!show)
       setName(" ")
       toast.success(data.message)
       setshowBene(!showBene);
@@ -687,7 +687,7 @@ try {
       // console.log("🚀 ~ file: FlexWrapper.jsx:403 ~ createNewBene ~ gateData:", gateData)
       
     }else{
-      // setShow(!show)
+      setShow(!show)
       setName(" ")
       toast.error(data.message)
       setshowBene(!showBene);

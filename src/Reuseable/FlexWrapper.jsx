@@ -17,7 +17,7 @@ import Selects from 'react-select';
 import { useLocation } from "react-router-dom";
 import { encode } from 'base64-js';
 import Btn from "../reuseables/Btn";
-import { BankTest } from "../../config/Test";
+import { BankTest,countries } from "../../config/Test";
 import { Spin } from "@arco-design/web-react";
 
 
@@ -91,8 +91,9 @@ const FlexWrapper = ({
   // }
   // )
 
-  const [createBene,setCreateBene] = useState(
-    
+
+
+  const [createBene,setCreateBene] = useState( 
   {
     "userId": undefined,
     "userBeneficiary": {
@@ -101,7 +102,7 @@ const FlexWrapper = ({
         },
         "currency": {
         "code": "NGN"
-      },
+        },
         "beneficiaryName": "",
         "beneficiaryPhoneNumber": "",
         "beneficiaryBank": {
@@ -154,6 +155,7 @@ const FlexWrapper = ({
     // location.setItem("test",JSON.stringify(result))
     
   }
+
   const fectherBeneficiary = async () => {
     const requestOptions = {
       method: 'GET',
@@ -170,34 +172,62 @@ const FlexWrapper = ({
     
   console.log("🚀 ~ fectherBeneficiary ~ beneficiaries:", beneficiaries)
   }
-const fetchCountries = async () => {
-  const requestOptions = {
-      method: "GET",
-      // redirect: "follow",
-    };
+  useEffect(() => {
+    fetchCountries();
+  }, []);
+
+  const fetchCountries = async () => {
+    const requestOptions = {
+        method: "GET",
+        // redirect: "follow",
+      };
 
     const response = await fetch("https://apidoc.transferrocket.co.uk/getcountries", requestOptions);
     const result = await response.json();
     console.log("🚀 ~ fetchCountries ~ result:", result.data)
-    const filterNigeria = result.data.filter(country => country.countryName === "Nigeria");
-    setSelectedOption4({
-      label: filterNigeria[0].countryName,
-      value: filterNigeria[0].id,
-      currencyCode: filterNigeria[0].currencyCode
-    });
-    const sanitizeCountry = result.data.map(country => ({
-      label: country.countryName,
-      value: country.id,
-      currencyCode: country.currencyCode
-    }));
-    console.log("🚀 ~ fetchCountries ~ sanitizeCountry:", sanitizeCountry)
-    setCountry(sanitizeCountry);
+    setCountry(result.data || countries?.data);
+    // if (!result.data) {
+      const filterNigeria = countries?.data?.filter(country => country.countryName === "Nigeria");
+    //   // console.log("🚀 ~ fetchCountries ~ filterNigeria:", filterNigeria)
+    //   // setSelectedOption4({
+    //   //   label: filterNigeria[0].countryName,
+    //   //   value: filterNigeria[0].id,
+    //   //   currencyCode: filterNigeria[0].currencyCode
+    //   // });
+    //   const sanitizeCountry =  countries?.data?.map(country => ({
+    //     label: country.countryName,
+    //     value: country.id,
+    //     currencyCode: country.currencyCode
+    //   }));
+    //   console.log("🚀 ~ fetchCountries ~ sanitizeCountry:", sanitizeCountry)
+    //   setCountry(sanitizeCountry);
+      
+    //   return;
+    // }else{
+
+    //   const filterNigeria = result.data.filter(country => country.countryName === "Nigeria");
+    //   setSelectedOption4({
+    //     label: filterNigeria[0].countryName,
+    //     value: filterNigeria[0].id,
+    //     currencyCode: filterNigeria[0].currencyCode
+    //   });
+    //   const sanitizeCountry = result.data.map(country => ({
+    //     label: country.countryName,
+    //     value: country.id,
+    //     currencyCode: country.currencyCode
+    //   }));
+    //   console.log("🚀 ~ fetchCountries ~ sanitizeCountry:", sanitizeCountry)
+    //   setCountry(sanitizeCountry);
+    // }
   };
+
+    console.log("🚀 ~ country:", country)
+
 
   useEffect(() => {
     fecther();
     fectherBeneficiary();
-    fetchCountries();
+
   }, []);
   
   const beneoptions = beneficiaries?.data?.map(option => ({
@@ -207,6 +237,7 @@ const fetchCountries = async () => {
     value: option.id,
     
   }))
+
   console.log("🚀 ~ beneoptions ~ beneficiaries:", beneficiaries)
   useEffect(() => {
     const beneoptions = beneficiaries?.data?.map(option => ({
@@ -334,7 +365,57 @@ const fetchCountries = async () => {
     code:option.bankCode
   }));
 
+  //   const countryoptions = country.map(option => ({
+  //   label: option.name,
+  //   value: option.id,
+  //   code:option.currencyCode
+  // }));
 
+
+  // useEffect(() => {
+  //           const filterNigeria = country?.filter(country => country?.currencyCode === "NGN");
+  //       console.log("🚀 ~ filterNigeria:", filterNigeria)
+  // setSelectedOption4({
+  //   label: filterNigeria[0].name,
+  //   value: filterNigeria[0].id,
+  //   currencyCode: filterNigeria[0].currencyCode
+  // });
+  // }, [country]);
+
+  // ...existing code...
+const countryoptions = country.map(option => ({
+  label: option.name,
+  value: option.id,
+  code: option.currencyCode
+}));
+
+// ...existing code...
+useEffect(() => {
+  if (!selectedOption4 && country.length > 0) {
+    const nigeria = country.find(c => c.currencyCode === "NGN");
+    if (nigeria) {
+      setSelectedOption4({
+        label: nigeria.name,
+        value: nigeria.id,
+        currencyCode: nigeria.currencyCode
+      });
+    }
+  }
+}, [country, selectedOption4]);
+// ...existing code...
+
+// Handler for when the user selects a different country
+const handleCountryChange = (selected) => {
+  setSelectedOption4({
+    label: selected.label,
+    value: selected.value,
+    currencyCode: selected.code
+  });
+};
+
+// Example usage with a Select component (e.g., react-select)
+
+// ...existing code...
 
   
   // const [info, setInfo] = useState("");
@@ -556,7 +637,15 @@ try {
 
       console.log("🚀 ~ createNewBene ~ raw:", createBene)
 
-    var raw = JSON.stringify(createBene);
+      const updatedBene = {
+  ...createBene,
+  countryId: selectedOption4?.value, // or use the appropriate key expected by your API
+  countryName: selectedOption4?.label,
+  currencyCode: selectedOption4?.currencyCode
+};
+      console.log("🚀 ~ createNewBene ~ updatedBene:", updatedBene)
+
+    var raw = JSON.stringify(updatedBene);
 
     var requestOptions = {
       method: 'POST',
@@ -846,9 +935,9 @@ const lookup = async (e) => {
                             
                                 // Custom styles if needed
                               }}
-                              value={selectedOption4}
-                              onChange={handleSelectChangecountry}
-                              options={country}
+                              options={countryoptions}
+  value={countryoptions.find(opt => opt.value === selectedOption4?.value)}
+  onChange={handleCountryChange}
 
                               />
                               <br />

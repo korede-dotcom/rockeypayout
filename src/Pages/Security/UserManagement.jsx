@@ -21,6 +21,7 @@ import CustomTable from "../../reuseables/CustomTable";
 import toast from "react-hot-toast";
 import Selects from 'react-select';
 import { roles } from "../../../config/Test";
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const UserManagement = () => {
   const [sho, setShow] = useState(false);
@@ -31,6 +32,7 @@ const UserManagement = () => {
   const [info, setInfo] = useState(null);
   const [info2, setInfo2] = useState(null);
    const [roles, setRoles] = useState([]);
+   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
 
@@ -438,7 +440,27 @@ const newData = getUser?.data?.payOutClientDevelopers?.reverse()?.map((item, ind
                     name="staffRole"
                   />
                  
-                  <OInput label="Password" type="password" placeholder="Password" name="password" onChange={handleOnChange}/>
+                    <div style={{ position: 'relative' }}>
+    <OInput
+      label="Password"
+      type={showPassword ? "text" : "password"}
+      placeholder="Password"
+      name="password"
+      onChange={handleOnChange}
+    />
+    <span
+      onClick={() => setShowPassword(prev => !prev)}
+      style={{
+        position: 'absolute',
+        right: 10,
+        top: '50%',
+        transform: 'translateY(-50%)',
+        cursor: 'pointer'
+      }}
+    >
+      {showPassword ? <FaEyeSlash /> : <FaEye />}
+    </span>
+  </div>
                   {/* <Role>
                     <label htmlFor="email">Role</label>
                     <div className="inner">

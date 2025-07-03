@@ -173,7 +173,7 @@ const handleRoleChange = (selectedOption) => {
   setSelectedRole(selectedOption);
   setCreateUser(prev => ({
     ...prev,
-    staffRole: {
+    role: {
       id: selectedOption.value
     }
   }));
@@ -437,7 +437,7 @@ const newData = getUser?.data?.payOutClientDevelopers?.reverse()?.map((item, ind
                     value={selectedRole}
                     onChange={handleRoleChange}
                     options={roleOptions}
-                    name="staffRole"
+                    name="role"
                   />
                  
                     <div style={{ position: 'relative' }}>

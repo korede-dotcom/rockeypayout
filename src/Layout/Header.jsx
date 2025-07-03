@@ -51,6 +51,10 @@ const Header = ({ setPropsPassed, SelectedCategory }) => {
   if (userRole === 8) {
     headerTab = headerTab.filter((item) => item.name === "Security");
   }
+  if (userRole === 14) {
+    headerTab = headerTab.filter((item) => item.name !== "Security");
+  }
+
   const [headtab, setHeadTab] = useState(0);
   const [showProfile, setShowProfile] = useState(false);
 

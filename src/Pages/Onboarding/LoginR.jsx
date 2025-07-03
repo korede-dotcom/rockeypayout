@@ -44,9 +44,6 @@ const TimelineItem = Timeline.Item;
 
 function LoginR() {
 
-
- 
-
     const navigate = useNavigate();
     const [err, seterr] = useState(null)
     const [modal, setModal] = useState(false)
@@ -66,6 +63,7 @@ function LoginR() {
         mutate(loginDetails)
     }
     console.log(loginDetails)
+
     useEffect(() => {
         const fecther = async () => {
             const response2 = await fetch('https://apidoc.transferrocket.co.uk//getpayoutprovider');
@@ -83,24 +81,7 @@ function LoginR() {
             const requestData = {
                 username: loginDetails.username,
               };
-            //  moneybusiness.tm-dev.xyz/moneybusiness//auth
-            //   axios
-            //     // .get(`${baseurl}moneybusiness/checkUserExistByEmail`, requestData)
-            //     .get(`${baseurl}/auth`, requestData)
-            //     .then((response) => {
-            //       console.log(response.data);
-          
-            //       setloginDetails((prev) => {
-            //         return { ...prev, [name]: value };
-            //       });
-            //     })
-            //     .catch((error) => {
-            //         seterr(error?.message)
-            //         setModal(true)
-            //       console.error(error);
-            //     });
-
-           
+      
         }
 
         setloginDetails((prev) => {
@@ -170,7 +151,7 @@ function LoginR() {
               
                 return
             }else{
-                const allowedUser = [7,8];
+                const allowedUser = [7,8,14];
                 if (!data?.data?.role?.id) {
                     console.log("🚀 ~ file: LoginR.jsx:169 ~ LoginR ~ !data?.data?.role?.id:", !data?.data?.role?.id)
                     toast.error("Invalid Credentials")
@@ -185,6 +166,9 @@ function LoginR() {
                 if(data?.data?.role?.id === 8){
                     navigate("/security/API")
 
+                }else if(data?.data?.role?.id === 14){  
+                   localStorage.setItem("details",JSON.stringify(loginDetails))
+                    navigate("/overview")
                 }else{
                     localStorage.setItem("details",JSON.stringify(loginDetails))
                     navigate("/overview")
@@ -196,10 +180,7 @@ function LoginR() {
     
                 // }
 
-            }
-
-
-          
+            }          
         },
         onError: (data) => {
             setModal(true)

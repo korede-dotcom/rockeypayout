@@ -814,15 +814,17 @@ const lookup = async (e) => {
                 )
                 
               } */}
-              {![8, 14].includes(userId?.data?.role?.id) && (
-  <div
-    className="bx"
-    onClick={() => setPayout(true)}
-  >
-    <img src={add} alt="" />
-    <span>Payout to client</span>
-  </div>
-)}
+              {
+              ![8, 14].includes(JSON.parse(localStorage.getItem("role"))?.id) && (
+                <div
+                  className="bx"
+                  onClick={() => setPayout(true)}
+                >
+                  <img src={add} alt="" />
+                  <span>Payout to client</span>
+                </div>
+              )
+  }
 
               {/*  */}
 

@@ -164,13 +164,16 @@ function LoginR() {
                 toast.success(data?.message)
                 localStorage.setItem("userDetails",JSON.stringify(data))
                 if(data?.data?.role?.id === 8){
+                    localStorage.setItem("role",JSON.stringify(data?.data?.role))
                     navigate("/security/API")
 
                 }else if(data?.data?.role?.id === 14){  
+                    localStorage.setItem("role",JSON.stringify(data?.data?.role))
                    localStorage.setItem("details",JSON.stringify(loginDetails))
-                    navigate("/overview")
+                   navigate("/overview")
                 }else{
                     localStorage.setItem("details",JSON.stringify(loginDetails))
+                    localStorage.setItem("role",JSON.stringify(data?.data?.role))
                     navigate("/overview")
                 }
                 // if (!data.data.user.isKYCCompleted) {

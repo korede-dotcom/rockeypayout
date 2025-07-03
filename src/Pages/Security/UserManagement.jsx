@@ -102,7 +102,7 @@ const UserManagement = () => {
 const handleOnChange = (e) => {
   const {name,value} = e.target;
   setCreateUser(prev => {
-    return{...prev,[name]:value.toLowerCase()}
+    return{...prev,[name]:value}
   })
   
 }

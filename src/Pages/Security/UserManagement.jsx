@@ -201,7 +201,7 @@ const columns = [
   },
   {
       title: "ROLE",
-      dataIndex: "role",
+      dataIndex: "role.name",
       width: 160,
   },
   {

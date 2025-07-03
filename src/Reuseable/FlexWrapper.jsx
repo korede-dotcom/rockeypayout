@@ -799,7 +799,7 @@ const lookup = async (e) => {
           </div>
           {show && (
             <div className="smallModal">
-              {
+              {/* {
                 [8,14].includes(userId?.data?.role?.id) ? "" : (
               <div
                 className="bx"
@@ -813,7 +813,16 @@ const lookup = async (e) => {
               </div>
                 )
                 
-              }
+              } */}
+              {![8, 14].includes(userId?.data?.role?.id) && (
+  <div
+    className="bx"
+    onClick={() => setPayout(true)}
+  >
+    <img src={add} alt="" />
+    <span>Payout to client</span>
+  </div>
+)}
 
               {/*  */}
 

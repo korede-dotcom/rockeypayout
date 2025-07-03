@@ -799,6 +799,8 @@ const lookup = async (e) => {
           </div>
           {show && (
             <div className="smallModal">
+              {
+                [8,14].includes(userId?.data?.role?.id) ? "" : (
               <div
                 className="bx"
                 onClick={() => {
@@ -806,8 +808,12 @@ const lookup = async (e) => {
                 }}
               >
                 <img src={add} alt="" />
+                
                 <span>Payout to client</span>
               </div>
+                )
+                
+              }
 
               {/*  */}
 

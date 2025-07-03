@@ -1,3 +1,8 @@
+export const roles = {
+  "transactionRef":"SUCCESS",
+  "status":true,"message":"Roles recieved",
+  "data":[{"id":1,"name":"Account and Finance","mobileAppRoleName":"Account and Finance","status":"status"},{"id":0,"name":"Admin","mobileAppRoleName":"Admin","status":"status"},{"id":5,"name":"Agent","mobileAppRoleName":"Marketer","status":"status"},{"id":3,"name":"Cashier","mobileAppRoleName":"Cashier","status":"status"},{"id":4,"name":"Compliance Team","mobileAppRoleName":"Compliance Team","status":"status"},{"id":2,"name":"Customer Support","mobileAppRoleName":"Customer Support","status":"status"},{"id":6,"name":"Direct Customer","mobileAppRoleName":"Direct Customer","status":"status"},{"id":9,"name":"Director","mobileAppRoleName":"Director","status":"status"},{"id":10,"name":"Human Resources","mobileAppRoleName":"Human Resources","status":"status"},{"id":11,"name":"Information Technology","mobileAppRoleName":"Information Technology","status":"status"},{"id":12,"name":"Operation Manager","mobileAppRoleName":"Operation Manager","status":"status"},{"id":13,"name":"Operation Team","mobileAppRoleName":"Operation Team","status":"status"},{"id":7,"name":"Payout Client","mobileAppRoleName":"Payout Client","status":"status"},{"id":8,"name":"PC Developer","mobileAppRoleName":"PC Developer","status":"status"},{"id":14,"name":"PC Support","mobileAppRoleName":"PC Support","status":"status"}]
+}
 export const countries = {
     "transactionRef": "SUCCESS",
     "status": true,

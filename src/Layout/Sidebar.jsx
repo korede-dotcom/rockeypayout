@@ -340,7 +340,7 @@ console.log(formattedGatewayItems);
             { title: "Company Profile", path: "/security/company", image: <img src={cprofile} alt="" /> },
             { title: "API", path: "/security/API", image: <img src={code} alt="" /> },
             { title: "Change Password", path: "/security/change-password", image: <img src={lock} alt="" /> },
-            { title: "Developers", path: "/security/user-management", image: <img src={code} alt="" /> },
+            { title: "Accounts", path: "/security/user-management", image: <img src={code} alt="" /> },
           ],
         },
         { pageName: "Beneficiary", Name: "Beneficiary", path: "/beneficiary" },
@@ -357,6 +357,8 @@ console.log(formattedGatewayItems);
           },
           { pageName: "Logout", Name: "Logout", path: "/" },
         ]);
+      } else if (userDetails?.data?.role?.id === 14) {
+        setSidebarData(sidebarData.filter(item => item.pageName !== "Security"));
       } else {
         setSidebarData(sidebarData);
       }

@@ -19,6 +19,8 @@ import mail from "../../assets/mail.svg";
 import choose from "../../assets/choose.svg";
 import CustomTable from "../../reuseables/CustomTable";
 import toast from "react-hot-toast";
+import Selects from 'react-select';
+import { roles } from "../../../config/Test";
 
 const UserManagement = () => {
   const [sho, setShow] = useState(false);
@@ -28,6 +30,7 @@ const UserManagement = () => {
   const [loading, setLoading] = useState(false);
   const [info, setInfo] = useState(null);
   const [info2, setInfo2] = useState(null);
+   const [roles, setRoles] = useState([]);
 
   useEffect(() => {
 
@@ -65,13 +68,34 @@ const UserManagement = () => {
       // Call the fetch function
       fetchData();
     }, []);
+
+    useEffect(() => {
+      fetchRoles()
+    },[])
+
+      const fetchRoles = async () => {
+        const requestOptions = {
+            method: "GET",
+            // redirect: "follow",
+          };
+    
+        const response = await fetch("https://apidoc.transferrocket.co.uk//getroles", requestOptions);
+        const result = await response.json();
+        console.log("🚀 ~ fetchRoles ~ result:", result.data)
+        setRoles(result.data || roles?.data);
+        
+
+      };
     
 
 
   const [createUser,setCreateUser] = useState({
     developerName : "",
     username : "",
-    password : ""
+    password : "",
+    "staffRole" : {
+        "id" : undefined,
+    }
 })
   console.log("🚀 ~ file: UserManagement.jsx:28 ~ UserManagement ~ createUser:", createUser)
 
@@ -92,7 +116,8 @@ var requestOptions = {
 };
 
 
-const response = await fetch(`https://apidoc.transferrocket.co.uk//addpayoutclientdeveloper/${getUser?.data?.userId}`, requestOptions)
+// const response = await fetch(`https://apidoc.transferrocket.co.uk//addpayoutclientdeveloper/${getUser?.data?.userId}`, requestOptions)
+const response = await fetch(`https://apidoc.transferrocket.co.uk//addpayoutsupportstaff/${getUser?.data?.userId}`, requestOptions)
 const data = await response?.json();
 
 if (data?.status) {
@@ -135,6 +160,23 @@ const handleCancel =() => {
   setShow(!sho)
 }
 
+const roleOptions = [
+  ...roles
+    .filter(role => ["PC Developer", "PC Support"].includes(role.name))
+    .map(role => ({ value: role.id, label: role.name }))
+];
+
+const [selectedRole, setSelectedRole] = useState(null);
+const handleRoleChange = (selectedOption) => {
+  setSelectedRole(selectedOption);
+  setCreateUser(prev => ({
+    ...prev,
+    staffRole: {
+      id: selectedOption.value
+    }
+  }));
+};
+
 
 const columns = [
   // {
@@ -155,6 +197,11 @@ const columns = [
   {
       title: "EMAIL",
       dataIndex: "username",
+      width: 160,
+  },
+  {
+      title: "ROLE",
+      dataIndex: "role",
       width: 160,
   },
   {
@@ -326,19 +373,19 @@ const newData = getUser?.data?.payOutClientDevelopers?.reverse()?.map((item, ind
       <UserWrapper>
         <div className="usertitle">
           <div className="left">
-            <h1>Developer Management</h1>
+            <h1>Account Management</h1>
             <p>
-             List of Developer
+             List of Users
             </p>
           </div>
           <div className="rightside">
             <p onClick={() => setShow(true)}>
               <img src={add} alt="" />
-              <span>New Developer</span>
+              <span>New User</span>
             </p>
             {sho && (
               <Modal
-                height="390px"
+                height="490px"
                 width="350px"
                 setShow={setShow}
                 setPayout={setShow}
@@ -358,6 +405,38 @@ const newData = getUser?.data?.payOutClientDevelopers?.reverse()?.map((item, ind
                       <input type="email" placeholder="sunearthweb@gmail.com" name="username" onChange={handleOnChange}  />
                     </div>
                   </Email>
+                  <br />
+                  <Selects
+                    placeholder="Select Role"
+                    styles={{
+                      control: styles => ({
+                        ...styles,
+                        backgroundColor: 'white',
+                        padding:"5px",
+                        // width: 554,
+                        borderRadius:"8px",
+                        border: "1px solid #d0d5dd",
+                        boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)",
+                        // border: 'none', // Remove the border
+                        // boxShadow: 'none', // Remove the box shadow
+                      }),
+                      singleValue: styles => ({
+                        ...styles,
+                        color: '#000'
+                      }),
+                      option: (styles, { isFocused }) => ({
+                        ...styles,
+                        backgroundColor: isFocused ? 'rgb(0, 168, 90)' : '#ededed',
+                        color: isFocused ? 'white' : 'black'
+                      })
+                  
+                      // Custom styles if needed
+                    }}
+                    value={selectedRole}
+                    onChange={handleRoleChange}
+                    options={roleOptions}
+                    name="staffRole"
+                  />
                  
                   <OInput label="Password" type="password" placeholder="Password" name="password" onChange={handleOnChange}/>
                   {/* <Role>

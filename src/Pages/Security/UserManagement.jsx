@@ -93,7 +93,7 @@ const UserManagement = () => {
     developerName : "",
     username : "",
     password : "",
-    "staffRole" : {
+    "role" : {
         "id" : undefined,
     }
 })

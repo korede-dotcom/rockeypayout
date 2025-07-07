@@ -10,7 +10,7 @@ const Password = ({ handlechangepass,name }) => {
       <input
         onChange={handlechangepass}
         type={show ? "text" : "password"}
-        placeholder='•••••••••'
+        placeholder=''
         name={name}
       />
       <span

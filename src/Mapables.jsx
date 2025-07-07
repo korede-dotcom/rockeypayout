@@ -116,63 +116,6 @@ export const SidebarData = [
     ],
   },
 ];
-// export const SidebarData = [
-
-//   {
-//     pageName: 'Gateway',
-//     Name: 'My GATEWAYS',
-//     Gateway: [
-//       {
-//         title: 'Overview',
-//         path: '/overview',
-//       },
-//       {
-//         title: 'Vendors',
-//         path: '/ohentpay',
-//       },
-//       {
-//         title: 'holders',
-//         path: '/hopebank',
-//       },
-//     ],
-//   },
-//   {
-//     pageName: 'Transactions',
-//     Name: 'Transactions',
-//     Gateway: [
-//       {
-//         title: 'Transaction',
-//         path: '/transaction',
-//       },
-//     ],
-//   },
-//   {
-//     pageName: 'Security',
-//     Name: 'Security',
-//     Gateway: [
-//       {
-//         title: 'User Profile',
-//         path: '/security',
-//       },
-//       {
-//         title: 'Company Profile',
-//         path: '/company',
-//       },
-//       {
-//         title: 'Deatails',
-//         path: '/api',
-//       },
-//       {
-//         title: 'Change Password',
-//         path: '/change-password',
-//       },
-//       {
-//         title: 'User Details',
-//         path: '/user-management',
-//       },
-//     ],
-//   },
-// ];
 
 export const ApiHeader = [
   {

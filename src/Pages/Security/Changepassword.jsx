@@ -1,11 +1,75 @@
-import React from "react";
+import React,{useState} from "react";
 import styled from "styled-components";
 import Layout from "../../Layout/Layout";
 import Box from "../../Reuseable/Box";
 import Password from "../../Reuseable/Inputs/Password";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import toast from 'react-hot-toast';
 
-const Changepassword = () => {
+const Changepassword = ({handlechangepass}) => {
+  //  const [showCurrent, setShowCurrent] = useState(false);
+   const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showCurrent, setShowCurrent] = useState(false);
+  const [showNew, setShowNew] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  // Get userId from localStorage or context
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+  const userId = userDetails?.data?.userId;
+
+
+  const handlechangepassfunc = (e) => {
+  const { name, value } = e.target;
+  if (name === "currentPassword") setCurrentPassword(value);
+  if (name === "newPassword") setNewPassword(value);
+  if (name === "confirmPassword") setConfirmPassword(value);
+};
+
+    const handleSubmit = async () => {
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      toast.error("All fields are required");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      toast.error("New password and confirm password must match");
+      return;
+    }
+    setLoading(true);
+    try {
+      const payload = {
+        userId,
+        oldPassword: currentPassword,
+        password: newPassword,
+      };
+      console.log("🚀 ~ handleSubmit ~ payload:", payload)
+      const response = await fetch(
+        "https://apidoc.transferrocket.co.uk/updateuserpassword",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }
+      );
+      const data = await response.json();
+      if (data.status) {
+        toast.success(data.message || "Password updated successfully");
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+      } else {
+        toast.error(data.message || "Failed to update password");
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.");
+    }
+    setLoading(false);
+  };
+
   return (
+    
     <Layout>
       <ChangePasswordBox>
         <div className="head">
@@ -24,7 +88,7 @@ const Changepassword = () => {
         >
           <InputWrapBox>
             <p>Current Password</p>
-            <Password />
+            <Password handlechangepass={handlechangepassfunc} name="currentPassword" />
           </InputWrapBox>
           <hr
             style={{
@@ -34,8 +98,8 @@ const Changepassword = () => {
             }}
           />
           <InputWrapBox>
-            <p>Current Password</p>
-            <Password />
+            <p>New Password</p>
+            <Password handlechangepass={handlechangepassfunc} name="newPassword" />
           </InputWrapBox>
           <hr
             style={{
@@ -45,8 +109,8 @@ const Changepassword = () => {
             }}
           />
           <InputWrapBox>
-            <p>Current Password</p>
-            <Password />
+            <p>Confirm Password</p>
+            <Password handlechangepass={handlechangepassfunc} name="confirmPassword" />
           </InputWrapBox>
           <hr
             style={{
@@ -58,7 +122,17 @@ const Changepassword = () => {
           <EndBtn>
             <div className="btns">
               <p className="cancel">Cancel</p>
-              <div className="update">Update Profile</div>
+              <button
+                className="update"
+                onClick={handleSubmit}
+                disabled={loading}
+                style={{
+                  opacity: loading ? 0.7 : 1,
+                  pointerEvents: loading ? "none" : "auto"
+                }}
+              >
+                {loading ? "Updating..." : "Update Profile"}
+              </button>
             </div>
           </EndBtn>
         </Box>
